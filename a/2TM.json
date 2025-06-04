@@ -43,169 +43,7 @@
             "audioURL": "https://ia902203.us.archive.org/19/items/Quran-Indonesia_/001.mp3",
             "title": "Al-Fatiha"
         },
-                {
-            "chapterNumber": 2,
-            "totalDuration": "03:49:49",
-            "verses": [
-                {
-                    "verseNumber": 1,
-                    "startTime": "00:00:00",
-                    "endTime": "00:00:07"
-                },
-                {
-                    "verseNumber": 2,
-                    "startTime": "00:00:07",
-                    "endTime": "00:00:22"
-                },
-                {
-                    "verseNumber": 3,
-                    "startTime": "00:00:22",
-                    "endTime": "00:00:42"
-                },
-                {
-                    "verseNumber": 4,
-                    "startTime": "00:00:42",
-                    "endTime": "00:01:09"
-                },
-                {
-                    "verseNumber": 5,
-                    "startTime": "00:01:09",
-                    "endTime": "00:01:27"
-                },
-                {
-                    "verseNumber": 6,
-                    "startTime": "00:01:27",
-                    "endTime": "00:01:50"
-                },
-                {
-                    "verseNumber": 7,
-                    "startTime": "00:01:50",
-                    "endTime": "00:02:13"
-                },
-                {
-                    "verseNumber": 8,
-                    "startTime": "00:02:13",
-                    "endTime": "00:02:35"
-                },
-                {
-                    "verseNumber": 9,
-                    "startTime": "00:02:35",
-                    "endTime": "00:02:57"
-                },
-                {
-                    "verseNumber": 10,
-                    "startTime": "00:02:57",
-                    "endTime": "00:03:21"
-                },
-                {
-                    "verseNumber": 11,
-                    "startTime": "00:03:21",
-                    "endTime": "00:03:43"
-                },
-                {
-                    "verseNumber": 12,
-                    "startTime": "00:03:43",
-                    "endTime": "00:03:59"
-                },
-                {
-                    "verseNumber": 13,
-                    "startTime": "00:03:59",
-                    "endTime": "00:04:45"
-                },
-                {
-                    "verseNumber": 14,
-                    "startTime": "00:04:45",
-                    "endTime": "00:05:27"
-                },
-                {
-                    "verseNumber": 15,
-                    "startTime": "00:05:27",
-                    "endTime": "00:05:42"
-                },
-                {
-                    "verseNumber": 16,
-                    "startTime": "00:05:42",
-                    "endTime": "00:06:05"
-                },
-                {
-                    "verseNumber": 17,
-                    "startTime": "00:06:05",
-                    "endTime": "00:06:40"
-                },
-                {
-                    "verseNumber": 18,
-                    "startTime": "00:06:40",
-                    "endTime": "00:06:54"
-                },
-                {
-                    "verseNumber": 19,
-                    "startTime": "00:06:54",
-                    "endTime": "00:07:37"
-                },
-                {
-                    "verseNumber": 20,
-                    "startTime": "00:07:37",
-                    "endTime": "00:08:32"
-                },
-                {
-                    "verseNumber": 21,
-                    "startTime": "00:08:32",
-                    "endTime": "00:08:55"
-                },
-                {
-                    "verseNumber": 22,
-                    "startTime": "00:08:55",
-                    "endTime": "00:09:48"
-                },
-                {
-                    "verseNumber": 23,
-                    "startTime": "00:09:48",
-                    "endTime": "00:10:27"
-                },
-                {
-                    "verseNumber": 24,
-                    "startTime": "00:10:27",
-                    "endTime": "00:10:57"
-                },
-                {
-                    "verseNumber": 25,
-                    "startTime": "00:10:57",
-                    "endTime": "00:12:08"
-                },
-                {
-                    "verseNumber": 26,
-                    "startTime": "00:12:08",
-                    "endTime": "00:13:27"
-                },
-                {
-                    "verseNumber": 27,
-                    "startTime": "00:13:27",
-                    "endTime": "00:14:10"
-                },
-                {
-                    "verseNumber": 28,
-                    "startTime": "00:14:10",
-                    "endTime": "00:14:45"
-                },
-                {
-                    "verseNumber": 284,
-                    "startTime": "04:48:29",
-                    "endTime": "04:49:52"
-                },
-                {
-                    "verseNumber": 285,
-                    "startTime": "04:49:53",
-                    "endTime": "04:50:29"
-                },
-                {
-                    "verseNumber": 286,
-                    "startTime": "04:50:30",
-                    "endTime": "04:52:15"
-                }
-            ],
-            "audioURL": "https://ia902203.us.archive.org/19/items/Quran-Indonesia_/002.mp3",
-            "title": "Al-Baqarah"
-        },
+
                 {
             "chapterNumber": 36,
             "totalDuration": "00:32:54",
@@ -3744,6 +3582,581 @@
             ],
             "audioURL": "https://ia902203.us.archive.org/19/items/Quran-Indonesia_/114.mp3",
             "title": "An-Nas"
+        },
+                        {
+            "chapterNumber": 2,
+            "totalDuration": "03:49:49",
+            "verses": [
+                {
+                    "verseNumber": 1,
+                    "startTime": "00:00:00",
+                    "endTime": "00:00:07"
+                },
+                {
+                    "verseNumber": 2,
+                    "startTime": "00:00:07",
+                    "endTime": "00:00:22"
+                },
+                {
+                    "verseNumber": 3,
+                    "startTime": "00:00:22",
+                    "endTime": "00:00:42"
+                },
+                {
+                    "verseNumber": 4,
+                    "startTime": "00:00:42",
+                    "endTime": "00:01:09"
+                },
+                {
+                    "verseNumber": 5,
+                    "startTime": "00:01:09",
+                    "endTime": "00:01:27"
+                },
+                {
+                    "verseNumber": 6,
+                    "startTime": "00:01:27",
+                    "endTime": "00:01:50"
+                },
+                {
+                    "verseNumber": 7,
+                    "startTime": "00:01:50",
+                    "endTime": "00:02:13"
+                },
+                {
+                    "verseNumber": 8,
+                    "startTime": "00:02:13",
+                    "endTime": "00:02:35"
+                },
+                {
+                    "verseNumber": 9,
+                    "startTime": "00:02:35",
+                    "endTime": "00:02:57"
+                },
+                {
+                    "verseNumber": 10,
+                    "startTime": "00:02:57",
+                    "endTime": "00:03:21"
+                },
+                {
+                    "verseNumber": 11,
+                    "startTime": "00:03:21",
+                    "endTime": "00:03:43"
+                },
+                {
+                    "verseNumber": 12,
+                    "startTime": "00:03:43",
+                    "endTime": "00:03:59"
+                },
+                {
+                    "verseNumber": 13,
+                    "startTime": "00:03:59",
+                    "endTime": "00:04:45"
+                },
+                {
+                    "verseNumber": 14,
+                    "startTime": "00:04:45",
+                    "endTime": "00:05:27"
+                },
+                {
+                    "verseNumber": 15,
+                    "startTime": "00:05:27",
+                    "endTime": "00:05:42"
+                },
+                {
+                    "verseNumber": 16,
+                    "startTime": "00:05:42",
+                    "endTime": "00:06:05"
+                },
+                {
+                    "verseNumber": 17,
+                    "startTime": "00:06:05",
+                    "endTime": "00:06:40"
+                },
+                {
+                    "verseNumber": 18,
+                    "startTime": "00:06:40",
+                    "endTime": "00:06:54"
+                },
+                {
+                    "verseNumber": 19,
+                    "startTime": "00:06:54",
+                    "endTime": "00:07:37"
+                },
+                {
+                    "verseNumber": 20,
+                    "startTime": "00:07:37",
+                    "endTime": "00:08:32"
+                },
+                {
+                    "verseNumber": 21,
+                    "startTime": "00:08:32",
+                    "endTime": "00:08:55"
+                },
+                {
+                    "verseNumber": 22,
+                    "startTime": "00:08:55",
+                    "endTime": "00:09:48"
+                },
+                {
+                    "verseNumber": 23,
+                    "startTime": "00:09:48",
+                    "endTime": "00:10:27"
+                },
+                {
+                    "verseNumber": 24,
+                    "startTime": "00:10:27",
+                    "endTime": "00:10:57"
+                },
+                {
+                    "verseNumber": 25,
+                    "startTime": "00:10:57",
+                    "endTime": "00:12:08"
+                },
+                {
+                    "verseNumber": 26,
+                    "startTime": "00:12:08",
+                    "endTime": "00:13:27"
+                },
+                {
+                    "verseNumber": 27,
+                    "startTime": "00:13:27",
+                    "endTime": "00:14:10"
+                },
+                {
+                    "verseNumber": 28,
+                    "startTime": "00:14:10",
+                    "endTime": "00:14:45"
+                },
+                {
+            ],
+            "audioURL": "https://ia902203.us.archive.org/19/items/Quran-Indonesia_/002.mp3",
+            "title": "Al-Baqarah"
+        },    
+                },
+
+                {
+            "chapterNumber": 36,
+            "totalDuration": "00:32:54",
+            "verses": [
+                {
+                    "verseNumber": 1,
+                    "startTime": "00:00:00",
+                    "endTime": "00:00:07"
+                },
+                {
+                    "verseNumber": 2,
+                    "startTime": "00:00:07",
+                    "endTime": "00:00:14"
+                },
+                {
+                    "verseNumber": 3,
+                    "startTime": "00:00:14",
+                    "endTime": "00:00:26"
+                },
+                {
+                    "verseNumber": 4,
+                    "startTime": "00:00:26",
+                    "endTime": "00:00:35"
+                },
+                {
+                    "verseNumber": 5,
+                    "startTime": "00:00:35",
+                    "endTime": "00:00:48"
+                },
+                {
+                    "verseNumber": 6,
+                    "startTime": "00:00:48",
+                    "endTime": "00:01:12"
+                },
+                {
+                    "verseNumber": 7,
+                    "startTime": "00:01:12",
+                    "endTime": "00:01:30"
+                },
+                {
+                    "verseNumber": 8,
+                    "startTime": "00:01:30",
+                    "endTime": "00:01:57"
+                },
+                {
+                    "verseNumber": 9,
+                    "startTime": "00:01:57",
+                    "endTime": "00:02:26"
+                },
+                {
+                    "verseNumber": 10,
+                    "startTime": "00:02:26",
+                    "endTime": "00:02:53"
+                },
+                {
+                    "verseNumber": 11,
+                    "startTime": "00:02:53",
+                    "endTime": "00:03:35"
+                },
+                {
+                    "verseNumber": 12,
+                    "startTime": "00:03:35",
+                    "endTime": "00:04:13"
+                },
+                {
+                    "verseNumber": 13,
+                    "startTime": "00:04:13",
+                    "endTime": "00:04:36"
+                },
+                {
+                    "verseNumber": 14,
+                    "startTime": "00:04:36",
+                    "endTime": "00:05:20"
+                },
+                {
+                    "verseNumber": 15,
+                    "startTime": "00:05:20",
+                    "endTime": "00:05:55"
+                },
+                {
+                    "verseNumber": 16,
+                    "startTime": "00:05:55",
+                    "endTime": "00:06:15"
+                },
+                {
+                    "verseNumber": 17,
+                    "startTime": "00:06:15",
+                    "endTime": "00:06:29"
+                },
+                {
+                    "verseNumber": 18,
+                    "startTime": "00:06:29",
+                    "endTime": "00:07:07"
+                },
+                {
+                    "verseNumber": 19,
+                    "startTime": "00:07:07",
+                    "endTime": "00:07:40"
+                },
+                {
+                    "verseNumber": 20,
+                    "startTime": "00:07:40",
+                    "endTime": "00:08:04"
+                },
+                {
+                    "verseNumber": 21,
+                    "startTime": "00:08:04",
+                    "endTime": "00:08:22"
+                },
+                {
+                    "verseNumber": 22,
+                    "startTime": "00:08:22",
+                    "endTime": "00:08:44"
+                },
+                {
+                    "verseNumber": 23,
+                    "startTime": "00:08:44",
+                    "endTime": "00:09:21"
+                },
+                {
+                    "verseNumber": 24,
+                    "startTime": "00:09:21",
+                    "endTime": "00:09:37"
+                },
+                {
+                    "verseNumber": 25,
+                    "startTime": "00:09:37",
+                    "endTime": "00:09:54"
+                },
+                {
+                    "verseNumber": 26,
+                    "startTime": "00:09:54",
+                    "endTime": "00:10:15"
+                },
+                {
+                    "verseNumber": 27,
+                    "startTime": "00:10:15",
+                    "endTime": "00:10:33"
+                },
+                {
+                    "verseNumber": 28,
+                    "startTime": "00:10:33",
+                    "endTime": "00:11:04"
+                },
+                {
+                    "verseNumber": 29,
+                    "startTime": "00:11:04",
+                    "endTime": "00:11:25"
+                },
+                {
+                    "verseNumber": 30,
+                    "startTime": "00:11:25",
+                    "endTime": "00:11:52"
+                },
+                {
+                    "verseNumber": 31,
+                    "startTime": "00:11:52",
+                    "endTime": "00:12:18"
+                },
+                {
+                    "verseNumber": 32,
+                    "startTime": "00:12:18",
+                    "endTime": "00:12:33"
+                },
+                {
+                    "verseNumber": 33,
+                    "startTime": "00:12:33",
+                    "endTime": "00:13:04"
+                },
+                {
+                    "verseNumber": 34,
+                    "startTime": "00:13:04",
+                    "endTime": "00:13:30"
+                },
+                {
+                    "verseNumber": 35,
+                    "startTime": "00:13:30",
+                    "endTime": "00:13:49"
+                },
+                {
+                    "verseNumber": 36,
+                    "startTime": "00:13:49",
+                    "endTime": "00:14:22"
+                },
+                {
+                    "verseNumber": 37,
+                    "startTime": "00:14:22",
+                    "endTime": "00:14:48"
+                },
+                {
+                    "verseNumber": 38,
+                    "startTime": "00:14:48",
+                    "endTime": "00:15:08"
+                },
+                {
+                    "verseNumber": 39,
+                    "startTime": "00:15:08",
+                    "endTime": "00:15:30"
+                },
+                {
+                    "verseNumber": 40,
+                    "startTime": "00:15:30",
+                    "endTime": "00:16:01"
+                },
+                {
+                    "verseNumber": 41,
+                    "startTime": "00:16:01",
+                    "endTime": "00:16:21"
+                },
+                {
+                    "verseNumber": 42,
+                    "startTime": "00:16:21",
+                    "endTime": "00:16:36"
+                },
+                {
+                    "verseNumber": 43,
+                    "startTime": "00:16:36",
+                    "endTime": "00:16:58"
+                },
+                {
+                    "verseNumber": 44,
+                    "startTime": "00:16:58",
+                    "endTime": "00:17:17"
+                },
+                {
+                    "verseNumber": 45,
+                    "startTime": "00:17:17",
+                    "endTime": "00:17:43"
+                },
+                {
+                    "verseNumber": 46,
+                    "startTime": "00:17:43",
+                    "endTime": "00:18:05"
+                },
+                {
+                    "verseNumber": 47,
+                    "startTime": "00:18:05",
+                    "endTime": "00:19:02"
+                },
+                {
+                    "verseNumber": 48,
+                    "startTime": "00:19:02",
+                    "endTime": "00:19:21"
+                },
+                {
+                    "verseNumber": 49,
+                    "startTime": "00:19:21",
+                    "endTime": "00:19:41"
+                },
+                {
+                    "verseNumber": 50,
+                    "startTime": "00:19:41",
+                    "endTime": "00:20:02"
+                },
+                {
+                    "verseNumber": 51,
+                    "startTime": "00:20:02",
+                    "endTime": "00:20:25"
+                },
+                {
+                    "verseNumber": 52,
+                    "startTime": "00:20:25",
+                    "endTime": "00:20:56"
+                },
+                {
+                    "verseNumber": 53,
+                    "startTime": "00:20:56",
+                    "endTime": "00:21:19"
+                },
+                {
+                    "verseNumber": 54,
+                    "startTime": "00:21:19",
+                    "endTime": "00:21:46"
+                },
+                {
+                    "verseNumber": 55,
+                    "startTime": "00:21:46",
+                    "endTime": "00:22:03"
+                },
+                {
+                    "verseNumber": 56,
+                    "startTime": "00:22:03",
+                    "endTime": "00:22:22"
+                },
+                {
+                    "verseNumber": 57,
+                    "startTime": "00:22:22",
+                    "endTime": "00:22:40"
+                },
+                {
+                    "verseNumber": 58,
+                    "startTime": "00:22:40",
+                    "endTime": "00:22:56"
+                },
+                {
+                    "verseNumber": 59,
+                    "startTime": "00:22:56",
+                    "endTime": "00:23:14"
+                },
+                {
+                    "verseNumber": 60,
+                    "startTime": "00:23:14",
+                    "endTime": "00:23:46"
+                },
+                {
+                    "verseNumber": 61,
+                    "startTime": "00:23:46",
+                    "endTime": "00:24:01"
+                },
+                {
+                    "verseNumber": 62,
+                    "startTime": "00:24:01",
+                    "endTime": "00:24:24"
+                },
+                {
+                    "verseNumber": 63,
+                    "startTime": "00:24:24",
+                    "endTime": "00:24:38"
+                },
+                {
+                    "verseNumber": 64,
+                    "startTime": "00:24:38",
+                    "endTime": "00:24:51"
+                },
+                {
+                    "verseNumber": 65,
+                    "startTime": "00:24:51",
+                    "endTime": "00:25:20"
+                },
+                {
+                    "verseNumber": 66,
+                    "startTime": "00:25:20",
+                    "endTime": "00:25:49"
+                },
+                {
+                    "verseNumber": 67,
+                    "startTime": "00:25:49",
+                    "endTime": "00:26:16"
+                },
+                {
+                    "verseNumber": 68,
+                    "startTime": "00:26:16",
+                    "endTime": "00:26:37"
+                },
+                {
+                    "verseNumber": 69,
+                    "startTime": "00:26:37",
+                    "endTime": "00:27:07"
+                },
+                {
+                    "verseNumber": 70,
+                    "startTime": "00:27:07",
+                    "endTime": "00:27:30"
+                },
+                {
+                    "verseNumber": 71,
+                    "startTime": "00:27:30",
+                    "endTime": "00:28:02"
+                },
+                {
+                    "verseNumber": 72,
+                    "startTime": "00:28:02",
+                    "endTime": "00:28:23"
+                },
+                {
+                    "verseNumber": 73,
+                    "startTime": "00:28:23",
+                    "endTime": "00:28:40"
+                },
+                {
+                    "verseNumber": 74,
+                    "startTime": "00:28:40",
+                    "endTime": "00:28:57"
+                },
+                {
+                    "verseNumber": 75,
+                    "startTime": "00:28:57",
+                    "endTime": "00:29:18"
+                },
+                {
+                    "verseNumber": 76,
+                    "startTime": "00:29:18",
+                    "endTime": "00:29:43"
+                },
+                {
+                    "verseNumber": 77,
+                    "startTime": "00:29:43",
+                    "endTime": "00:30:08"
+                },
+                {
+                    "verseNumber": 78,
+                    "startTime": "00:30:08",
+                    "endTime": "00:30:35"
+                },
+                {
+                    "verseNumber": 79,
+                    "startTime": "00:30:35",
+                    "endTime": "00:31:01"
+                },
+                {
+                    "verseNumber": 80,
+                    "startTime": "00:31:01",
+                    "endTime": "00:31:27"
+                },
+                {
+                    "verseNumber": 81,
+                    "startTime": "00:31:27",
+                    "endTime": "00:32:02"
+                },
+                {
+                    "verseNumber": 82,
+                    "startTime": "00:32:02",
+                    "endTime": "00:32:31"
+                },
+                {
+                    "verseNumber": 83,
+                    "startTime": "00:32:31",
+                    "endTime": "00:32:54"
+                }
+            ],
+            "audioURL": "https://ia902203.us.archive.org/19/items/Quran-Indonesia_/036.mp3",
+            "title": "Ya-Sin"
+
         }
     ]
 }

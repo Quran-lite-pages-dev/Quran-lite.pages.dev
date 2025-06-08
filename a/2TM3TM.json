@@ -1,7 +1,7 @@
 {
     "chapters": [
         {
-            "chapterNumber": 1,
+            "chapterNumber": 0,
             "totalDuration": "00:10:44",
             "verses": [
                 {
@@ -144,7 +144,7 @@
             "title": "Introduction"
         },
         {
-            "chapterNumber": 2,
+            "chapterNumber": 1,
             "totalDuration": "00:01:26",
             "verses": [
                 {

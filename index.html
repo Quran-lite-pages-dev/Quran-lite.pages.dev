@@ -118,7 +118,8 @@
     /* TV UPDATE: General body styles for TV readability */
     body { 
       font-family: Verdana, Geneva, Arial, sans-serif; 
-      background-image: url('./BGw.png');
+      background-image: url('https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/BGw.png
+');
       background-size: cover;
       background-repeat: no-repeat;
       color: black; 
@@ -190,7 +191,7 @@
             margin-right: auto;
         }
     .dark-mode {
-  background-image: url('./BGw.png');
+  background-image: url('https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/BGw.png');
   background-size: cover;
   background-repeat: no-repeat;
   color: black;
@@ -1357,7 +1358,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentChapterData = null;
     let currentChapterIndex = 0;
 
-    fetch('https://muslim1446.github.io/a/2TM3TM.json')
+    fetch('https://muslim1446.github.io/2TM3TM.json')
         .then(response => response.json())
         .then(data => {
             jsonData = data;
@@ -1367,7 +1368,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error fetching JSON:', error));
 
     // --- MODIFICATION START ---
-    fetch('https://muslim1446.github.io/a/3TM.xml') // Assuming 3TM.json is now your XML file
+    fetch('https://muslim1446.github.io/3TM.xml') // Assuming 3TM.json is now your XML file
         .then(response => response.text()) // Fetch as text
         .then(xmlString => {
             const parser = new DOMParser();

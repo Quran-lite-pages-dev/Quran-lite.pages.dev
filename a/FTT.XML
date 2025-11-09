@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ForbiddenToTranslate>
+    <Group name="Istawā" root="س-و-ي">
+        <Verse chapter="2" number="29" />
+        <Verse chapter="7" number="54" />
+        <Verse chapter="10" number="3" />
+        <Verse chapter="13" number="2" />
+        <Verse chapter="20" number="5" />
+        <Verse chapter="25" number="59" />
+        <Verse chapter="32" number="4" />
+        <Verse chapter="41" number="11" />
+        <Verse chapter="57" number="4" />
+    </Group>
+    <Group name="Yad" root="ي-د-ي">
+        <Verse chapter="3" number="26" />
+        <Verse chapter="3" number="73" />
+        <Verse chapter="5" number="64" />
+        <Verse chapter="38" number="75" />
+        <Verse chapter="48" number="10" />
+        <Verse chapter="57" number="29" />
+        <Verse chapter="67" number="1" />
+    </Group>
+    <Group name="Wajh" root="و-ج-ه">
+        <Verse chapter="2" number="112" />
+        <Verse chapter="2" number="115" />
+        <Verse chapter="2" number="272" />
+        <Verse chapter="3" number="20" />
+        <Verse chapter="6" number="52" />
+        <Verse chapter="13" number="22" />
+        <Verse chapter="18" number="28" />
+        <Verse chapter="28" number="88" />
+        <Verse chapter="30" number="38" />
+        <Verse chapter="30" number="39" />
+        <Verse chapter="55" number="27" />
+        <Verse chapter="76" number="9" />
+        <Verse chapter="92" number="20" />
+    </Group>
+    <Group name="Ayn" root="ع-ي-n">
+        <Verse chapter="11" number="37" />
+        <Verse chapter="20" number="39" note="bi-a'yuninā" />
+        <Verse chapter="23" number="27" />
+        <Verse chapter="52" number="48" />
+        <Verse chapter="54" number="14" />
+    </Group>
+    <Group name="Majī' / Atā" root="ج-ي-ء / أ-ت-ي">
+        <Verse chapter="2" number="210" />
+        <Verse chapter="6" number="158" />
+        <Verse chapter="16" number="26" />
+        <Verse chapter="89" number="22" />
+    </Group>
+    <Group name="Sāq" root="س-و-ق">
+        <Verse chapter="68" number="42" />
+    </Group>
+    <Group name="Fawqa" root="ف-و-ق">
+        <Verse chapter="6" number="18" />
+        <Verse chapter="6" number="61" />
+        <Verse chapter="7" number="127" />
+        <Verse chapter="43" number="84" />
+        <Verse chapter="67" number="16" />
+        <Verse chapter="67" number="17" />
+    </Group>
+    <Group name="Nazar" root="ن-ظ-ر">
+        <Verse chapter="3" number="77" />
+        <Verse chapter="7" number="143" />
+        <Verse chapter="75" number="23" />
+        <Verse chapter="83" number="35" />
+    </Group>
+</ForbiddenToTranslate>

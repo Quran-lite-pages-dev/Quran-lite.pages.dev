@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Audio Tagger (v3 - Web Hosted)</title>
+    <title>Online Audio Tagger (v4 - Shortcuts Fixed)</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -135,7 +135,7 @@
 <body>
 
     <header>
-        <h1>🎧 Online Audio Tagger (v3 - Web Hosted)</h1>
+        <h1>🎧 Online Audio Tagger (v4 - Shortcuts Fixed)</h1>
     </header>
 
     <section id="player-controls">
@@ -337,11 +337,7 @@
          */
         function loadChapter(chapterNum) {
             const fileName = `coran_${chapterNum}.mp3`;
-            
-            // --- THIS IS THE ONLY LINE THAT CHANGED ---
-            // It now points to the online 'archive.org' path instead of the local 'Q_espanol' folder.
             const filePath = `https://ia601404.us.archive.org/34/items/elsagrado/${fileName}`;
-            // ---------------------------------------------
             
             playerState.currentFile = fileName; // We still save the local-style name for the DB
             playerState.currentTime = 0; // Reset on new chapter load
@@ -442,7 +438,10 @@
             if (state === 'orange') {
                 tagStatus.style.backgroundColor = 'orange';
                 tagStatus.style.color = '#333';
-                tagGag.textContent = 'Waiting for Arabic End (Press 1)';
+                // --- THIS WAS THE BUG ---
+                // It used to say 'tagGag.textContent'
+                tagStatus.textContent = 'Waiting for Arabic End (Press 1)';
+                // -----------------------
             } else {
                 tagStatus.style.backgroundColor = 'lightgreen';
                 tagStatus.style.color = '#333';
@@ -597,6 +596,7 @@
             updateTagStatusUI('orange');
 
             // 6. Attach event listeners
+            // This line is now reachable because the typo is fixed!
             document.addEventListener('keydown', handleGlobalKeydown);
             chapterSelect.addEventListener('change', (e) => loadChapter(e.target.value));
             importButton.addEventListener('click', handleImport);

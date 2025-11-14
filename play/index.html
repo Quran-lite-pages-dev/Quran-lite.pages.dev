@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offline Audio Tagger (v2 - Waveform)</title>
+    <title>Online Audio Tagger (v3 - Web Hosted)</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -135,7 +135,7 @@
 <body>
 
     <header>
-        <h1>🎧 Offline Audio Tagger (v2 - Waveform)</h1>
+        <h1>🎧 Online Audio Tagger (v3 - Web Hosted)</h1>
     </header>
 
     <section id="player-controls">
@@ -235,7 +235,8 @@
                 try {
                     db = JSON.parse(storedDB);
                     exportJsonText.value = JSON.stringify(db, null, 2);
-                } catch (e) {
+                } catch (e)
+                {
                     console.error("Failed to parse stored DB:", e);
                     db = {};
                 }
@@ -336,16 +337,21 @@
          */
         function loadChapter(chapterNum) {
             const fileName = `coran_${chapterNum}.mp3`;
-            const filePath = `Q_espanol/${fileName}`;
             
-            playerState.currentFile = fileName;
+            // --- THIS IS THE ONLY LINE THAT CHANGED ---
+            // It now points to the online 'archive.org' path instead of the local 'Q_espanol' folder.
+            const filePath = `https://ia601404.us.archive.org/34/items/elsagrado/${fileName}`;
+            // ---------------------------------------------
+            
+            playerState.currentFile = fileName; // We still save the local-style name for the DB
             playerState.currentTime = 0; // Reset on new chapter load
             savePlayerState();
             
             currentChapterTitle.textContent = `coran_${chapterNum}`;
             
             // Load the new audio file into wavesurfer
-            wavesurfer.load(filePath);
+            // We MUST add a dummy parameter to bypass browser cache for archive.org
+            wavesurfer.load(filePath + '?t=' + new Date().getTime());
 
             renderCurrentChapterClips();
             updateTagStatusUI('orange'); // Reset tag state
@@ -436,7 +442,7 @@
             if (state === 'orange') {
                 tagStatus.style.backgroundColor = 'orange';
                 tagStatus.style.color = '#333';
-                tagStatus.textContent = 'Waiting for Arabic End (Press 1)';
+                tagGag.textContent = 'Waiting for Arabic End (Press 1)';
             } else {
                 tagStatus.style.backgroundColor = 'lightgreen';
                 tagStatus.style.color = '#333';
@@ -576,7 +582,9 @@
                 currentChapterTitle.textContent = `coran_${chapterNum}`;
                 
                 // Load the audio, and the 'ready' event will handle setting the time
-                wavesurfer.load(`Q_espanol/${playerState.currentFile}`);
+                const fileName = `coran_${chapterNum}.mp3`;
+                const filePath = `https://ia601404.us.archive.org/34/items/elsagrado/${fileName}`;
+                wavesurfer.load(filePath + '?t=' + new Date().getTime());
             
             } else {
                 // Load the first chapter by default if no state

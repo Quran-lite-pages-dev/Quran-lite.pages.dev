@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Audio Tagger (v7 - Layout Restored)</title>
+    <title>Offline Audio Tagger (Dark)</title>
     <style>
-        /* --- FIX --- Removed the entire 'html' block from v6 */
+        :root {
+            color-scheme: dark; /* Hint to browser for native dark controls */
+        }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -15,46 +17,44 @@
                 "player"
                 "clips"
                 "io";
-            grid-template-rows: auto auto 1fr auto; /* Clips section will flex */
+            grid-template-rows: auto auto 1fr auto;
             gap: 15px;
             padding: 15px;
-            background-color: #f4f4f4;
-            color: #333;
-
-            /* --- FIX ---
-               Set body to 100vh and hide its own overflow.
-               This contains the grid perfectly.
-            */
-            height: 100vh;
-            width: 100vw;
-            margin: 0;
-            box-sizing: border-box; /* Include padding in the 100vh/vw */
-            overflow: hidden; 
-            /* --- END FIX --- */
+            background-color: #1a1a1a; /* Ergonomic dark-gray, not pure black */
+            color: #e0e0e0; /* Off-white text, not pure white */
+            height: 95vh;
         }
 
         header { grid-area: header; }
         #player-controls { grid-area: player; }
-        #clips-section { grid-area: clips; display: flex; flex-direction: column; min-height: 150px; }
+        #clips-section { grid-area: clips; display: flex; flex-direction: column; min-height: 200px; }
         #io-section { grid-area: io; }
 
         h1, h2 {
             margin: 0 0 10px 0;
-            border-bottom: 2px solid #ddd;
+            border-bottom: 2px solid #444; /* Darker border */
             padding-bottom: 5px;
+            color: #f5f5f5; /* Brighter white for headers */
         }
 
-        #player-controls {
-            background: #fff;
+        /* Elevated surfaces are lighter than the background */
+        #player-controls,
+        #clips-section,
+        #io-section > div {
+            background: #252525;
             padding: 15px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05); /* Subtle edge highlight */
         }
 
         #chapter-select {
             font-size: 1.2em;
             padding: 5px;
             margin-right: 10px;
+            background-color: #333;
+            color: #e0e0e0;
+            border: 1px solid #555;
+            border-radius: 5px;
         }
 
         #tag-status {
@@ -66,54 +66,25 @@
             display: inline-block;
             width: 300px;
             text-align: center;
+            transition: background-color 0.3s ease; /* Smooth state transition */
         }
 
         #time-display {
             font-family: "Courier New", Courier, monospace;
             font-size: 1.5em;
             font-weight: bold;
-            color: #004a99;
+            color: #6cb6ff; /* Light, readable blue for high-vis info */
             margin-left: 20px;
         }
 
-        #waveform {
+        audio {
             width: 100%;
-            height: 128px;
             margin-top: 10px;
-            border: 1px solid #ddd;
-            background: #f9f9f9;
-        }
-        
-        #loading-indicator {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #d9534f;
-            display: none;
-            margin-left: 20px;
-        }
-        
-        #zoom-controls {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #fafafa;
-            border: 1px solid #eee;
-            border-radius: 5px;
-        }
-        #zoom-controls label {
-            font-weight: bold;
-            margin-right: 10px;
-        }
-        #zoom-slider {
-            width: 300px;
-            vertical-align: middle;
         }
 
         #clips-section {
-            background: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            overflow-y: auto; /* Allow THIS section to scroll */
+            /* Handled by the combined rule above */
+            overflow-y: auto;
         }
 
         #clips-list {
@@ -126,10 +97,39 @@
         #clips-list li {
             font-family: "Courier New", Courier, monospace;
             padding: 8px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #444; /* Was #eee */
         }
-        #clips-list li:nth-child(odd) { background-color: #f9f9f9; }
-        #clips-list li button { margin-left: 15px; cursor: pointer; }
+        #clips-list li:nth-child(odd) { 
+            background-color: #303030; /* Darker, subtle zebra striping */
+        }
+
+        /* Styling for buttons inside the list */
+        #clips-list li button {
+            margin-left: 15px; 
+            cursor: pointer;
+            background-color: #444;
+            color: #e0e0e0;
+            border: 1px solid #555;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-size: 0.9em;
+        }
+        #clips-list li button:hover {
+             background-color: #555;
+        }
+        
+        /* New class for the delete button (see JS change) */
+        .delete-btn {
+            color: #ff6b6b; /* Brighter red for dark bg */
+            background-color: #4f2a2a;
+            border-color: #803030;
+        }
+        .delete-btn:hover {
+            color: #fff;
+            background-color: #6a3a3a;
+            border-color: #a04040;
+        }
+
 
         #io-section {
             display: grid;
@@ -137,6 +137,7 @@
             gap: 15px;
         }
         #io-section > div {
+            /* Handled by the combined rule above */
             display: flex;
             flex-direction: column;
         }
@@ -144,10 +145,20 @@
             width: 100%;
             height: 150px;
             font-family: "Courier New", Courier, monospace;
-            box-sizing: border-box;
+            box-sizing: border-box; /* Ensures padding doesn't affect width */
+            background-color: #1f1f1f;
+            color: #d5d5d5;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 8px;
         }
+        #io-section textarea:focus {
+            border-color: #4a85d4; /* Match button hover */
+            outline: none;
+        }
+
         #import-button {
-            background-color: #007bff;
+            background-color: #3a75c4; /* Desaturated, clear blue */
             color: white;
             border: none;
             padding: 10px;
@@ -155,14 +166,24 @@
             cursor: pointer;
             font-size: 1em;
             margin-top: 5px;
+            font-weight: bold;
         }
-        #import-button:hover { background-color: #0056b3; }
+        #import-button:hover { 
+            background-color: #4a85d4; 
+        }
+
+        /* Style for the secondary shortcut info text */
+        #player-controls > div:last-of-type {
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #aaa; /* Dim secondary text */
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>🎧 Online Audio Tagger (v7 - Layout Restored)</h1>
+        <h1>🎧 Offline Audio Tagger</h1>
     </header>
 
     <section id="player-controls">
@@ -171,24 +192,16 @@
 
         <span id="tag-status"></span>
         <span id="time-display">00:00:00.000</span>
-        <span id="loading-indicator">Decoding Waveform...</span>
         
-        <div id="zoom-controls">
-            <label for="zoom-slider">Zoom:</label>
-            <input type="range" id="zoom-slider" min="10" max="500" value="50">
-            (Shortcuts: [+] / [-])
-        </div>
-
-        <div id="waveform"></div>
+        <audio id="audio-player" controls></audio>
         
         <div>
             <strong>Shortcuts:</strong> 
             [Space]: Play/Pause |
-            [←/→]: Rewind/Fwd 1s |
+            [←]: Rewind 1s |
+            [→]: Forward 1s |
             [1]: Mark Arabic End |
-            [2]: Mark Spanish End |
-            [+/=]: Zoom In |
-            [-]: Zoom Out
+            [2]: Mark Spanish End
         </div>
     </section>
 
@@ -210,38 +223,42 @@
         </div>
     </section>
 
-    <script src="https://unpkg.com/wavesurfer.js@7/dist/wavesurfer.min.js"></script>
-
     <script>
         // --- GLOBALS ---
+        const audioPlayer = document.getElementById('audio-player');
         const chapterSelect = document.getElementById('chapter-select');
         const tagStatus = document.getElementById('tag-status');
         const timeDisplay = document.getElementById('time-display');
-        const loadingIndicator = document.getElementById('loading-indicator');
         const clipsList = document.getElementById('clips-list');
         const currentChapterTitle = document.getElementById('current-chapter-title');
         const importJsonText = document.getElementById('import-json');
         const exportJsonText = document.getElementById('export-json');
         const importButton = document.getElementById('import-button');
-        const zoomSlider = document.getElementById('zoom-slider');
-        
-        let wavesurfer = null;
-        let db = {};
-        let playerState = { currentFile: null, currentTime: 0 };
-        let taggingState = 'orange';
+
+        let db = {}; // Master database for all timestamps
+        let playerState = { currentFile: null, currentTime: 0 }; // Last known state
+        let taggingState = 'orange'; // 'orange' (waiting for 1) or 'green' (waiting for 2)
         let currentStartTime = null;
 
         // --- CORE FUNCTIONS ---
 
+        /**
+         * Formats seconds into HH:MM:SS.mmm format
+         * @param {number} seconds - The time in seconds
+         * @returns {string} Formatted time string
+         */
         function formatTime(seconds) {
             const ms = Math.floor((seconds % 1) * 1000);
             const totalSec = Math.floor(seconds);
             const h = Math.floor(totalSec / 3600);
             const m = Math.floor((totalSec % 3600) / 60);
             const s = totalSec % 60;
-            return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(3, '0')}.${ms.toString().padStart(3, '0')}`;
+            return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}.${ms.toString().padStart(3, '0')}`;
         }
 
+        /**
+         * Saves the entire timestamp database to localStorage and updates the export box
+         */
         function saveDB() {
             try {
                 const jsonString = JSON.stringify(db, null, 2);
@@ -253,14 +270,16 @@
             }
         }
 
+        /**
+         * Loads the timestamp database from localStorage
+         */
         function loadDB() {
             const storedDB = localStorage.getItem('timestampDB');
             if (storedDB) {
                 try {
                     db = JSON.parse(storedDB);
                     exportJsonText.value = JSON.stringify(db, null, 2);
-                } catch (e)
-                {
+                } catch (e) {
                     console.error("Failed to parse stored DB:", e);
                     db = {};
                 }
@@ -269,13 +288,16 @@
             }
         }
 
+        /**
+         * Saves the current player state (file and time) to localStorage
+         */
         function savePlayerState() {
-            if (wavesurfer) {
-                playerState.currentTime = wavesurfer.getCurrentTime();
-            }
             localStorage.setItem('playerState', JSON.stringify(playerState));
         }
 
+        /**
+         * Loads the last player state from localStorage
+         */
         function loadPlayerState() {
             const storedState = localStorage.getItem('playerState');
             if (storedState) {
@@ -288,6 +310,9 @@
             }
         }
 
+        /**
+         * Populates the chapter select dropdown (1-114)
+         */
         function populateChapterSelect() {
             for (let i = 1; i <= 114; i++) {
                 const chapterNum = i.toString().padStart(3, '0');
@@ -298,74 +323,32 @@
             }
         }
 
-        function initWaveSurfer() {
-            if (wavesurfer) {
-                wavesurfer.destroy();
-            }
-            
-            wavesurfer = WaveSurfer.create({
-                container: '#waveform',
-                /* --- Keeping v6 Colors --- */
-                waveColor: 'rgb(200, 200, 200)',    // Light grey for unplayed
-                progressColor: 'rgb(70, 70, 130)',  // Dark blue for played
-                cursorColor: '#d9534f',             // Bright red for the cursor
-                /* --- End Colors --- */
-                height: 128,
-                barWidth: 2,
-                barGap: 1,
-                cursorWidth: 2
-            });
-
-            // --- WaveSurfer Event Listeners ---
-            
-            wavesurfer.on('ready', () => {
-                loadingIndicator.style.display = 'none';
-                console.log('Waveform ready.');
-                
-                wavesurfer.zoom(parseInt(zoomSlider.value));
-
-                wavesurfer.setTime(playerState.currentTime);
-                timeDisplay.textContent = formatTime(playerState.currentTime);
-            });
-            
-            wavesurfer.on('loading', (percent) => {
-                loadingIndicator.textContent = `Decoding Waveform... ${percent}%`;
-                loadingIndicator.style.display = 'inline';
-            });
-
-            wavesurfer.on('timeupdate', (currentTime) => {
-                timeDisplay.textContent = formatTime(currentTime);
-                playerState.currentTime = currentTime;
-                savePlayerState();
-            });
-
-            wavesurfer.on('error', (err) => {
-                console.error('Wavesurfer error:', err);
-                loadingIndicator.textContent = `Error loading file. Check console.`;
-            });
-        }
-        
+        /**
+         * Loads a new chapter into the audio player
+         * @param {string} chapterNum - The 3-digit chapter number (e.g., "001")
+         */
         function loadChapter(chapterNum) {
             const fileName = `coran_${chapterNum}.mp3`;
-            const filePath = `https://ia601404.us.archive.org/34/items/elsagrado/${fileName}`;
+            const filePath = `Q_espanol/${fileName}`;
             
+            audioPlayer.src = filePath;
             playerState.currentFile = fileName;
-            playerState.currentTime = 0;
+            playerState.currentTime = 0; // Reset on new chapter load
             savePlayerState();
             
             currentChapterTitle.textContent = `coran_${chapterNum}`;
-            
-            wavesurfer.load(filePath + '?t=' + new Date().getTime());
-
             renderCurrentChapterClips();
-            updateTagStatusUI('orange');
+            updateTagStatusUI('orange'); // Reset tag state
         }
 
+        /**
+         * Renders the list of marked clips for the currently loaded chapter
+         */
         function renderCurrentChapterClips() {
-            clipsList.innerHTML = '';
+            clipsList.innerHTML = ''; // Clear existing list
             if (!playerState.currentFile) return;
 
-            const chapterKey = playerState.currentFile.split('.')[0];
+            const chapterKey = playerState.currentFile.split('.')[0]; // e.g., "coran_001"
             const clips = db[chapterKey] || [];
 
             if (clips.length === 0) {
@@ -375,17 +358,19 @@
                     const li = document.createElement('li');
                     li.textContent = `Verse ${clip.verse}: ${clip.start}  →  ${clip.end}`;
                     
+                    // Add a jump-to button
                     const jumpBtn = document.createElement('button');
                     jumpBtn.textContent = 'Jump to Start';
                     jumpBtn.onclick = () => {
-                        wavesurfer.setTime(timeStringToSeconds(clip.start));
-                        wavesurfer.play();
+                        audioPlayer.currentTime = timeStringToSeconds(clip.start);
+                        audioPlayer.play();
                     };
                     li.appendChild(jumpBtn);
 
+                    // Add a delete button
                     const deleteBtn = document.createElement('button');
                     deleteBtn.textContent = 'Delete';
-                    deleteBtn.style.color = 'red';
+                    deleteBtn.classList.add('delete-btn'); // *** MODIFICATION: Use class instead of inline style ***
                     deleteBtn.onclick = (e) => {
                         e.stopPropagation();
                         if (confirm(`Delete Verse ${clip.verse}?`)) {
@@ -399,48 +384,81 @@
             }
         }
 
+        /**
+         * Deletes a specific clip and re-numbers subsequent verses
+         * @param {string} chapterKey - e.g., "coran_001"
+         * @param {number} verseToDelete - The verse number to delete
+         */
         function deleteClip(chapterKey, verseToDelete) {
             if (!db[chapterKey]) return;
+
+            // Filter out the deleted verse
             let chapterClips = db[chapterKey];
             chapterClips = chapterClips.filter(clip => clip.verse !== verseToDelete);
+
+            // Re-number all subsequent verses
             chapterClips.forEach((clip, index) => {
                 clip.verse = index + 1;
             });
+
             db[chapterKey] = chapterClips;
             saveDB();
             renderCurrentChapterClips();
         }
 
+        /**
+         * Converts "HH:MM:SS.mmm" string to seconds
+         * @param {string} timeString
+         * @returns {number} Time in seconds
+         */
         function timeStringToSeconds(timeString) {
             const parts = timeString.split(':');
             const secondsAndMs = parseFloat(parts[2]);
             return (parseInt(parts[0]) * 3600) + (parseInt(parts[1]) * 60) + secondsAndMs;
         }
 
+        /**
+         * Updates the status indicator UI
+         * @param {string} state - 'orange' or 'green'
+         */
         function updateTagStatusUI(state) {
             taggingState = state;
+            
+            // *** MODIFICATION: Use desaturated, ergonomic colors ***
             if (state === 'orange') {
-                tagStatus.style.backgroundColor = 'orange';
-                tagStatus.style.color = '#333';
+                tagStatus.style.backgroundColor = '#d9822b'; // Desaturated burnt orange
+                tagStatus.style.color = '#fff';
                 tagStatus.textContent = 'Waiting for Arabic End (Press 1)';
             } else {
-                tagStatus.style.backgroundColor = 'lightgreen';
-                tagStatus.style.color = '#333';
+                tagStatus.style.backgroundColor = '#50a150'; // Desaturated success green
+                tagStatus.style.color = '#fff';
                 tagStatus.textContent = 'Waiting for Spanish End (Press 2)';
             }
         }
 
+        /**
+         * Handles the "Mark Start" action (Key '1')
+         */
         function handleMarkStart() {
-            if (taggingState !== 'orange') return;
-            currentStartTime = wavesurfer.getCurrentTime();
+            if (taggingState !== 'orange') {
+                console.warn("Ignored '1' press: not in correct state.");
+                return; // Can only mark start from orange state
+            }
+            currentStartTime = audioPlayer.currentTime;
             updateTagStatusUI('green');
             console.log(`Marked START at ${formatTime(currentStartTime)}`);
         }
 
+        /**
+         * Handles the "Mark End" action (Key '2')
+         */
         function handleMarkEnd() {
-            if (taggingState !== 'green') return;
+            if (taggingState !== 'green') {
+                console.warn("Ignored '2' press: no start time marked.");
+                return; // Can only mark end from green state
+            }
             
-            const endTime = wavesurfer.getCurrentTime();
+            const endTime = audioPlayer.currentTime;
             if (endTime <= currentStartTime) {
                 alert("End time must be after start time.");
                 return;
@@ -459,44 +477,38 @@
             };
 
             db[chapterKey].push(newClip);
-            saveDB();
-            renderCurrentChapterClips();
+            saveDB(); // Save and update export box
+            renderCurrentChapterClips(); // Update UI list
 
             console.log(`Saved CLIP ${verseNum}: ${newClip.start} -> ${newClip.end}`);
 
+            // Reset for next clip
             currentStartTime = null;
             updateTagStatusUI('orange');
         }
 
-        function setZoom(newZoom) {
-            const min = parseInt(zoomSlider.min);
-            const max = parseInt(zoomSlider.max);
-            newZoom = Math.max(min, Math.min(max, newZoom));
-            
-            zoomSlider.value = newZoom;
-            if (wavesurfer) {
-                wavesurfer.zoom(newZoom);
-            }
-        }
-
+        /**
+         * Handles global key presses for shortcuts
+         * @param {KeyboardEvent} e
+         */
         function handleGlobalKeydown(e) {
-            if (e.target === importJsonText) {
+            // If user is typing in an input/textarea, don't trigger shortcuts
+            if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') {
                 return;
             }
-            if (!wavesurfer) return;
 
             switch (e.key) {
                 case ' ':
                     e.preventDefault();
-                    wavesurfer.playPause();
+                    audioPlayer.paused ? audioPlayer.play() : audioPlayer.pause();
                     break;
                 case 'ArrowLeft':
                     e.preventDefault();
-                    wavesurfer.skip(-1);
+                    audioPlayer.currentTime = Math.max(0, audioPlayer.currentTime - 1);
                     break;
                 case 'ArrowRight':
                     e.preventDefault();
-                    wavesurfer.skip(1);
+                    audioPlayer.currentTime += 1;
                     break;
                 case '1':
                     e.preventDefault();
@@ -506,18 +518,12 @@
                     e.preventDefault();
                     handleMarkEnd();
                     break;
-                case '+':
-                case '=':
-                    e.preventDefault();
-                    setZoom(parseInt(zoomSlider.value) + 50);
-                    break;
-                case '-':
-                    e.preventDefault();
-                    setZoom(parseInt(zoomSlider.value) - 50);
-                    break;
             }
         }
 
+        /**
+         * Handles the click on the Import button
+         */
         function handleImport() {
             const jsonToImport = importJsonText.value;
             if (!jsonToImport) {
@@ -530,10 +536,10 @@
 
             try {
                 const newData = JSON.parse(jsonToImport);
-                db = newData;
-                saveDB();
-                renderCurrentChapterClips();
-                importJsonText.value = "";
+                db = newData; // Overwrite in-memory DB
+                saveDB(); // Save to localStorage and update export box
+                renderCurrentChapterClips(); // Re-render UI
+                importJsonText.value = ""; // Clear import box
                 alert("Import successful! All data has been overwritten.");
             } catch (e) {
                 console.error("Import failed:", e);
@@ -544,39 +550,53 @@
         // --- INITIALIZATION ---
         
         window.addEventListener('load', () => {
+            // 1. Populate UI elements
             populateChapterSelect();
+
+            // 2. Load data from localStorage
             loadDB();
             loadPlayerState();
-            initWaveSurfer();
-            
+
+            // 3. Restore state
             if (playerState.currentFile) {
                 const chapterNum = playerState.currentFile.split('_')[1].split('.')[0];
                 chapterSelect.value = chapterNum;
                 currentChapterTitle.textContent = `coran_${chapterNum}`;
-                
-                const fileName = `coran_${chapterNum}.mp3`;
-                const filePath = `https://ia601404.us.archive.org/34/items/elsagrado/${fileName}`;
-                wavesurfer.load(filePath + '?t=' + new Date().getTime());
+                audioPlayer.src = `Q_espanol/${playerState.currentFile}`;
+
+                // Must wait for metadata to load before setting time
+                audioPlayer.addEventListener('loadedmetadata', () => {
+                    audioPlayer.currentTime = playerState.currentTime;
+                    timeDisplay.textContent = formatTime(playerState.currentTime);
+                }, { once: true }); // Only run this once
             
             } else {
+                // Load the first chapter by default if no state
                 chapterSelect.value = "001";
                 loadChapter("001");
-
             }
             
+            // 4. Render initial data
             renderCurrentChapterClips();
             updateTagStatusUI('orange');
 
+            // 5. Attach event listeners
             document.addEventListener('keydown', handleGlobalKeydown);
             chapterSelect.addEventListener('change', (e) => loadChapter(e.target.value));
             importButton.addEventListener('click', handleImport);
 
-            zoomSlider.addEventListener('input', () => {
-                const zoomLevel = parseInt(zoomSlider.value);
-                if (wavesurfer) {
-                    wavesurfer.zoom(zoomLevel);
-                }
+            // 6. Set up continuous state saving
+            audioPlayer.addEventListener('timeupdate', () => {
+                const currentTime = audioPlayer.currentTime;
+                timeDisplay.textContent = formatTime(currentTime);
+                
+                // Save state every timeupdate
+                playerState.currentTime = currentTime;
+                savePlayerState();
             });
+
+            audioPlayer.addEventListener('play', () => console.log('Playback started.'));
+            audioPlayer.addEventListener('pause', () => console.log('Playback paused.'));
         });
 
     </script>

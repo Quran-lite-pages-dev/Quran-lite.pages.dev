@@ -5,26 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
     <title>QuranLite - Online Quran Audio, Surah Player & Translations</title>
-    
     <meta name="description" content="Read and listen to the Noble Quran online. Features synchronized MP3 audio, verse-by-verse recitation (Surah), and translations in English, Urdu, and more.">
-    
     <meta name="keywords" content="Quran Audio, Ayah Player, Online Quran, Quran Translation, Mishary Alafasy, Sudais, Verse by Verse, Quran Focus, Digital Quran">
+    
     <meta name="author" content="QuranLite Open Source">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#050505">
 
     <meta property="og:site_name" content="QuranLite">
     <meta property="og:title" content="QuranLite - The Distraction-Free Quran Player">
     <meta property="og:description" content="Listen to the Noble Quran verse by verse with synchronized text and translations.">
-    <meta property="og:image" content="https://Quran-lite.github.io/social-preview.jpg"> <meta property="og:url" content="https://Quran-lite.github.io/">
+    <meta property="og:image" content="https://Quran-lite.github.io/social-preview.jpg"> 
+    <meta property="og:url" content="https://Quran-lite.github.io/">
     <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
 
     <link rel="canonical" id="dynamic-canonical" href="https://Quran-lite.github.io/">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://everyayah.com"> <link rel="preconnect" href="https://raw.githubusercontent.com"> 
+    <link rel="preconnect" href="https://everyayah.com"> 
+    <link rel="preconnect" href="https://raw.githubusercontent.com"> 
     
     <link href="data:image/svg+xml,<svg xmlns=%22http://www.w.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💠</text></svg>" rel="icon">
     <link rel="icon" href="https://quran-lite.github.io/favicon.ico" sizes="any">
@@ -50,19 +50,15 @@
       "url": "https://Quran-lite.github.io/",
       "applicationCategory": "EducationalApplication",
       "operatingSystem": "All",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "description": "Free, open-source Quran player featuring synchronized audio recitation and multi-language translations."
     }
     </script>
 
     <style>
-        /* --- Modern CSS Variables & Reset --- */
+        /* --- Core Layout (TV NO SCROLL) --- */
         :root { --vh: 100vh; --accent: #0FB; --bg: #050505; --surface: #111; --text: #f0f0f0; }
-        html { box-sizing: border-box; font-size: 62.5%; scroll-behavior: smooth; }
+        html { box-sizing: border-box; font-size: 62.5%; }
         *, *::before, *::after { box-sizing: inherit; margin: 0; padding: 0; }
         
         body {
@@ -72,30 +68,24 @@
             color: var(--text);
             line-height: 1.6;
             font-size: 1.6rem;
-            overscroll-behavior: none;
-            overflow: hidden;
-            height: var(--vh);
-            /* Mobile Viewport Fix */
-            height: 100dvh; 
+            /* CRITICAL FOR TV: Hide Scrollbars */
+            height: 100vh;
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
         }
 
-        /* --- SEO HIDDEN LINKS --- */
-        #seo-sitemap {
-            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-            overflow: hidden; clip: rect(0,0,0,0); border: 0;
-            white-space: nowrap;
-        }
-
-        /* --- Initial Loading Screen --- */
+        /* --- Loading Screen with SEO Content --- */
         #loading-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: #000;
             z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 0.5s ease;
+            padding: 2rem;
         }
         
-        .loader-content { text-align: center; }
+        .loader-content { text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         
         .loader-spinner {
             width: 50px; height: 50px;
@@ -103,7 +93,7 @@
             border-radius: 50%;
             border-top-color: var(--accent);
             animation: spin 0.8s ease-in-out infinite;
-            margin: 0 auto 2rem auto;
+            margin-bottom: 2rem;
         }
         
         .loader-text { font-size: 1.6rem; color: #888; margin-bottom: 2rem; letter-spacing: 1px; }
@@ -118,33 +108,35 @@
             transition: all 0.3s ease;
             font-family: inherit; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
         }
-        .start-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 30px rgba(0, 255, 187, 0.3); }
-
-        /* --- Buffering Indicator --- */
-        #buffering-indicator {
-            position: absolute;
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 40px; height: 40px;
-            border: 3px solid rgba(255,255,255,0.1);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            display: none; 
-            z-index: 20;
+        .start-btn:focus, .start-btn:hover { 
+            background: var(--accent); color: #000; 
+            box-shadow: 0 0 30px rgba(0, 255, 187, 0.5); 
+            outline: 2px solid #fff; /* Focus indication for TV */
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        /* --- Main Layout (Desktop Default) --- */
+        /* --- SEO Splash Footer (Inside Loading Screen) --- */
+        #splash-footer {
+            width: 100%; max-width: 800px;
+            text-align: center; font-size: 1.1rem; color: #444;
+            margin-top: auto; padding-bottom: 2rem;
+            opacity: 0.8;
+        }
+        #splash-footer h2 { font-size: 1.2rem; color: #666; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
+        #splash-footer a { color: #555; text-decoration: none; margin: 0 8px; transition: color 0.2s; }
+        #splash-footer a:hover { color: var(--accent); }
+
+        /* --- Main App Layout --- */
         .container {
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            width: 100%; height: 100%; padding: 2rem; padding-bottom: 12rem;
+            width: 100%; height: 100%; 
+            padding: 2rem; padding-bottom: 12rem;
+            position: relative;
         }
 
         #content-display {
             text-align: center; width: 100%; max-width: 1200px; margin: 0 auto;
             flex-grow: 1; display: flex; flex-direction: column; justify-content: center;
-            overflow: hidden; position: relative;
+            position: relative;
         }
 
         #chapter-title {
@@ -158,13 +150,21 @@
             margin-bottom: 3rem; display: flex; justify-content: center; align-items: center;
         }
 
+        #buffering-indicator {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 40px; height: 40px;
+            border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--accent);
+            border-radius: 50%; animation: spin 0.8s linear infinite;
+            display: none; z-index: 20;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         #verse-text, #verse-text-next { 
             filter: invert(1) drop-shadow(0 0 10px rgba(255,255,255,0.1)); 
             width: 100%; height: 100%; object-fit: contain;
             position: absolute; top: 0; left: 0; opacity: 0;
             transition: opacity 0.5s ease-in-out; will-change: opacity;
         }
-
         .active-verse-img { opacity: 1 !important; z-index: 2; }
 
         #translation-text {
@@ -176,7 +176,7 @@
         }
         #translation-text::-webkit-scrollbar { display: none; }
 
-        /* --- Control Panel (Desktop Default) --- */
+        /* --- TV Control Panel (Fixed Bottom) --- */
         #control-panel {
             position: fixed; bottom: 0; left: 0; right: 0;
             display: flex; justify-content: center; align-items: center;
@@ -191,172 +191,87 @@
         select {
             font-family: 'Inter', sans-serif; font-size: 1.3rem;
             padding: 0.8rem 2.5rem 0.8rem 1rem;
-            background-color: rgba(20,20,20,0.8); color: #ccc;
+            background-color: rgba(20,20,20,0.9); color: #ccc;
             border: 1px solid #333; border-radius: 6px;
             cursor: pointer; appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='gray' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
             background-repeat: no-repeat; background-position: right 0.8rem center;
             min-width: 140px; backdrop-filter: blur(5px);
-            transition: border-color 0.2s;
         }
-        select:focus { outline: none; border-color: var(--accent); color: #fff; }
+
+        /* --- TV D-PAD FOCUS STATE (CRITICAL) --- */
+        /* When user navigates with remote, this lights up */
+        select:focus { 
+            outline: none; 
+            border-color: var(--accent); 
+            color: #fff; 
+            box-shadow: 0 0 15px rgba(0, 255, 187, 0.4); 
+            transform: scale(1.02);
+            transition: all 0.2s ease;
+        }
         
         audio { display: none; }
 
-        /* ==================================================================
-           MOBILE OPTIMIZATION (9:16) - CORE WEB VITALS COMPLIANT
-           Transforms layout from "Desktop Video Player" to "Mobile Music App"
-        ================================================================== */
+        /* --- Mobile / Small TV Layout --- */
         @media (max-width: 768px) {
-            /* 1. Layout Structure: Vertical Flex Stack */
-            body {
-                height: 100dvh; /* Dynamic viewport height */
-                overflow: hidden;
-            }
-
-            .container {
-                padding: 0;
-                padding-bottom: 230px; /* Space for the taller control deck */
-                justify-content: flex-start;
-                height: 100%;
-            }
-
-            #content-display {
-                margin: 0;
-                justify-content: flex-start;
-                gap: 0;
-                width: 100%;
-                height: 100%;
-            }
-
-            /* 2. Header (Surah Title) - Sticky Top */
             #chapter-title {
-                position: relative;
-                top: 0; left: 0;
-                width: 100%;
+                position: relative; top: 0; left: 0; width: 100%;
+                text-align: center; padding: 1.5rem 0; margin-bottom: 1rem;
                 background: linear-gradient(to bottom, #000 50%, transparent);
-                text-align: center;
-                padding: 1.5rem 0 0.5rem 0;
-                font-size: 1.8rem;
-                color: var(--accent);
-                flex-shrink: 0;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                mix-blend-mode: normal;
-                margin-bottom: 1rem;
+                color: var(--accent); mix-blend-mode: normal;
             }
 
-            /* 3. Verse Image (Album Art Style) */
-            #verse-container {
-                height: 40vh; /* Fixed height for visual consistency */
-                width: 100%;
-                margin-bottom: 0;
-                background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
-                flex-shrink: 0;
-            }
-            
-            #verse-text, #verse-text-next {
-                padding: 1rem;
-                max-width: 95%;
-            }
+            .container { padding: 0; padding-bottom: 230px; justify-content: flex-start; }
+            #content-display { margin: 0; justify-content: flex-start; }
 
-            /* 4. Translation Text (Lyrics Card Style) */
+            #verse-container { height: 40vh; margin-bottom: 0; background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%); }
+            #verse-text, #verse-text-next { padding: 1rem; max-width: 95%; }
+
             #translation-text {
-                width: 92%;
-                margin: 0 auto;
+                width: 92%; margin: 0 auto;
                 background: rgba(255,255,255,0.03);
                 border-radius: 12px 12px 0 0;
+                padding: 2rem; text-align: left;
+                font-size: 1.8rem !important;
+                flex-grow: 1; overflow-y: auto;
                 border: 1px solid rgba(255,255,255,0.05);
-                padding: 2rem;
-                text-align: left; /* Easier reading on mobile */
-                flex-grow: 1;
-                max-height: none;
-                
-                /* Override JS auto-resize logic for readability */
-                font-size: 1.8rem !important; 
-                line-height: 1.6;
-                color: #ddd;
-                
-                /* Enable Scroll inside the card */
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
             }
 
-            /* 5. Control Panel (Bottom Deck) - Always Visible */
             #control-panel {
-                transform: none !important;
-                opacity: 1 !important;
-                pointer-events: auto !important;
-                
                 background: rgba(10, 10, 10, 0.95);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
+                backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
                 border-top: 1px solid rgba(255,255,255,0.1);
-                
-                padding: 1.5rem;
-                padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
-                gap: 1rem;
-                
-                /* Grid Layout for Controls */
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                grid-template-rows: auto auto auto;
-                align-content: end;
+                padding: 1.5rem; padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+                display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
             }
+            body.idle #control-panel { transform: none; opacity: 1; }
 
-            /* Hide idle behavior on mobile */
-            body.idle #control-panel {
-                transform: none;
-                opacity: 1;
-            }
-
-            /* Touch Target Optimization (48px height minimum) */
-            select {
-                width: 100%;
-                min-width: 0;
-                height: 48px;
-                font-size: 1.4rem;
-                border-color: rgba(255,255,255,0.15);
-            }
-
-            /* Layout of the Specific Dropdowns */
-            /* Full Width for Chapter Selector */
-            #chapterSelect {
-                grid-column: 1 / -1; 
-                background-color: rgba(30,30,30,0.8);
-                font-weight: 600;
-                color: var(--accent);
-            }
-
-            /* Row 2 */
-            #verseSelect { grid-column: 1 / 2; }
-            #reciterSelect { grid-column: 2 / 3; }
-
-            /* Row 3 */
-            #translationSelect { grid-column: 1 / 2; }
-            #translationAudioSelect { grid-column: 2 / 3; }
+            select { width: 100%; height: 48px; font-size: 1.4rem; }
+            #chapterSelect { grid-column: 1 / -1; background-color: rgba(30,30,30,0.8); color: var(--accent); font-weight: 600; }
         }
     </style>
 </head>
 
 <body>
-    <nav id="seo-sitemap">
-        <h2>Quick Access</h2>
-        <a href="?chapter=1&trans=en">Surah Al-Fatihah Audio</a>
-        <a href="?chapter=18&trans=en">Surah Al-Kahf Audio</a>
-        <a href="?chapter=36&trans=en">Surah Ya-Sin Audio</a>
-        <a href="?chapter=67&trans=en">Surah Al-Mulk Audio</a>
-        <a href="?chapter=55&trans=en">Surah Ar-Rahman Audio</a>
-        <a href="?chapter=2&verse=255&trans=en">Ayatul Kursi MP3</a>
-        <p>QuranLite is an open-source Quran player offering high-quality MP3 recitation from Mishary Alafasy, Sudais, and others. Read and listen to the Quran online with English, Urdu, and Indonesian translations.</p>
-    </nav>
-
     <div id="loading-overlay">
-        <div class="loader-content" id="loader-content">
+        <div class="loader-content">
             <div class="loader-spinner"></div>
             <div class="loader-text" id="loader-text">Initializing QuranLite...</div>
-            <button id="start-btn" class="start-btn">Enter</button>
+            <button id="start-btn" class="start-btn">Start</button>
         </div>
+        
+        <nav id="splash-footer">
+            <h2>Quick Access</h2>
+            <a href="?chapter=1&trans=en">Al-Fatihah</a>
+            <a href="?chapter=18&trans=en">Al-Kahf</a>
+            <a href="?chapter=36&trans=en">Ya-Sin</a>
+            <a href="?chapter=67&trans=en">Al-Mulk</a>
+            <a href="?chapter=55&trans=en">Ar-Rahman</a>
+            <a href="?chapter=2&verse=255&trans=en">Ayatul Kursi</a>
+            <div style="margin-top: 1rem; font-size: 0.9rem; color: #333;">
+                QuranLite: Distraction-Free Player. Recitation by Mishary Alafasy.
+            </div>
+        </nav>
     </div>
 
     <div class="container">
@@ -368,7 +283,6 @@
         <div id="content-display">
             <div id="verse-container">
                 <div id="buffering-indicator"></div>
-                
                 <img id="verse-text" class="active-verse-img" alt="Quran Verse Arabic Text" width="600" height="300" loading="eager">
                 <img id="verse-text-next" alt="Next Quran Verse" width="600" height="300" loading="lazy">
             </div>
@@ -385,7 +299,6 @@
     </div>
 
     <script>
-        // CONFIGURATION CONSTANTS
         const TRANSLATIONS_CONFIG = {
             'sq': { name: 'Albanian (Sherif Ahmeti)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/sq.ahmeti.xml' },
             'ber': { name: 'Amazigh (At Mansour)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ber.mensur.xml' },
@@ -534,6 +447,9 @@
                 if(quranData[chIdx]) {
                     elements.startBtn.textContent = `Continue`;
                 }
+                
+                // Focus start button for TV users immediately
+                elements.startBtn.focus();
 
             } catch (error) {
                 console.error("Critical Init Error:", error);
@@ -618,7 +534,7 @@
             const newUrl = `?chapter=${chNum}&verse=${vNum}&reciter=${state.reciter}&trans=${state.trans}&audio_trans=${state.audio_trans}`;
             window.history.pushState({path: newUrl}, '', newUrl);
 
-            // SEO FIX 5: Update Canonical Link Dynamically
+            // Update Canonical Link Dynamically
             const canonicalLink = document.getElementById('dynamic-canonical');
             const fullUrl = `https://Quran-lite.github.io/${newUrl}`;
             if (canonicalLink) {
@@ -900,7 +816,7 @@
 
         function adjustFontSize() {
             const el = elements.display.trans;
-            // On mobile we override this via CSS !important to keep text readable
+            // Mobile override still applies here if needed
             if (window.innerWidth <= 768) return; 
 
             el.style.fontSize = '3.5rem';

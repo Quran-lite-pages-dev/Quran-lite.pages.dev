@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
-    <title>QuranLite - Data Saving Online Mushaf</title>
-    <meta name="description" content="A focused Quran player with synchronized audio, translations (English, Urdu, Indonesian, etc.), and crystal clear recitation. No distractions, just the Divine Word.">
+    <title>QuranLite - Online Quran Audio, Surah Player & Translations</title>
+    
+    <meta name="description" content="Read and listen to the Noble Quran online. Features synchronized MP3 audio, verse-by-verse recitation (Surah), and translations in English, Urdu, and more.">
+    
     <meta name="keywords" content="Quran Audio, Ayah Player, Online Quran, Quran Translation, Mishary Alafasy, Sudais, Verse by Verse, Quran Focus, Digital Quran">
     <meta name="author" content="QuranLite Open Source">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -22,8 +24,15 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://everyayah.com"> <link rel="preconnect" href="https://raw.githubusercontent.com"> <link href="data:image/svg+xml,<svg xmlns=%22http://www.w.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💠</text></svg>" rel="icon">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://everyayah.com"> <link rel="preconnect" href="https://raw.githubusercontent.com"> 
+    
+    <link href="data:image/svg+xml,<svg xmlns=%22http://www.w.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💠</text></svg>" rel="icon">
+    <link rel="icon" href="https://quran-lite.github.io/favicon.ico" sizes="any">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    </noscript>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PDWXFDCQRH"></script>
     <script>
@@ -360,8 +369,8 @@
             <div id="verse-container">
                 <div id="buffering-indicator"></div>
                 
-                <img id="verse-text" class="active-verse-img" alt="Quran Verse Arabic Text" loading="eager">
-                <img id="verse-text-next" alt="Next Quran Verse" loading="lazy">
+                <img id="verse-text" class="active-verse-img" alt="Quran Verse Arabic Text" width="600" height="300" loading="eager">
+                <img id="verse-text-next" alt="Next Quran Verse" width="600" height="300" loading="lazy">
             </div>
             <div id="translation-text">Select a Surah to begin reading...</div>
         </div>
@@ -609,15 +618,22 @@
             const newUrl = `?chapter=${chNum}&verse=${vNum}&reciter=${state.reciter}&trans=${state.trans}&audio_trans=${state.audio_trans}`;
             window.history.pushState({path: newUrl}, '', newUrl);
 
+            // SEO FIX 5: Update Canonical Link Dynamically
+            const canonicalLink = document.getElementById('dynamic-canonical');
+            const fullUrl = `https://Quran-lite.github.io/${newUrl}`;
+            if (canonicalLink) {
+                canonicalLink.href = fullUrl;
+            }
+
             const pageTitle = `${chObj.title} - Verse ${vNum} | QuranLite`;
             document.title = pageTitle;
             
             const metaDesc = `Read and Listen to Surah ${chObj.title} Verse ${vNum}. Translation: ${transName}. Recitation by ${reciterName}.`;
-            document.querySelector('meta[name="description"]').setAttribute("content", metaDesc);
+            const metaDescTag = document.querySelector('meta[name="description"]');
+            if(metaDescTag) metaDescTag.setAttribute("content", metaDesc);
 
-            const fullUrl = `https://Quran-lite.github.io/${newUrl}`;
-            document.getElementById('dynamic-canonical').href = fullUrl;
-            document.querySelector('meta[property="og:url"]').content = fullUrl;
+            const ogUrl = document.querySelector('meta[property="og:url"]');
+            if(ogUrl) ogUrl.content = fullUrl;
 
             updateGoogleSchema(chNum, vNum, chObj.title, transName, reciterName);
         }

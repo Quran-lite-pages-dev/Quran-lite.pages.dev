@@ -392,13 +392,53 @@ function updateVerse(newSrc) {
         const translationTextEl = document.getElementById('translation-text');
         const contentDisplayEl = document.getElementById('content-display');
 
-        // --- Translation Configuration ---
-        const TRANSLATIONS_CONFIG = {
-            'en': { name: 'English (Sahih)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/3TM.xml' },
-            'zh': { name: '中文 (Jian)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/zh.jian.xml' },
-            'es': { name: 'Español (Garcia)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/es.garcia.xml' },
-            'id': { name: 'Indonesian', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/id.indonesian.xml' }
-        };
+// --- Translation Configuration ---
+const TRANSLATIONS_CONFIG = {
+    'sq': { name: 'Albanian (Sherif Ahmeti)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/sq.ahmeti.xml' },
+    'ber': { name: 'Amazigh (At Mansour)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/ber.mensur.xml' },
+    'am': { name: 'Amharic (Sadiq & Sani)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/am.sadiq.xml' },
+    'ar': { name: 'Arabic Tafsir (Al-Muyassar)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/ar.muyassar.xml' },
+    'az': { name: 'Azerbaijani (Musayev)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/az.musayev.xml' },
+    'bn': { name: 'Bengali (Muhiuddin Khan)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/bn.bengali.xml' },
+    'bs': { name: 'Bosnian (Besim Korkut)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/bs.korkut.xml' },
+    'bg': { name: 'Bulgarian (Theophanov)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/bg.theophanov.xml' },
+    'zh': { name: 'Chinese (Ma Jian)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/zh.jian.xml' },
+    'cs': { name: 'Czech (Hrbek)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/cs.hrbek.xml' },
+    'dv': { name: 'Divehi (Maldives President Office)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/dv.divehi.xml' },
+    'nl': { name: 'Dutch (Siregar)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/nl.siregar.xml' },
+    'en': { name: 'English (Saheeh International)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/en.sahih.xml' },
+    'fr': { name: 'French (Muhammad Hamidullah)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/fr.hamidullah.xml' },
+    'de': { name: 'German (Bubenheim & Elyas)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/de.bubenheim.xml' },
+    'ha': { name: 'Hausa (Gumi)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/ha.gumi.xml' },
+    'hi': { name: 'Hindi (Suhel Farooq Khan)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/hi.hindi.xml' },
+    'id': { name: 'Indonesian (Ministry of Religious Affairs)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/id.indonesian.xml' },
+    'it': { name: 'Italian (Piccardo)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/it.piccardo.xml' },
+    'ja': { name: 'Japanese (Standard)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/ja.japanese.xml' },
+    'ko': { name: 'Korean (Standard)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/ko.korean.xml' },
+    'ku': { name: 'Kurdish (Burhan Muhammad-Amin)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/ku.asan.xml' },
+    'ms': { name: 'Malay (Basmeih)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/ms.basmeih.xml' },
+    'ml': { name: 'Malayalam (Abdul Hameed)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/ml.abdulhameed.xml' },
+    'no': { name: 'Norwegian (Berg)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/no.berg.xml' },
+    'ps': { name: 'Pashto (Abdulwali Khan)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/ps.abdulwali.xml' },
+    'fa': { name: 'Persian (Mostafa Khorramdel)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/fa.khorramdel.xml' },
+    'pl': { name: 'Polish (Bielawskiego)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/pl.bielawskiego.xml' },
+    'pt': { name: 'Portuguese (El-Hayek)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/pt.elhayek.xml' },
+    'ro': { name: 'Romanian (Grigore)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/ro.grigore.xml' },
+    'ru': { name: 'Russian (Elmir Kuliev)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/ru.kuliev.xml' },
+    'sd': { name: 'Sindhi (Amroti)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/sd.amroti.xml' },
+    'so': { name: 'Somali (Abduh)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/so.abduh.xml' },
+    'es': { name: 'Spanish (Muhammad Isa García)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/es.garcia.xml' },
+    'sw': { name: 'Swahili (Al-Barwani)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/sw.barwani.xml' },
+    'sv': { name: 'Swedish (Bernström)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/sv.bernstrom.xml' },
+    'ta': { name: 'Tamil (Jan Turst)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/ta.tamil.xml' },
+    'tt': { name: 'Tatar (Nugman)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/tt.nugman.xml' },
+    'th': { name: 'Thai (King Fahad Complex)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/th.thai.xml' },
+    'tr': { name: 'Turkish (Diyanet)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/tr.diyanet.xml' },
+    'ur': { name: 'Urdu (Muhammad Junagarhi)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/ur.junagarhi.xml' },
+    'ug': { name: 'Uyghur (Muhammad Saleh)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/ug.saleh.xml' },
+    'uz': { name: 'Uzbek (Muhammad Sodik)', url: 'https://raw.githubusercontent.com/muslim1446/muslim1446.github.io/refs/heads/master/a/uz.sodik.xml' }
+};
+        
 
         // --- Reciter Configuration ---
         const RECITERS_CONFIG = {

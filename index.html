@@ -66,6 +66,8 @@
             overscroll-behavior: none;
             overflow: hidden;
             height: var(--vh);
+            /* Mobile Viewport Fix */
+            height: 100dvh; 
         }
 
         /* --- SEO HIDDEN LINKS --- */
@@ -75,7 +77,7 @@
             white-space: nowrap;
         }
 
-        /* --- Initial Loading Screen (Only for App Start) --- */
+        /* --- Initial Loading Screen --- */
         #loading-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: #000;
@@ -109,7 +111,7 @@
         }
         .start-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 30px rgba(0, 255, 187, 0.3); }
 
-        /* --- In-App Buffering Indicator (For slow internet) --- */
+        /* --- Buffering Indicator --- */
         #buffering-indicator {
             position: absolute;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -118,13 +120,13 @@
             border-top-color: var(--accent);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            display: none; /* Hidden by default */
+            display: none; 
             z-index: 20;
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
         
-        /* --- Main Layout --- */
+        /* --- Main Layout (Desktop Default) --- */
         .container {
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             width: 100%; height: 100%; padding: 2rem; padding-bottom: 12rem;
@@ -165,7 +167,7 @@
         }
         #translation-text::-webkit-scrollbar { display: none; }
 
-        /* --- Control Panel --- */
+        /* --- Control Panel (Desktop Default) --- */
         #control-panel {
             position: fixed; bottom: 0; left: 0; right: 0;
             display: flex; justify-content: center; align-items: center;
@@ -190,14 +192,141 @@
         }
         select:focus { outline: none; border-color: var(--accent); color: #fff; }
         
-        /* Mobile Optimization */
-        @media (max-width: 768px) {
-            #control-panel { gap: 0.5rem; padding: 1rem; }
-            select { flex: 1 1 40%; font-size: 1.2rem; min-width: auto; }
-            #chapter-title { font-size: 1.6rem; }
-        }
-        
         audio { display: none; }
+
+        /* ==================================================================
+           MOBILE OPTIMIZATION (9:16) - CORE WEB VITALS COMPLIANT
+           Transforms layout from "Desktop Video Player" to "Mobile Music App"
+        ================================================================== */
+        @media (max-width: 768px) {
+            /* 1. Layout Structure: Vertical Flex Stack */
+            body {
+                height: 100dvh; /* Dynamic viewport height */
+                overflow: hidden;
+            }
+
+            .container {
+                padding: 0;
+                padding-bottom: 230px; /* Space for the taller control deck */
+                justify-content: flex-start;
+                height: 100%;
+            }
+
+            #content-display {
+                margin: 0;
+                justify-content: flex-start;
+                gap: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            /* 2. Header (Surah Title) - Sticky Top */
+            #chapter-title {
+                position: relative;
+                top: 0; left: 0;
+                width: 100%;
+                background: linear-gradient(to bottom, #000 50%, transparent);
+                text-align: center;
+                padding: 1.5rem 0 0.5rem 0;
+                font-size: 1.8rem;
+                color: var(--accent);
+                flex-shrink: 0;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                mix-blend-mode: normal;
+                margin-bottom: 1rem;
+            }
+
+            /* 3. Verse Image (Album Art Style) */
+            #verse-container {
+                height: 40vh; /* Fixed height for visual consistency */
+                width: 100%;
+                margin-bottom: 0;
+                background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
+                flex-shrink: 0;
+            }
+            
+            #verse-text, #verse-text-next {
+                padding: 1rem;
+                max-width: 95%;
+            }
+
+            /* 4. Translation Text (Lyrics Card Style) */
+            #translation-text {
+                width: 92%;
+                margin: 0 auto;
+                background: rgba(255,255,255,0.03);
+                border-radius: 12px 12px 0 0;
+                border: 1px solid rgba(255,255,255,0.05);
+                padding: 2rem;
+                text-align: left; /* Easier reading on mobile */
+                flex-grow: 1;
+                max-height: none;
+                
+                /* Override JS auto-resize logic for readability */
+                font-size: 1.8rem !important; 
+                line-height: 1.6;
+                color: #ddd;
+                
+                /* Enable Scroll inside the card */
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* 5. Control Panel (Bottom Deck) - Always Visible */
+            #control-panel {
+                transform: none !important;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+                
+                background: rgba(10, 10, 10, 0.95);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border-top: 1px solid rgba(255,255,255,0.1);
+                
+                padding: 1.5rem;
+                padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+                gap: 1rem;
+                
+                /* Grid Layout for Controls */
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto auto auto;
+                align-content: end;
+            }
+
+            /* Hide idle behavior on mobile */
+            body.idle #control-panel {
+                transform: none;
+                opacity: 1;
+            }
+
+            /* Touch Target Optimization (48px height minimum) */
+            select {
+                width: 100%;
+                min-width: 0;
+                height: 48px;
+                font-size: 1.4rem;
+                border-color: rgba(255,255,255,0.15);
+            }
+
+            /* Layout of the Specific Dropdowns */
+            /* Full Width for Chapter Selector */
+            #chapterSelect {
+                grid-column: 1 / -1; 
+                background-color: rgba(30,30,30,0.8);
+                font-weight: 600;
+                color: var(--accent);
+            }
+
+            /* Row 2 */
+            #verseSelect { grid-column: 1 / 2; }
+            #reciterSelect { grid-column: 2 / 3; }
+
+            /* Row 3 */
+            #translationSelect { grid-column: 1 / 2; }
+            #translationAudioSelect { grid-column: 2 / 3; }
+        }
     </style>
 </head>
 
@@ -241,8 +370,8 @@
     <div id="control-panel">
         <select id="chapterSelect" aria-label="Select Surah"></select>
         <select id="verseSelect" aria-label="Select Ayah"></select>
-        <select id="translationSelect" aria-label="Choose Translation"></select>
         <select id="reciterSelect" aria-label="Choose Reciter"></select>
+        <select id="translationSelect" aria-label="Choose Translation"></select>
         <select id="translationAudioSelect" aria-label="Choose Audio Translation"></select>
     </div>
 
@@ -309,7 +438,6 @@
             'none': { name: 'No Audio Translation' },
             'en_walk': { name: 'English (Ibrahim Walk)', path: 'English/Sahih_Intnl_Ibrahim_Walk_192kbps' },
             'id_ministry': { name: 'Indonesian (Ministry)', path: 'httpIA://dn721906.ca.archive.org/0/items/AlQuran-terjemahan-indonesia-tanpa-bahasa-arab' },
-            // FIXED: Pointing to valid raw.githubusercontent.com URL directly
             'es': { name: 'Español', path: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/play' }
         };
 
@@ -343,7 +471,7 @@
         };
 
         let quranData = []; 
-        let translationCache = {}; // Replaces allTranslations, used for lazy loading
+        let translationCache = {}; 
         let currentChapterData = {};
         let inactivityTimer;
         let forbiddenToTranslateSet = new Set();
@@ -352,13 +480,11 @@
         // APP INITIALIZATION
         async function initializeApp() {
             try {
-                // 1. Fetch Structure ONLY (Small file)
                 const jsonResponse = await fetch('https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/2TM3TM.json');
                 if (!jsonResponse.ok) throw new Error("Failed to load Quran JSON");
                 const jsonData = await jsonResponse.json();
                 quranData = jsonData.chapters;
 
-                // 2. Fetch Forbidden to Translate list (Small file)
                 try {
                     const fttResp = await fetch(FTT_URL);
                     if (fttResp.ok) {
@@ -372,13 +498,11 @@
                     }
                 } catch (e) { console.warn("FTT load failed", e); }
 
-                // 3. Populate Dropdowns (Without fetching actual translation XMLs yet)
                 populateChapterSelect();
                 populateReciterSelect();
                 populateTranslationAudioSelect();
-                populateTranslationSelectOptions(); // Just the names
+                populateTranslationSelectOptions();
 
-                // 4. Restore State (Determine which translation user wants)
                 restoreState();
                 populateVerseSelect();
                 const savedVerse = getSavedVerseIndex();
@@ -386,12 +510,10 @@
                     elements.selects.verse.value = savedVerse;
                 }
 
-                // 5. Lazy Load ONLY the active translation
                 const activeTransId = elements.selects.trans.value;
                 elements.loaderText.textContent = "Loading active translation...";
                 await loadTranslationData(activeTransId);
 
-                // 6. Ready
                 loadVerse(false); 
                 setupEventListeners();
 
@@ -410,13 +532,11 @@
             }
         }
 
-        // LAZY LOADING TRANSLATION
         async function loadTranslationData(id) {
-            if (translationCache[id]) return; // Already loaded
+            if (translationCache[id]) return; 
             if (!TRANSLATIONS_CONFIG[id]) return;
 
             try {
-                // Show buffering indicator if this happens during app usage
                 toggleBuffering(true);
                 const res = await fetch(TRANSLATIONS_CONFIG[id].url);
                 if (res.ok) {
@@ -430,7 +550,6 @@
             }
         }
 
-        // STATE MANAGEMENT
         function restoreState() {
             const urlParams = new URLSearchParams(window.location.search);
             const saved = JSON.parse(localStorage.getItem('quranState')) || {};
@@ -452,7 +571,6 @@
             else if (saved.trans) trans = saved.trans;
             else if (TRANSLATIONS_CONFIG[browserLang]) trans = browserLang; 
             
-            // Ensure valid translation selected
             if (!TRANSLATIONS_CONFIG[trans]) trans = 'en';
             elements.selects.trans.value = trans;
 
@@ -540,7 +658,6 @@
             document.head.appendChild(script);
         }
 
-        // POPULATION HELPERS
         function populateChapterSelect() {
             elements.selects.chapter.innerHTML = '';
             quranData.forEach((c, i) => {
@@ -591,7 +708,6 @@
             });
         }
 
-        // CORE LOGIC & BUFFERING
         function toggleBuffering(show) {
             isBuffering = show;
             elements.bufferInd.style.display = show ? 'block' : 'none';
@@ -610,12 +726,10 @@
 
             elements.display.title.textContent = `${currentChapterData.title} (${chNum}:${vNum})`;
             
-            // Image Loading Logic
             const newSrc = `https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/img/${chNum}_${vNum}.png`;
             const img1 = elements.display.verse;
             const img2 = elements.display.verseNext;
 
-            // Check if image is already cached
             let imgReady = false;
             if(img1.src === newSrc || img2.src === newSrc) imgReady = true;
 
@@ -629,17 +743,15 @@
             nextImg.onload = () => {
                 activeImg.classList.remove('active-verse-img');
                 nextImg.classList.add('active-verse-img');
-                toggleBuffering(false); // Image loaded, stop buffering
+                toggleBuffering(false); 
             };
             
-            // If already cached, switch immediately
             if (nextImg.complete && nextImg.naturalHeight !== 0) {
                  activeImg.classList.remove('active-verse-img');
                  nextImg.classList.add('active-verse-img');
                  toggleBuffering(false);
             }
 
-            // Ensure Translation is Loaded (Lazy)
             const tid = elements.selects.trans.value;
             if(!translationCache[tid]) {
                 await loadTranslationData(tid);
@@ -662,40 +774,34 @@
             saveState(); 
             updateMediaSession(currentChapterData.title, vNum, RECITERS_CONFIG[elements.selects.reciter.value].name);
             
-            // SMART BUFFERING: Preload the NEXT verse only
             bufferNextResources(chIdx, parseInt(vIdx));
         }
 
         function bufferNextResources(currentChIdx, currentVIdx) {
-            // Calculate Next Coordinates
             let nextChIdx = currentChIdx;
             let nextVIdx = currentVIdx + 1;
             
-            // Check boundary
             if (nextVIdx >= quranData[nextChIdx].verses.length) {
                 nextChIdx = parseInt(nextChIdx) + 1;
                 nextVIdx = 0;
             }
 
-            if (nextChIdx >= quranData.length) return; // End of Quran
+            if (nextChIdx >= quranData.length) return; 
 
             const nextCh = quranData[nextChIdx].chapterNumber;
             const nextV = quranData[nextChIdx].verses[nextVIdx].verseNumber;
 
-            // 1. Buffer Image
             const img = new Image();
             img.src = `https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/img/${nextCh}_${nextV}.png`;
 
-            // 2. Buffer Quran Audio
             const rId = elements.selects.reciter.value;
             const qPath = RECITERS_CONFIG[rId].path;
             const padCh = String(nextCh).padStart(3, '0');
             const padV = String(nextV).padStart(3, '0');
             const aud = new Audio();
             aud.src = `https://everyayah.com/data/${qPath}/${padCh}${padV}.mp3`;
-            aud.preload = 'auto'; // Force buffer
+            aud.preload = 'auto'; 
 
-            // 3. Buffer Translation Audio (If active)
             const taId = elements.selects.transAudio.value;
             if (taId !== 'none') {
                 const config = TRANSLATION_AUDIO_CONFIG[taId];
@@ -743,7 +849,6 @@
             
             let url;
             if (config.path.startsWith('httpIA')) url = `${config.path.replace('httpIA', 'https')}/${padCh}${padV}.mp3`;
-            // Handles both custom full URLs and EveryAyah paths
             else if (config.path.startsWith('http')) url = `${config.path}/${padCh}${padV}.mp3`;
             else url = `https://everyayah.com/data/${config.path}/${padCh}${padV}.mp3`;
 
@@ -751,7 +856,6 @@
             if(play) elements.transAudio.play();
         }
 
-        // EVENT HANDLERS
         function handleQuranEnd() {
             if (elements.transAudio.src && elements.transAudio.src !== window.location.href) {
                 elements.transAudio.play().catch(() => nextVerse());
@@ -780,6 +884,9 @@
 
         function adjustFontSize() {
             const el = elements.display.trans;
+            // On mobile we override this via CSS !important to keep text readable
+            if (window.innerWidth <= 768) return; 
+
             el.style.fontSize = '3.5rem';
             let iter = 0;
             while (el.scrollHeight > el.clientHeight && iter < 50) {
@@ -801,10 +908,9 @@
             elements.selects.verse.addEventListener('change', () => loadVerse(true));
             elements.selects.reciter.addEventListener('change', () => loadVerse(elements.quranAudio.paused === false));
             
-            // Translation Change: Fetch on demand
             elements.selects.trans.addEventListener('change', async () => {
                 const activeTransId = elements.selects.trans.value;
-                await loadTranslationData(activeTransId); // Lazy load if not present
+                await loadTranslationData(activeTransId); 
                 
                 const chIdx = elements.selects.chapter.value;
                 const vIdx = elements.selects.verse.value;

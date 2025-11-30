@@ -1,1 +1,16 @@
-Sitemap: https://Quran-lite.github.io/sitemap/index.xml User-agent: * Disallow: /checkout/ Disallow: /search/results/ Disallow: /*? Allow: /*addedItemKey= Allow: /*f= Allow: /*g= Allow: /*mh= Allow: /*mw= Allow: /*page= Allow: /*pageId= Allow: /*pageType= Allow: /*rpp= Allow: /*rs= Allow: /*sort= Allow: /*variantId= User-agent: * Crawl-delay: 5
+User-agent: *
+Allow: /
+Allow: /reading/
+Allow: /a/
+Allow: /img/
+Allow: /play/
+
+# Helper for Googlebot to render the JS properly
+User-agent: Googlebot
+Allow: /
+Allow: /a/*.json
+Allow: /a/*.xml
+Allow: /img/*.png
+
+# ABSOLUTE PATH TO YOUR SITEMAP
+Sitemap: https://quran-lite.github.io/sitemap/index.xml

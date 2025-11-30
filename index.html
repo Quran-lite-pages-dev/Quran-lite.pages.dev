@@ -845,11 +845,15 @@
         }
 
         function setupEventListeners() {
-            elements.startBtn.addEventListener('click', () => {
-                elements.overlay.style.opacity = 0;
-                setTimeout(() => elements.overlay.style.display = 'none', 500);
-                loadVerse(true); 
-            });
+            /* --- ROOT PAGE: GATEWAY LOGIC --- */
+elements.startBtn.addEventListener('click', () => {
+    // 1. Get the current settings (chapter, verse, etc.) from the URL
+    const currentParams = window.location.search; 
+
+    // 2. Send user to the Reading Room with these settings
+    // This ensures they go to the page where you EXCLUDED ads
+    window.location.href = "https://Quran-lite.github.io/reading/" + currentParams;
+});
 
             elements.selects.chapter.addEventListener('change', () => { populateVerseSelect(); loadVerse(true); });
             elements.selects.verse.addEventListener('change', () => loadVerse(true));

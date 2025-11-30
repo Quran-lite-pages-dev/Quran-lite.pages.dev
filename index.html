@@ -15,7 +15,7 @@
     <meta property="og:site_name" content="QuranLite">
     <meta property="og:title" content="QuranLite - The Distraction-Free Quran Player">
     <meta property="og:description" content="Listen to the Noble Quran verse by verse with synchronized text and translations.">
-    <meta property="og:image" content="https://Quran-lite.github.io/social-preview.jpg"> 
+    <meta property="og:image" content="social-preview.jpg"> 
     <meta property="og:url" content="https://Quran-lite.github.io/">
     <meta property="og:type" content="website">
 
@@ -24,10 +24,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://everyayah.com"> 
-    <link rel="preconnect" href="https://raw.githubusercontent.com"> 
     
     <link href="data:image/svg+xml,<svg xmlns=%22http://www.w.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💠</text></svg>" rel="icon">
-    <link rel="icon" href="https://quran-lite.github.io/favicon.ico" sizes="any">
+    <link rel="icon" href="favicon.ico" sizes="any">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript>
@@ -35,19 +34,17 @@
     </noscript>
 
     <script>
-/* --- REDIRECT USERS WHO TYPE ?chapter= DIRECTLY TO READING PAGE --- */
-(function() {
-    const p = new URLSearchParams(window.location.search);
-    // If we have a chapter param, go to reading folder immediately
-    if (p.has("chapter")) {
-        window.location.replace("https://Quran-lite.github.io/reading/" + window.location.search);
-    }
-})();
-</script>
+    /* --- REDIRECT USERS WHO TYPE ?chapter= DIRECTLY TO READING PAGE --- */
+    (function() {
+        const p = new URLSearchParams(window.location.search);
+        // If we have a chapter param, go to reading folder immediately
+        if (p.has("chapter")) {
+            window.location.replace("https://Quran-lite.github.io/reading/" + window.location.search);
+        }
+    })();
+    </script>
 
-
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3499275303366562"
-     crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3499275303366562" crossorigin="anonymous"></script>
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PDWXFDCQRH"></script>
     <script>
@@ -83,7 +80,6 @@
             color: var(--text);
             line-height: 1.6;
             font-size: 1.6rem;
-            /* CRITICAL FOR TV: Hide Scrollbars */
             height: 100vh;
             overflow: hidden; 
             display: flex;
@@ -126,7 +122,7 @@
         .start-btn:focus, .start-btn:hover { 
             background: var(--accent); color: #000; 
             box-shadow: 0 0 30px rgba(0, 255, 187, 0.5); 
-            outline: 2px solid #fff; /* Focus indication for TV */
+            outline: 2px solid #fff; 
         }
 
         /* --- SEO Splash Footer (Inside Loading Screen) --- */
@@ -214,8 +210,6 @@
             min-width: 140px; backdrop-filter: blur(5px);
         }
 
-        /* --- TV D-PAD FOCUS STATE (CRITICAL) --- */
-        /* When user navigates with remote, this lights up */
         select:focus { 
             outline: none; 
             border-color: var(--accent); 
@@ -298,8 +292,8 @@
         <div id="content-display">
             <div id="verse-container">
                 <div id="buffering-indicator"></div>
-                <img id="verse-text" class="active-verse-img" alt="Quran Verse Arabic Text" width="600" height="300" loading="eager">
-                <img id="verse-text-next" alt="Next Quran Verse" width="600" height="300" loading="lazy">
+                <img id="verse-text" class="active-verse-img" alt="Quran Verse Text" loading="eager">
+                <img id="verse-text-next" alt="Next Quran Verse" loading="lazy">
             </div>
             <div id="translation-text">Select a Surah to begin reading...</div>
         </div>
@@ -314,52 +308,55 @@
     </div>
 
     <script>
+        // FIXED: Using relative paths to avoid GitHub Raw blocking Googlebot
+        // Ensure your repo has folders: 'a', 'img', 'play'
         const TRANSLATIONS_CONFIG = {
-            'sq': { name: 'Albanian (Sherif Ahmeti)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/sq.ahmeti.xml' },
-            'ber': { name: 'Amazigh (At Mansour)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ber.mensur.xml' },
-            'am': { name: 'Amharic (Sadiq & Sani)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/am.sadiq.xml' },
-            'ar': { name: 'Arabic Tafsir (Al-Muyassar)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ar.muyassar.xml' },
-            'az': { name: 'Azerbaijani (Musayev)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/az.musayev.xml' },
-            'bn': { name: 'Bengali (Muhiuddin Khan)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/bn.bengali.xml' },
-            'bs': { name: 'Bosnian (Besim Korkut)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/bs.korkut.xml' },
-            'bg': { name: 'Bulgarian (Theophanov)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/bg.theophanov.xml' },
-            'zh': { name: 'Chinese (Ma Jian)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/zh.jian.xml' },
-            'cs': { name: 'Czech (Hrbek)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/cs.hrbek.xml' },
-            'dv': { name: 'Divehi (Maldives)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/dv.divehi.xml' },
-            'nl': { name: 'Dutch (Siregar)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/nl.siregar.xml' },
-            'en': { name: 'English (Saheeh Intl)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/en.xml' },
-            'fr': { name: 'French (Hamidullah)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/fr.hamidullah.xml' },
-            'de': { name: 'German (Bubenheim)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/de.bubenheim.xml' },
-            'ha': { name: 'Hausa (Gumi)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ha.gumi.xml' },
-            'hi': { name: 'Hindi (Suhel Khan)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/hi.hindi.xml' },
-            'id': { name: 'Indonesian (Kemenag)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/id.indonesian.xml' },
-            'it': { name: 'Italian (Piccardo)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/it.piccardo.xml' },
-            'ja': { name: 'Japanese (Standard)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ja.japanese.xml' },
-            'ko': { name: 'Korean (Standard)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ko.korean.xml' },
-            'ku': { name: 'Kurdish (Burhan)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ku.asan.xml' },
-            'ms': { name: 'Malay (Basmeih)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ms.basmeih.xml' },
-            'ml': { name: 'Malayalam (Abdul Hameed)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ml.abdulhameed.xml' },
-            'no': { name: 'Norwegian (Berg)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/no.berg.xml' },
-            'ps': { name: 'Pashto (Abdulwali Khan)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ps.abdulwali.xml' },
-            'fa': { name: 'Persian (Mostafa)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/fa.khorramdel.xml' },
-            'pl': { name: 'Polish (Bielawskiego)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/pl.bielawskiego.xml' },
-            'pt': { name: 'Portuguese (El-Hayek)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/pt.elhayek.xml' },
-            'ro': { name: 'Romanian (Grigore)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ro.grigore.xml' },
-            'ru': { name: 'Russian (Kuliev)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ru.kuliev.xml' },
-            'sd': { name: 'Sindhi (Amroti)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/sd.amroti.xml' },
-            'so': { name: 'Somali (Abduh)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/so.abduh.xml' },
-            'es': { name: 'Spanish (Isa García)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/es.garcia.xml' },
-            'sw': { name: 'Swahili (Al-Barwani)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/sw.barwani.xml' },
-            'sv': { name: 'Swedish (Bernström)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/sv.bernstrom.xml' },
-            'ta': { name: 'Tamil (Jan Turst)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ta.tamil.xml' },
-            'tt': { name: 'Tatar (Nugman)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/tt.nugman.xml' },
-            'th': { name: 'Thai (King Fahad)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/th.thai.xml' },
-            'tr': { name: 'Turkish (Diyanet)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/tr.diyanet.xml' },
-            'ur': { name: 'Urdu (Junagarhi)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ur.junagarhi.xml' },
-            'ug': { name: 'Uyghur (Muhammad Saleh)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ug.saleh.xml' },
-            'uz': { name: 'Uzbek (Muhammad Sodik)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/uz.sodik.xml' }
+            'sq': { name: 'Albanian (Sherif Ahmeti)', url: 'a/sq.ahmeti.xml' },
+            'ber': { name: 'Amazigh (At Mansour)', url: 'a/ber.mensur.xml' },
+            'am': { name: 'Amharic (Sadiq & Sani)', url: 'a/am.sadiq.xml' },
+            'ar': { name: 'Arabic Tafsir (Al-Muyassar)', url: 'a/ar.muyassar.xml' },
+            'az': { name: 'Azerbaijani (Musayev)', url: 'a/az.musayev.xml' },
+            'bn': { name: 'Bengali (Muhiuddin Khan)', url: 'a/bn.bengali.xml' },
+            'bs': { name: 'Bosnian (Besim Korkut)', url: 'a/bs.korkut.xml' },
+            'bg': { name: 'Bulgarian (Theophanov)', url: 'a/bg.theophanov.xml' },
+            'zh': { name: 'Chinese (Ma Jian)', url: 'a/zh.jian.xml' },
+            'cs': { name: 'Czech (Hrbek)', url: 'a/cs.hrbek.xml' },
+            'dv': { name: 'Divehi (Maldives)', url: 'a/dv.divehi.xml' },
+            'nl': { name: 'Dutch (Siregar)', url: 'a/nl.siregar.xml' },
+            'en': { name: 'English (Saheeh Intl)', url: 'a/en.xml' },
+            'fr': { name: 'French (Hamidullah)', url: 'a/fr.hamidullah.xml' },
+            'de': { name: 'German (Bubenheim)', url: 'a/de.bubenheim.xml' },
+            'ha': { name: 'Hausa (Gumi)', url: 'a/ha.gumi.xml' },
+            'hi': { name: 'Hindi (Suhel Khan)', url: 'a/hi.hindi.xml' },
+            'id': { name: 'Indonesian (Kemenag)', url: 'a/id.indonesian.xml' },
+            'it': { name: 'Italian (Piccardo)', url: 'a/it.piccardo.xml' },
+            'ja': { name: 'Japanese (Standard)', url: 'a/ja.japanese.xml' },
+            'ko': { name: 'Korean (Standard)', url: 'a/ko.korean.xml' },
+            'ku': { name: 'Kurdish (Burhan)', url: 'a/ku.asan.xml' },
+            'ms': { name: 'Malay (Basmeih)', url: 'a/ms.basmeih.xml' },
+            'ml': { name: 'Malayalam (Abdul Hameed)', url: 'a/ml.abdulhameed.xml' },
+            'no': { name: 'Norwegian (Berg)', url: 'a/no.berg.xml' },
+            'ps': { name: 'Pashto (Abdulwali Khan)', url: 'a/ps.abdulwali.xml' },
+            'fa': { name: 'Persian (Mostafa)', url: 'a/fa.khorramdel.xml' },
+            'pl': { name: 'Polish (Bielawskiego)', url: 'a/pl.bielawskiego.xml' },
+            'pt': { name: 'Portuguese (El-Hayek)', url: 'a/pt.elhayek.xml' },
+            'ro': { name: 'Romanian (Grigore)', url: 'a/ro.grigore.xml' },
+            'ru': { name: 'Russian (Kuliev)', url: 'a/ru.kuliev.xml' },
+            'sd': { name: 'Sindhi (Amroti)', url: 'a/sd.amroti.xml' },
+            'so': { name: 'Somali (Abduh)', url: 'a/so.abduh.xml' },
+            'es': { name: 'Spanish (Isa García)', url: 'a/es.garcia.xml' },
+            'sw': { name: 'Swahili (Al-Barwani)', url: 'a/sw.barwani.xml' },
+            'sv': { name: 'Swedish (Bernström)', url: 'a/sv.bernstrom.xml' },
+            'ta': { name: 'Tamil (Jan Turst)', url: 'a/ta.tamil.xml' },
+            'tt': { name: 'Tatar (Nugman)', url: 'a/tt.nugman.xml' },
+            'th': { name: 'Thai (King Fahad)', url: 'a/th.thai.xml' },
+            'tr': { name: 'Turkish (Diyanet)', url: 'a/tr.diyanet.xml' },
+            'ur': { name: 'Urdu (Junagarhi)', url: 'a/ur.junagarhi.xml' },
+            'ug': { name: 'Uyghur (Muhammad Saleh)', url: 'a/ug.saleh.xml' },
+            'uz': { name: 'Uzbek (Muhammad Sodik)', url: 'a/uz.sodik.xml' }
         };
 
+        // EveryAyah audio is fine to keep remote, as it doesn't block page indexing
         const RECITERS_CONFIG = {
             'alafasy': { name: 'Mishary Alafasy', path: 'Alafasy_128kbps' },
             'juhaynee': { name: 'Al Juhany', path: 'Abdullaah_3awwaad_Al-Juhaynee_128kbps' },
@@ -371,14 +368,15 @@
             'basit': { name: 'Abdul Basit', path: 'Abdul_Basit_Murattal_192kbps' }
         };
 
+        // FIXED: Swapped raw GitHub links for relative 'play/' folder links
         const TRANSLATION_AUDIO_CONFIG = {
             'none': { name: 'No Audio Translation' },
             'en_walk': { name: 'English (Ibrahim Walk)', path: 'English/Sahih_Intnl_Ibrahim_Walk_192kbps' },
-            'id_ministry': { name: 'Indonesian (Ministry)', path: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/play/id' },
-            'es': { name: 'Español', path: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/play' }
+            'id_ministry': { name: 'Indonesian (Ministry)', path: 'play/id' },
+            'es': { name: 'Español', path: 'play' }
         };
 
-        const FTT_URL = 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/FTT.XML';
+        const FTT_URL = 'a/FTT.XML'; // Relative path
 
         // STATE & VARIABLES
         const elements = {
@@ -417,7 +415,8 @@
         // APP INITIALIZATION
         async function initializeApp() {
             try {
-                const jsonResponse = await fetch('https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/2TM3TM.json');
+                // FIXED: Local relative fetch
+                const jsonResponse = await fetch('a/2TM3TM.json');
                 if (!jsonResponse.ok) throw new Error("Failed to load Quran JSON");
                 const jsonData = await jsonResponse.json();
                 quranData = jsonData.chapters;
@@ -549,7 +548,6 @@
             const newUrl = `?chapter=${chNum}&verse=${vNum}&reciter=${state.reciter}&trans=${state.trans}&audio_trans=${state.audio_trans}`;
             window.history.pushState({path: newUrl}, '', newUrl);
 
-            // Update Canonical Link Dynamically
             const canonicalLink = document.getElementById('dynamic-canonical');
             const fullUrl = `https://Quran-lite.github.io/${newUrl}`;
             if (canonicalLink) {
@@ -671,14 +669,16 @@
             const verseKey = `${chNum}-${vNum}`;
             const isForbidden = forbiddenToTranslateSet.has(verseKey);
 
+            // Update UI Titles immediately
             elements.display.title.textContent = `${currentChapterData.title} (${chNum}:${vNum})`;
             
-            const newSrc = `https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/img/${chNum}_${vNum}.png`;
+            // FIXED: Relative path for Images
+            const newSrc = `img/${chNum}_${vNum}.png`;
             const img1 = elements.display.verse;
             const img2 = elements.display.verseNext;
 
             let imgReady = false;
-            if(img1.src === newSrc || img2.src === newSrc) imgReady = true;
+            if(img1.src.includes(newSrc) || img2.src.includes(newSrc)) imgReady = true;
 
             const isImg1Active = img1.classList.contains('active-verse-img');
             const activeImg = isImg1Active ? img1 : img2;
@@ -686,7 +686,13 @@
 
             if(!imgReady && autoplay) toggleBuffering(true);
 
+            // SEO FIX: Dynamic ALT Tag update
+            const seoAltText = `Surah ${currentChapterData.title} - Verse ${vNum} - Arabic Text`;
+            nextImg.alt = seoAltText;
+            activeImg.alt = seoAltText; // Update current one too in case it stays visible
+
             nextImg.src = newSrc;
+            
             nextImg.onload = () => {
                 activeImg.classList.remove('active-verse-img');
                 nextImg.classList.add('active-verse-img');
@@ -710,6 +716,7 @@
                 updateTranslationText(chNum, vNum);
             }
 
+            // Audio loads separately - if it fails, it won't crash the image display
             updateQuranAudio(chNum, vNum, autoplay);
             
             if (isForbidden) {
@@ -738,9 +745,11 @@
             const nextCh = quranData[nextChIdx].chapterNumber;
             const nextV = quranData[nextChIdx].verses[nextVIdx].verseNumber;
 
+            // FIXED: Buffer relative image
             const img = new Image();
-            img.src = `https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/img/${nextCh}_${nextV}.png`;
+            img.src = `img/${nextCh}_${nextV}.png`;
 
+            // Audio buffering (EveryAyah is fine here)
             const rId = elements.selects.reciter.value;
             const qPath = RECITERS_CONFIG[rId].path;
             const padCh = String(nextCh).padStart(3, '0');
@@ -755,6 +764,7 @@
                 let tUrl;
                 if (config.path.startsWith('httpIA')) tUrl = `${config.path.replace('httpIA', 'https')}/${padCh}${padV}.mp3`;
                 else if (config.path.startsWith('http')) tUrl = `${config.path}/${padCh}${padV}.mp3`;
+                else if (config.path.startsWith('play')) tUrl = `${config.path}/${padCh}${padV}.mp3`; // Local relative audio support
                 else tUrl = `https://everyayah.com/data/${config.path}/${padCh}${padV}.mp3`;
                 
                 const tAud = new Audio();
@@ -797,6 +807,7 @@
             let url;
             if (config.path.startsWith('httpIA')) url = `${config.path.replace('httpIA', 'https')}/${padCh}${padV}.mp3`;
             else if (config.path.startsWith('http')) url = `${config.path}/${padCh}${padV}.mp3`;
+            else if (config.path.startsWith('play')) url = `${config.path}/${padCh}${padV}.mp3`; // Fix for local play folder
             else url = `https://everyayah.com/data/${config.path}/${padCh}${padV}.mp3`;
 
             elements.transAudio.src = url;
@@ -831,7 +842,6 @@
 
         function adjustFontSize() {
             const el = elements.display.trans;
-            // Mobile override still applies here if needed
             if (window.innerWidth <= 768) return; 
 
             el.style.fontSize = '3.5rem';
@@ -845,15 +855,10 @@
         }
 
         function setupEventListeners() {
-            /* --- ROOT PAGE: GATEWAY LOGIC --- */
-elements.startBtn.addEventListener('click', () => {
-    // 1. Get the current settings (chapter, verse, etc.) from the URL
-    const currentParams = window.location.search; 
-
-    // 2. Send user to the Reading Room with these settings
-    // This ensures they go to the page where you EXCLUDED ads
-    window.location.href = "https://Quran-lite.github.io/reading/" + currentParams;
-});
+            elements.startBtn.addEventListener('click', () => {
+                const currentParams = window.location.search; 
+                window.location.href = "https://Quran-lite.github.io/reading/" + currentParams;
+            });
 
             elements.selects.chapter.addEventListener('change', () => { populateVerseSelect(); loadVerse(true); });
             elements.selects.verse.addEventListener('change', () => loadVerse(true));
@@ -913,7 +918,7 @@ elements.startBtn.addEventListener('click', () => {
                     title: `Ayah ${verse}`,
                     artist: artist,
                     album: `Surah ${surah}`,
-                    artwork: [{ src: 'https://Quran-lite.github.io/social-preview.jpg', sizes: '512x512', type: 'image/jpeg' }]
+                    artwork: [{ src: 'social-preview.jpg', sizes: '512x512', type: 'image/jpeg' }]
                 });
                 navigator.mediaSession.setActionHandler('nexttrack', nextVerse);
             }
@@ -923,22 +928,17 @@ elements.startBtn.addEventListener('click', () => {
 
     </script>
     <script>
-/* --- FORCE START BUTTON TO GO TO READING PAGE --- */
-document.addEventListener('DOMContentLoaded', () => {
-    // Wait for the button to be ready
-    const startBtn = document.getElementById('start-btn');
-    if (startBtn) {
-        // Intercept the click event
-        startBtn.addEventListener('click', (e) => {
-            // Stop the default app loader
-            e.stopImmediatePropagation(); 
-            e.preventDefault();
-            // Go to the Reading Room
-            window.location.href = "https://Quran-lite.github.io/reading/";
-        }, true); // 'true' makes this run before the main app logic
-    }
-});
-</script>
-</body>
+        /* --- FORCE START BUTTON TO GO TO READING PAGE --- */
+        document.addEventListener('DOMContentLoaded', () => {
+            const startBtn = document.getElementById('start-btn');
+            if (startBtn) {
+                startBtn.addEventListener('click', (e) => {
+                    e.stopImmediatePropagation(); 
+                    e.preventDefault();
+                    window.location.href = "https://Quran-lite.github.io/reading/";
+                }, true);
+            }
+        });
+    </script>
 </body>
 </html>

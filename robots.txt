@@ -1,8 +1,1 @@
-User-agent: *
-Allow: /
-
-# Explicitly ensure all common assets (JS, CSS, images) are accessible
-Allow: /assets/
-Allow: /static/
-
-Sitemap: https://Quran-lite.github.io/sitemap.xml
+Sitemap: https://Quran-lite.github.io/sitemap.xml User-agent: * Disallow: /checkout/ Disallow: /search/results/ Disallow: /*? Allow: /*addedItemKey= Allow: /*f= Allow: /*g= Allow: /*mh= Allow: /*mw= Allow: /*page= Allow: /*pageId= Allow: /*pageType= Allow: /*rpp= Allow: /*rs= Allow: /*sort= Allow: /*variantId= User-agent: * Crawl-delay: 5

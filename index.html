@@ -35,16 +35,12 @@
     </noscript>
 
     <script>
-/* --- REDIRECT USERS WHO TYPE ?chapter= DIRECTLY --- */
+/* --- REDIRECT USERS WHO TYPE ?chapter= DIRECTLY TO READING PAGE --- */
 (function() {
     const p = new URLSearchParams(window.location.search);
+    // If we have a chapter param, go to reading folder immediately
     if (p.has("chapter")) {
-
-        // Save full query for later use by Continue button
-        localStorage.setItem("reading_redirect", window.location.search);
-
-        // Redirect to clean homepage (ads allowed)
-        window.location.replace("https://Quran-lite.github.io/");
+        window.location.replace("https://Quran-lite.github.io/reading/" + window.location.search);
     }
 })();
 </script>
@@ -922,5 +918,23 @@
         document.addEventListener('DOMContentLoaded', initializeApp);
 
     </script>
+    <script>
+/* --- FORCE START BUTTON TO GO TO READING PAGE --- */
+document.addEventListener('DOMContentLoaded', () => {
+    // Wait for the button to be ready
+    const startBtn = document.getElementById('start-btn');
+    if (startBtn) {
+        // Intercept the click event
+        startBtn.addEventListener('click', (e) => {
+            // Stop the default app loader
+            e.stopImmediatePropagation(); 
+            e.preventDefault();
+            // Go to the Reading Room
+            window.location.href = "https://Quran-lite.github.io/reading/";
+        }, true); // 'true' makes this run before the main app logic
+    }
+});
+</script>
+</body>
 </body>
 </html>

@@ -1,72 +1,58 @@
 export async function onRequestPost(context) {
     const { request, env } = context;
 
-    // 1. Get User Input
     let body;
     try {
         body = await request.json();
     } catch (e) {
-        return new Response(JSON.stringify({ safe: false, reason: "Invalid JSON input" }), { headers: { "Content-Type": "application/json" }});
+        return new Response(JSON.stringify({ safe: false }), { headers: { "Content-Type": "application/json" }});
     }
     const nameToCheck = body.name || "";
 
-    // 2. The Instructions (System Prompt)
+    // --- CLEAN PROMPT: NO DIRTY WORDS ---
     const systemPrompt = `
-    You are a content safety filter.
-    Task: specific check of the user's name.
-
-    FORBIDDEN CATEGORIES:
-    1. Profanity/Insults (English, Arabic, Malay).
-    2. Polytheism/Shirk (e.g. "I am God", "Allah", "Lat", "Uzza", "Hubal", "Zeus").
-    3. Disrespect toward religion.
+    You are a strict Islamic content moderator.
     
-    Strictly allow common names like "Abdullah", "Muslim", "Muhammad" unless used offensively.
+    YOUR KNOWLEDGE BASE:
+    1. You know all English and Malay and all languages exist in this world, profanity.
+    2. You know the names of all Pre-Islamic Arabian Idols and False Deities from Greek/Hindu mythology and all languages exist in this world.
+    3. You know major controversial political figures.
+
+    TASK:
+    Analyze the name "${nameToCheck}".
+
+    RULES FOR REJECTION (Block these):
+    1. Any name that constitutes 'Shirk' (claiming divinity) or 'Kufr' (atheistic terms) and all languages exist in this world.
+    2. Any name of a false deity or idol mentioned in Islamic history or world mythology and all languages exist in this world.
+    3. Any vulgarity, insult, or sexual innuendo in English or Malay and all languages exist in this world.
+    4. Any name of a modern controversial political leader (e.g. presidents, dictators) to maintain neutrality.
+    5. Any phonetic spelling that sounds like the above (e.g. "Atist" sounding like "Atheist" or sh!j or fv)x etc.) and all languages exist in this world.
 
     OUTPUT:
-    Return ONLY raw JSON. No markdown formatting. No intro text.
-    Format: { "safe": boolean, "reason": "short explanation" }
+    Return JSON only: { "safe": boolean, "reason": "General category of violation" }
     `;
 
     try {
-        // 3. Ask the AI
         const aiResult = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
             messages: [
                 { role: "system", content: systemPrompt },
-                { role: "user", content: `Check this name: "${nameToCheck}"` }
+                { role: "user", content: "Check this name." } 
             ]
         });
 
-        // --- THE FIX STARTS HERE ---
-        
-        // The AI result comes wrapped in a "response" string. 
-        // Example: { response: "{\n \"safe\": true ... }" }
+        // JSON Parsing logic (Same as before)
         const rawText = aiResult.response || "";
-
-        // We use a "Substring" trick to find the JSON inside the text.
-        // This handles cases where the AI says "Here is the JSON: { ... }"
         const firstCurly = rawText.indexOf('{');
         const lastCurly = rawText.lastIndexOf('}');
 
         if (firstCurly !== -1 && lastCurly !== -1) {
-            // Extract just the clean JSON part
-            const cleanJsonString = rawText.substring(firstCurly, lastCurly + 1);
-            
-            // Send ONLY the clean JSON to your website
-            return new Response(cleanJsonString, {
+            return new Response(rawText.substring(firstCurly, lastCurly + 1), {
                 headers: { "Content-Type": "application/json" }
             });
         } else {
-            // Fallback: If AI spoke nonsense, fail safely (or block it)
-            return new Response(JSON.stringify({ safe: true, reason: "AI output unclear, allowing." }), {
-                headers: { "Content-Type": "application/json" }
-            });
+            return new Response(JSON.stringify({ safe: true }), { headers: { "Content-Type": "application/json" } });
         }
-        // --- THE FIX ENDS HERE ---
-
     } catch (err) {
-        // If the AI service is down completely
-        return new Response(JSON.stringify({ safe: true, warning: "AI_OFFLINE" }), {
-            headers: { "Content-Type": "application/json" }
-        });
+        return new Response(JSON.stringify({ safe: true, warning: "AI_OFFLINE" }), { headers: { "Content-Type": "application/json" } });
     }
 }

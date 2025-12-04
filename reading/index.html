@@ -1,27 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<script>
-    // 1. Redirect GitHub.io traffic to Pages.dev<!DOCTYPE html>
 <html lang="en" dir="auto" prefix="og: http://ogp.me/ns# book: http://ogp.me/ns/book#">
 <head>
 <script>
     // 1. Redirect GitHub.io traffic to Pages.dev
-    // This ensures everyone uses the same localStorage database
     if (window.location.hostname.includes('github.io')) {
         var newUrl = window.location.href.replace('github.io', 'pages.dev');
-        
-        // This tells Google "The new page is the real one" (301-like behavior for JS)
-        window.location.replace(newUrl); 
-    }
-</script>
-<script>
-    // 1. Redirect GitHub.io traffic to Pages.dev
-    // This ensures everyone uses the same localStorage database
-    if (window.location.hostname.includes('github.io')) {
-        var newUrl = window.location.href.replace('github.io', 'pages.dev');
-        
-        // This tells Google "The new page is the real one" (301-like behavior for JS)
         window.location.replace(newUrl); 
     }
 </script>
@@ -52,11 +35,10 @@
     <link href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💠</text></svg>" rel="icon">
     <link rel="icon" href="https://Quran-lite.pages.dev/favicon.ico" sizes="any">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     </noscript>
-
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PDWXFDCQRH"></script>
     <script>
@@ -67,7 +49,80 @@
     </script>
 
     <style>
-        /* --- Core Layout (TV NO SCROLL) --- */
+        /* --- 0. NETFLIX TV STYLE OVERRIDES & SCROLLBAR BAN --- */
+        ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; background: transparent !important; }
+        html, body { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+        
+        /* Sidebar Navigation */
+        #tv-sidebar {
+            position: fixed; left: 0; top: 0; bottom: 0; width: 80px; background: #000; z-index: 3000;
+            display: flex; flex-direction: column; align-items: center; padding-top: 4rem;
+            transition: width 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), background 0.3s;
+            overflow: hidden;
+        }
+        #tv-sidebar:hover, #tv-sidebar.expanded { width: 250px; background: rgba(0,0,0,0.95); box-shadow: 20px 0 50px rgba(0,0,0,0.5); }
+        
+        .nav-item {
+            width: 100%; display: flex; align-items: center; padding: 1.5rem 2rem; cursor: pointer;
+            color: #888; text-decoration: none; transition: color 0.2s, transform 0.2s;
+            white-space: nowrap; outline: none;
+        }
+        .nav-item:focus, .nav-item:hover { color: #fff; transform: scale(1.05); }
+        .nav-item.active { color: #fff; border-right: 3px solid var(--accent); }
+        .nav-icon { width: 24px; height: 24px; margin-right: 20px; flex-shrink: 0; fill: currentColor; }
+        .nav-label { font-size: 1.6rem; font-weight: 600; opacity: 0; transition: opacity 0.2s 0.1s; }
+        #tv-sidebar:hover .nav-label, #tv-sidebar.expanded .nav-label { opacity: 1; }
+
+        .profile-icon { border-radius: 4px; background: #e50914; display:flex; justify-content:center; align-items:center; color:#fff; font-weight:bold; }
+        
+        /* Adjust Dashboard for Sidebar */
+        #dashboard-view { padding-left: 80px; transition: padding-left 0.3s; }
+
+        /* Preview Subtitles */
+        #hero-subtitle-overlay {
+            position: absolute; bottom: 120px; left: 5%; max-width: 600px;
+            color: #fff; font-size: 1.8rem; font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+            z-index: 10; opacity: 0; transition: opacity 0.3s;
+            background: rgba(0,0,0,0.4); padding: 1rem; border-radius: 4px;
+            pointer-events: none;
+        }
+        #hero-subtitle-overlay.active { opacity: 1; }
+
+        /* Search Overlay (Netflix TV Style) */
+        #search-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #141414; z-index: 2500; padding-left: 80px;
+            display: none; grid-template-columns: 350px 1fr;
+        }
+        #search-overlay.active { display: grid; }
+        
+        .keyboard-section {
+            background: #000; padding: 4rem 2rem; display: flex; flex-direction: column;
+            border-right: 1px solid #333;
+        }
+        #search-input-display {
+            background: #333; color: #fff; padding: 1rem; font-size: 2rem;
+            border: 1px solid #fff; margin-bottom: 2rem; min-height: 50px; display: flex; align-items: center;
+        }
+        .keyboard-grid {
+            display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;
+        }
+        .key {
+            aspect-ratio: 1; background: #333; color: #fff; font-size: 1.4rem;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; border: 2px solid transparent; transition: transform 0.1s;
+        }
+        .key:focus, .key:hover { border-color: #fff; background: #555; transform: scale(1.1); z-index: 2; outline: none; }
+        .key.wide { grid-column: span 2; aspect-ratio: auto; height: 50px; }
+        
+        .results-section { padding: 4rem; overflow-y: auto; }
+        .results-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;
+        }
+        .no-results { color: #666; font-size: 2rem; margin-top: 4rem; }
+
+        /* --- 1. GLOBAL & TV RESET --- */
         :root { --vh: 100vh; --accent: #0FB; --bg: #050505; --surface: #111; --text: #f0f0f0; }
         html { box-sizing: border-box; font-size: 62.5%; }
         *, *::before, *::after { box-sizing: inherit; margin: 0; padding: 0; }
@@ -79,97 +134,159 @@
             color: var(--text);
             line-height: 1.6;
             font-size: 1.6rem;
-            /* CRITICAL FOR TV: Hide Scrollbars */
-            height: 100vh;
-            overflow: hidden; 
-            display: flex;
-            flex-direction: column;
+            height: 100vh; overflow: hidden; /* App-like feel */
+            display: flex; flex-direction: column;
         }
 
-        /* --- Loading Screen with SEO Content --- */
+        /* --- 2. DASHBOARD STYLES (THE DOOR) --- */
+        #dashboard-view {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2000;
+            background: #050505;
+            overflow-y: auto; overflow-x: hidden;
+            display: none; /* Hidden by default */
+            padding-left: 80px; /* Force Space for Sidebar */
+        }
+        #dashboard-view.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .hero-banner {
+            height: 75vh; width: 100%; position: relative;
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 0 5%;
+            overflow: hidden;
+            background: #000; 
+        }
+
+        /* Hero Preview Layer */
+        .hero-preview-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; opacity: 0; transition: opacity 0.8s ease; pointer-events: none;
+        }
+        .hero-preview-layer.active { opacity: 1; }
+        
+        .preview-img {
+            width: 100%; height: 100%; 
+            object-fit: contain; object-position: center right;
+            filter: invert(1) drop-shadow(0 0 20px rgba(255,255,255,0.2));
+            transform: scale(0.9); opacity: 0.6; transition: opacity 0.5s ease;
+        }
+
+        /* Shadow/Vignette */
+        .hero-shadow-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2;
+            background: 
+                radial-gradient(circle at 80% 20%, transparent 0%, #050505 120%),
+                linear-gradient(to top, #050505 10%, rgba(5,5,5,0.9) 25%, transparent 70%),
+                linear-gradient(to right, #050505 0%, rgba(5,5,5,0.8) 40%, transparent 100%);
+        }
+
+        .hero-content { max-width: 650px; z-index: 5; position: relative; margin-top: 5vh; }
+        
+        .hero-super { 
+            display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;
+            font-weight: 700; color: #aaa; letter-spacing: 1px;
+            text-transform: uppercase; font-size: 1.1rem;
+        }
+        .hero-super span.badge { background: rgba(255,255,255,0.2); color: #fff; padding: 2px 6px; border-radius: 2px; font-size: 0.9rem; }
+
+        .hero-title-text { 
+            font-size: clamp(3rem, 5vw, 6rem); font-weight: 900; line-height: 1; 
+            margin-bottom: 0.5rem; text-shadow: 0 4px 30px rgba(0,0,0,1); color: #fff;
+        }
+        .hero-subtitle {
+            font-family: 'Amiri', serif; font-size: 2.2rem; color: var(--accent);
+            margin-bottom: 1.5rem; font-weight: 400; text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+        .hero-desc { 
+            color: #ccc; font-size: 1.5rem; margin-bottom: 2.5rem; line-height: 1.5;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8); max-width: 600px;
+            display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        
+        .dash-btn {
+            background: #fff; color: #000; border: none; padding: 1.2rem 3rem;
+            font-size: 1.6rem; font-weight: 700; border-radius: 4px; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 12px;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .dash-btn:focus, .dash-btn:hover { transform: scale(1.05); background: var(--accent); box-shadow: 0 0 30px rgba(0, 255, 187, 0.4); outline: none; }
+
+        .row-section { padding: 2rem 0 2rem 5%; position: relative; z-index: 5; margin-top: -8vh; background: linear-gradient(to bottom, transparent, #050505 20%); }
+        .row-header { font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; color: #e5e5e5; padding-left: 2px; }
+        .card-scroller { display: flex; gap: 1rem; overflow-x: auto; padding-right: 5%; padding-bottom: 3rem; scroll-behavior: smooth; }
+        .card-scroller::-webkit-scrollbar { display: none; }
+        
+        .surah-card {
+            flex: 0 0 240px; height: 135px;
+            background: #1a1a1a; border-radius: 4px; position: relative;
+            cursor: pointer; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid #333; overflow: hidden;
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem;
+        }
+        .surah-card:focus, .surah-card:hover { transform: scale(1.15); z-index: 10; border-color: var(--accent); background: #222; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        .card-bg-num { position: absolute; top: -15px; right: 5px; font-size: 7rem; font-weight: 900; color: rgba(255,255,255,0.03); line-height: 1; font-family: 'Inter', sans-serif; }
+        .card-title { font-size: 1.6rem; font-weight: 700; color: #fff; z-index: 2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-sub { font-size: 1.1rem; color: #aaa; z-index: 2; margin-top: 0.2rem; }
+
+        /* --- 3. CINEMA VIEW STYLES (FROM OLD FILE) --- */
+        #cinema-view {
+            width: 100%; height: 100%; position: absolute; top: 0; left: 0;
+            display: flex; flex-direction: column;
+            transition: opacity 0.5s;
+            opacity: 0; pointer-events: none; /* Hidden by default */
+        }
+        #cinema-view.active { opacity: 1; pointer-events: all; z-index: 1000; }
+
         #loading-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #000;
-            z-index: 9999;
+            background-color: #000; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.5s ease;
-            padding: 2rem;
+            transition: opacity 0.5s ease; padding: 2rem;
         }
-        
         .loader-content { text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        
         .loader-spinner {
-            width: 50px; height: 50px;
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 50%;
-            border-top-color: var(--accent);
-            animation: spin 0.8s ease-in-out infinite;
-            margin-bottom: 2rem;
+            width: 50px; height: 50px; border: 2px solid rgba(255,255,255,0.1); border-radius: 50%;
+            border-top-color: var(--accent); animation: spin 0.8s ease-in-out infinite; margin-bottom: 2rem;
         }
-        
         .loader-text { font-size: 1.6rem; color: #888; margin-bottom: 2rem; letter-spacing: 1px; }
-        
         .start-btn {
-            display: none;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 15px 50px; font-size: 1.6rem;
-            border-radius: 50px; cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: inherit; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
+            display: none; background: rgba(255, 255, 255, 0.1); border: 1px solid var(--accent);
+            color: var(--accent); padding: 15px 50px; font-size: 1.6rem; border-radius: 50px; cursor: pointer;
+            transition: all 0.3s ease; font-family: inherit; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
         }
-        .start-btn:focus, .start-btn:hover { 
-            background: var(--accent); color: #000; 
-            box-shadow: 0 0 30px rgba(0, 255, 187, 0.5); 
-            outline: 2px solid #fff; /* Focus indication for TV */
-        }
+        .start-btn:focus, .start-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 30px rgba(0, 255, 187, 0.5); outline: 2px solid #fff; }
 
-        /* --- SEO Splash Footer (Inside Loading Screen) --- */
         #splash-footer {
-            width: 100%; max-width: 800px;
-            text-align: center; font-size: 1.1rem; color: #444;
-            margin-top: auto; padding-bottom: 2rem;
-            opacity: 0.8;
+            width: 100%; max-width: 800px; text-align: center; font-size: 1.1rem; color: #444;
+            margin-top: auto; padding-bottom: 2rem; opacity: 0.8;
         }
         #splash-footer h2 { font-size: 1.2rem; color: #666; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px; }
         #splash-footer a { color: #555; text-decoration: none; margin: 0 8px; transition: color 0.2s; }
         #splash-footer a:hover { color: var(--accent); }
 
-        /* --- Main App Layout --- */
         .container {
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            width: 100%; height: 100%; 
-            padding: 2rem; padding-bottom: 12rem;
-            position: relative;
+            width: 100%; height: 100%; padding: 2rem; padding-bottom: 12rem; position: relative;
         }
-
         #content-display {
             text-align: center; width: 100%; max-width: 1200px; margin: 0 auto;
-            flex-grow: 1; display: flex; flex-direction: column; justify-content: center;
-            position: relative;
+            flex-grow: 1; display: flex; flex-direction: column; justify-content: center; position: relative;
         }
-
         #chapter-title {
-            position: fixed; top: 2rem; left: 2rem;
-            font-size: clamp(1.4rem, 2.5vw, 2.4rem); font-weight: 600; color: #666;
+            position: fixed; top: 2rem; left: 2rem; font-size: clamp(1.4rem, 2.5vw, 2.4rem); font-weight: 600; color: #666;
             z-index: 100; mix-blend-mode: difference;
         }
-
         #verse-container {
-            position: relative; width: 100%; height: 50vh;
-            margin-bottom: 3rem; display: flex; justify-content: center; align-items: center;
+            position: relative; width: 100%; height: 50vh; margin-bottom: 3rem; display: flex; justify-content: center; align-items: center;
         }
-
         #buffering-indicator {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 40px; height: 40px;
-            border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--accent);
-            border-radius: 50%; animation: spin 0.8s linear infinite;
-            display: none; z-index: 20;
+            width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--accent);
+            border-radius: 50%; animation: spin 0.8s linear infinite; display: none; z-index: 20;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-
         #verse-text, #verse-text-next { 
             filter: invert(1) drop-shadow(0 0 10px rgba(255,255,255,0.1)); 
             width: 100%; height: 100%; object-fit: contain;
@@ -183,83 +300,51 @@
             line-height: 1.7; flex-grow: 0; flex-shrink: 1; max-height: 30%;
             overflow-y: auto; white-space: pre-wrap; text-align: center;
             padding: 0 2rem; scrollbar-width: none;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            /* Smooth transition for direction changes */
-            transition: opacity 0.3s;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5); transition: opacity 0.3s;
         }
         #translation-text::-webkit-scrollbar { display: none; }
 
-        /* --- TV Control Panel (Fixed Bottom) --- */
         #control-panel {
             position: fixed; bottom: 0; left: 0; right: 0;
             display: flex; justify-content: center; align-items: center;
             flex-wrap: wrap; gap: 1rem; padding: 2rem;
             background: linear-gradient(to top, #000 20%, transparent);
-            transition: transform 0.4s ease, opacity 0.4s ease;
-            z-index: 100;
+            transition: transform 0.4s ease, opacity 0.4s ease; z-index: 100;
         }
-        
         body.idle #control-panel { transform: translateY(100%); opacity: 0; pointer-events: none; }
 
         select {
-            font-family: 'Inter', sans-serif; font-size: 1.3rem;
-            padding: 0.8rem 2.5rem 0.8rem 1rem;
-            background-color: rgba(20,20,20,0.9); color: #ccc;
-            border: 1px solid #333; border-radius: 6px;
+            font-family: 'Inter', sans-serif; font-size: 1.3rem; padding: 0.8rem 2.5rem 0.8rem 1rem;
+            background-color: rgba(20,20,20,0.9); color: #ccc; border: 1px solid #333; border-radius: 6px;
             cursor: pointer; appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='gray' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: right 0.8rem center;
-            min-width: 140px; backdrop-filter: blur(5px);
+            background-repeat: no-repeat; background-position: right 0.8rem center; min-width: 140px; backdrop-filter: blur(5px);
         }
-
-        /* --- TV D-PAD FOCUS STATE (CRITICAL) --- */
-        select:focus { 
-            outline: none; 
-            border-color: var(--accent); 
-            color: #fff; 
-            box-shadow: 0 0 15px rgba(0, 255, 187, 0.4); 
-            transform: scale(1.02);
-            transition: all 0.2s ease;
-        }
+        select:focus { outline: none; border-color: var(--accent); color: #fff; box-shadow: 0 0 15px rgba(0, 255, 187, 0.4); transform: scale(1.02); transition: all 0.2s ease; }
         
         audio { display: none; }
 
-        /* --- Mobile / Small TV Layout --- */
         @media (max-width: 768px) {
+            #tv-sidebar { width: 0; overflow: hidden; } /* Hide Sidebar on mobile for now, or adapt */
+            #dashboard-view { padding-left: 0; }
             #chapter-title {
-                position: relative; top: 0; left: 0; width: 100%;
-                text-align: center; padding: 1.5rem 0; margin-bottom: 1rem;
-                background: linear-gradient(to bottom, #000 50%, transparent);
-                color: var(--accent); mix-blend-mode: normal;
+                position: relative; top: 0; left: 0; width: 100%; text-align: center; padding: 1.5rem 0; margin-bottom: 1rem;
+                background: linear-gradient(to bottom, #000 50%, transparent); color: var(--accent); mix-blend-mode: normal;
             }
-
             .container { padding: 0; padding-bottom: 230px; justify-content: flex-start; }
             #content-display { margin: 0; justify-content: flex-start; }
-
             #verse-container { height: 40vh; margin-bottom: 0; background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%); }
             #verse-text, #verse-text-next { padding: 1rem; max-width: 95%; }
-
             #translation-text {
-                width: 92%; margin: 0 auto;
-                background: rgba(255,255,255,0.03);
-                border-radius: 12px 12px 0 0;
-                padding: 2rem; 
-                /* CHANGED: 'start' handles LTR and RTL correctly (Left for English, Right for Arabic) */
-                text-align: start; 
-                font-size: 1.8rem !important;
-                flex-grow: 1; overflow-y: auto;
-                border: 1px solid rgba(255,255,255,0.05);
+                width: 92%; margin: 0 auto; background: rgba(255,255,255,0.03); border-radius: 12px 12px 0 0;
+                padding: 2rem; text-align: start; font-size: 1.8rem !important; flex-grow: 1; overflow-y: auto; border: 1px solid rgba(255,255,255,0.05);
             }
-
             #control-panel {
-                background: rgba(10, 10, 10, 0.95);
-                backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-                border-top: 1px solid rgba(255,255,255,0.1);
-                padding: 1.5rem; padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+                background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+                border-top: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
                 display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
             }
             body.idle #control-panel { transform: none; opacity: 1; }
-
             select { width: 100%; height: 48px; font-size: 1.4rem; }
             #chapterSelect { grid-column: 1 / -1; background-color: rgba(30,30,30,0.8); color: var(--accent); font-weight: 600; }
         }
@@ -267,64 +352,251 @@
 </head>
 
 <body>
-    <div id="loading-overlay">
-        <div class="loader-content">
-            <div class="loader-spinner"></div>
-            <div class="loader-text" id="loader-text">Initializing QuranLite...</div>
-            <button id="start-btn" class="start-btn">Start</button>
+
+    <nav id="tv-sidebar">
+        <a href="#" class="nav-item active" id="nav-home" tabindex="1">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span class="nav-label">Home</span>
+        </a>
+        <a href="#" class="nav-item" id="nav-search" tabindex="2">
+            <svg class="nav-icon" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <span class="nav-label">Search</span>
+        </a>
+        <a href="../" class="nav-item" id="nav-profile" tabindex="3">
+            <div class="nav-icon profile-icon">Q</div>
+            <span class="nav-label">Profile</span>
+        </a>
+    </nav>
+
+    <div id="search-overlay">
+        <div class="keyboard-section">
+            <div id="search-input-display"></div>
+            <div class="keyboard-grid" id="keyboard-grid">
+                </div>
         </div>
-        
-        <nav id="splash-footer">
-            <h2>Quick Access</h2>
-            <a href="?chapter=1&trans=en">Al-Fatihah</a>
-            <a href="?chapter=18&trans=en">Al-Kahf</a>
-            <a href="?chapter=36&trans=en">Ya-Sin</a>
-            <a href="?chapter=67&trans=en">Al-Mulk</a>
-            <a href="?chapter=55&trans=en">Ar-Rahman</a>
-            <a href="?chapter=2&verse=255&trans=en">Ayatul Kursi</a>
-            <div style="margin-top: 1rem; font-size: 0.9rem; color: #333;">
-                QuranLite: Distraction-Free Player. Recitation by Mishary Alafasy.
+        <div class="results-section">
+            <div class="row-header" style="margin-top:0;">Top Results</div>
+            <div class="results-grid" id="search-results-grid">
+                <div class="no-results">Start typing to search Surahs...</div>
             </div>
-        </nav>
-    </div>
-
-    <div class="container">
-        <audio id="audio-player" crossorigin="anonymous"></audio>
-        <audio id="translation-audio-player" crossorigin="anonymous"></audio>
-
-        <h1 id="chapter-title">QuranLite</h1>
-        
-        <div id="content-display">
-            <div id="verse-container">
-                <div id="buffering-indicator"></div>
-                <img id="verse-text" class="active-verse-img" alt="Quran Verse Arabic Text" width="600" height="300" loading="eager">
-                <img id="verse-text-next" alt="Next Quran Verse" width="600" height="300" loading="lazy">
-            </div>
-            <div id="translation-text" dir="auto">Select a Surah to begin reading...</div>
         </div>
     </div>
 
-    <div id="control-panel">
-        <select id="chapterSelect" aria-label="Select Surah"></select>
-        <select id="verseSelect" aria-label="Select Ayah"></select>
-        <select id="reciterSelect" aria-label="Choose Reciter"></select>
-        <select id="translationSelect" aria-label="Choose Translation"></select>
-        <select id="translationAudioSelect" aria-label="Choose Audio Translation"></select>
+    <div id="dashboard-view" class="active">
+        <div class="hero-banner">
+            <div class="hero-preview-layer" id="hero-preview-layer">
+                <img id="preview-img" class="preview-img" src="" alt="">
+            </div>
+            <div class="hero-shadow-overlay"></div>
+            
+            <div id="hero-subtitle-overlay"></div>
+
+            <div class="hero-content">
+                <div class="hero-super">
+                    <span>The  Clear  Book  | The Quran</span>
+                    <span class="badge">AUDIO HD</span>
+                </div>
+                <h1 class="hero-title-text" id="door-hero-title">Reading Mode</h1>
+                <div class="hero-subtitle" id="door-hero-subtitle">Surah Information</div>
+                <p class="hero-desc" id="door-hero-desc">Experience the Holy Quran with synchronized audio, distraction-free interface, and multi-language translations.</p>
+                <button id="door-play-btn" class="dash-btn" tabindex="10">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    <span>Resume</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="row-section" id="continue-section" style="display:none;">
+            <div class="row-header">Continue Reading</div>
+            <div class="card-scroller" id="continue-row"></div>
+        </div>
+
+        <div class="row-section">
+            <div class="row-header">Trending Now</div>
+            <div class="card-scroller" id="trending-row"></div>
+        </div>
+
+        <div class="row-section" style="padding-bottom:100px;">
+            <div class="row-header">All Surahs</div>
+            <div class="card-scroller" id="all-row"></div>
+        </div>
+    </div>
+
+    <audio id="preview-audio" crossorigin="anonymous"></audio>
+
+    <div id="cinema-view">
+        <div id="loading-overlay">
+            <div class="loader-content">
+                <div class="loader-spinner"></div>
+                <div class="loader-text" id="loader-text">Initializing QuranLite...</div>
+                <button id="start-btn" class="start-btn">Start</button>
+            </div>
+            <nav id="splash-footer">
+                <h2>Quick Access</h2>
+                <a href="?chapter=1&trans=en">Al-Fatihah</a>
+                <a href="?chapter=18&trans=en">Al-Kahf</a>
+                <a href="?chapter=36&trans=en">Ya-Sin</a>
+                <a href="?chapter=67&trans=en">Al-Mulk</a>
+                <a href="?chapter=55&trans=en">Ar-Rahman</a>
+                <a href="?chapter=2&verse=255&trans=en">Ayatul Kursi</a>
+                <div style="margin-top: 1rem; font-size: 0.9rem; color: #333;">QuranLite: Distraction-Free Player. Recitation by Mishary Alafasy.</div>
+            </nav>
+        </div>
+
+        <div class="container">
+            <audio id="audio-player" crossorigin="anonymous"></audio>
+            <audio id="translation-audio-player" crossorigin="anonymous"></audio>
+
+            <h1 id="chapter-title">QuranLite</h1>
+            
+            <div id="content-display">
+                <div id="verse-container">
+                    <div id="buffering-indicator"></div>
+                    <img id="verse-text" class="active-verse-img" alt="Verse" width="600" height="300" loading="eager">
+                    <img id="verse-text-next" alt="Next Verse" width="600" height="300" loading="lazy">
+                </div>
+                <div id="translation-text" dir="auto">Select a Surah...</div>
+            </div>
+        </div>
+
+        <div id="control-panel">
+            <select id="chapterSelect" aria-label="Select Surah"></select>
+            <select id="verseSelect" aria-label="Select Ayah"></select>
+            <select id="reciterSelect" aria-label="Choose Reciter"></select>
+            <select id="translationSelect" aria-label="Choose Translation"></select>
+            <select id="translationAudioSelect" aria-label="Choose Audio Translation"></select>
+        </div>
     </div>
 
     <script>
-        // --- MULTI-PROFILE LOGIC & GUARD ---
-        // This runs immediately. If no profile is selected (direct link), redirect to root.
+        // --- 1. CONFIG & METADATA ---
+        const SURAH_METADATA = [
+          { "chapter": 1, "english_name": "The Opening", "description": "Revealed in Mecca, this is the fundamental prayer of Islam, summarizing the core relationship between God and humanity. It is recited in every unit of prayer. (7 verses)" },
+          { "chapter": 2, "english_name": "The Cow", "description": "The longest Surah, revealed in Medina. It establishes Islamic laws, recounts the stories of Moses (Peace be upon him), and guides the new Muslim community. (286 verses)" },
+          { "chapter": 3, "english_name": "The Family of Imran", "description": "A Medinan chapter focusing on the Oneness of God, the family of Mary (Peace be upon her) and Jesus (Peace be upon him), and lessons from the Battle of Uhud. (200 verses)" },
+          { "chapter": 4, "english_name": "The Women", "description": "Revealed in Medina after the Battle of Uhud, addressing the rights of women, care for orphans, inheritance laws, and the protection of the vulnerable within society. (176 verses)" },
+          { "chapter": 5, "english_name": "The Table Spread", "description": "One of the last revealed Surahs, finalizing dietary laws and discussing the miracle of the table requested by the disciples of Jesus (Peace be upon him) and the fulfillment of covenants. (120 verses)" },
+          { "chapter": 6, "english_name": "The Cattle", "description": "A late Meccan Surah emphasizing pure monotheism, rejecting superstition, and detailing the nature of God's infinite power over creation. (165 verses)" },
+          { "chapter": 7, "english_name": "The Heights", "description": "A Meccan chapter detailing the history of prophets from Adam (Peace be upon him) to Moses (Peace be upon him), warning against arrogance and describing the Day of Judgment. (206 verses)" },
+          { "chapter": 8, "english_name": "The Spoils of War", "description": "Revealed after the Battle of Badr, clarifying the ethics of warfare, the distribution of spoils, and the importance of placing full trust in God. (75 verses)" },
+          { "chapter": 9, "english_name": "The Repentance", "description": "A Medinan text issued before the Tabuk expedition, addressing treaty violations by polytheists and the issue of hypocrisy; it is the only Surah that does not begin with 'Bismillah'. (129 verses)" },
+          { "chapter": 10, "english_name": "Jonah", "description": "A Meccan Surah emphasizing God's Oneness and citing the story of the people of Jonah (Peace be upon him), who were saved by their timely repentance. (109 verses)" },
+          { "chapter": 11, "english_name": "Hud", "description": "Revealed during a difficult period in Mecca, recounting stories of previous prophets like Noah (Peace be upon him) and Hud (Peace be upon him) to comfort the Prophet Muhammad (Peace be upon him). (123 verses)" },
+          { "chapter": 12, "english_name": "Joseph", "description": "A unique Meccan Surah devoted entirely to the story of Joseph (Peace be upon him), illustrating patience, divine destiny, and family reconciliation. (111 verses)" },
+          { "chapter": 13, "english_name": "The Thunder", "description": "Revealed in Medina, utilizing natural phenomena like thunder to argue for the existence of God and the absolute truth of the resurrection. (43 verses)" },
+          { "chapter": 14, "english_name": "Abraham", "description": "A Meccan chapter highlighting the prayer of Abraham (Peace be upon him) for the sanctuary of Mecca and contrasting the gratitude of believers with the ingratitude of disbelievers. (52 verses)" },
+          { "chapter": 15, "english_name": "The Rocky Tract", "description": "A Meccan Surah reassuring the Prophet (Peace be upon him) against mockery and detailing the story of Satan's refusal to bow to Adam (Peace be upon him). (99 verses)" },
+          { "chapter": 16, "english_name": "The Bee", "description": "A Meccan chapter calling attention to God's blessings in nature, specifically the bee, and warning against associating partners with God. (128 verses)" },
+          { "chapter": 17, "english_name": "The Night Journey", "description": "Commemorates the Prophet Muhammad's (Peace be upon him) miraculous night journey from Mecca to Jerusalem and ascension to the heavens, establishing the five daily prayers. (111 verses)" },
+          { "chapter": 18, "english_name": "The Cave", "description": "A Meccan Surah telling the story of the Sleepers of the Cave and Moses (Peace be upon him), focusing on maintaining faith during times of trial. (110 verses)" },
+          { "chapter": 19, "english_name": "Mary", "description": "A Meccan chapter detailing the miraculous births of Jesus (Peace be upon him) and John (Peace be upon him), emphasizing God's mercy and refuting the concept of God having a son. (98 verses)" },
+          { "chapter": 20, "english_name": "Ta-Ha", "description": "Revealed in Mecca, this Surah details the story of Moses (Peace be upon him) confronting Pharaoh and offers comfort to the Prophet Muhammad (Peace be upon him). (135 verses)" },
+          { "chapter": 21, "english_name": "The Prophets", "description": "A Meccan text referencing many prophets (Peace be upon them) to show the continuity of the divine message and the inevitability of Judgment Day. (112 verses)" },
+          { "chapter": 22, "english_name": "The Pilgrimage", "description": "A Medinan Surah establishing the rituals of the Hajj pilgrimage and giving permission to believers to defend themselves against oppression. (78 verses)" },
+          { "chapter": 23, "english_name": "The Believers", "description": "Revealed in Mecca, outlining the moral qualities of true believers and the miraculous stages of human embryonic development. (118 verses)" },
+          { "chapter": 24, "english_name": "The Light", "description": "A Medinan chapter focusing on social ethics, laws against slander (specifically regarding Aisha, may Allah be pleased with her), and the famous 'Verse of Light'. (64 verses)" },
+          { "chapter": 25, "english_name": "The Criterion", "description": "A Meccan Surah distinguishing right from wrong, answering objections raised against the Quran, and describing the virtues of the 'Servants of the Most Merciful'. (77 verses)" },
+          { "chapter": 26, "english_name": "The Poets", "description": "A Meccan chapter recounting the struggles of past prophets (Peace be upon them) and criticizing poets who mislead people with falsehoods. (227 verses)" },
+          { "chapter": 27, "english_name": "The Ant", "description": "Revealed in Mecca, featuring the story of Solomon (Peace be upon him), the Queen of Sheba, and the ant, emphasizing knowledge and gratitude. (93 verses)" },
+          { "chapter": 28, "english_name": "The Narratives", "description": "A Meccan Surah detailing the life of Moses (Peace be upon him) before prophethood and the arrogance of Korah (Qarun) regarding wealth. (88 verses)" },
+          { "chapter": 29, "english_name": "The Spider", "description": "A Meccan chapter using the metaphor of a spider's web to describe the fragility of false beliefs and the necessity of testing one's faith. (69 verses)" },
+          { "chapter": 30, "english_name": "The Romans", "description": "Revealed in Mecca, predicting the Byzantine (Roman) victory over the Persians as a sign of God's control over historical events. (60 verses)" },
+          { "chapter": 31, "english_name": "Luqman", "description": "A Meccan Surah containing the wisdom and advice of the sage Luqman to his son regarding faith, gratitude, and behavior. (34 verses)" },
+          { "chapter": 32, "english_name": "The Prostration", "description": "A Meccan chapter emphasizing the creation of man, the revelation of the Book, and the absolute certainty of the Day of Judgment. (30 verses)" },
+          { "chapter": 33, "english_name": "The Combined Forces", "description": "Revealed in Medina during the Battle of the Trench, addressing social reforms, adoption, and the status of the Prophet's (Peace be upon him) wives. (73 verses)" },
+          { "chapter": 34, "english_name": "Sheba", "description": "A Meccan Surah contrasting the gratitude of David (Peace be upon him) and Solomon (Peace be upon him) with the ingratitude of the people of Sheba. (54 verses)" },
+          { "chapter": 35, "english_name": "The Originator", "description": "A Meccan chapter praising God as the Creator of angels and the universe, warning against the deception of worldly life. (45 verses)" },
+          { "chapter": 36, "english_name": "Ya-Sin", "description": "Known as the 'heart of the Quran', this Meccan Surah focuses on the Quran's divine source, the signs of nature, and the resurrection. (83 verses)" },
+          { "chapter": 37, "english_name": "Those Who Set The Ranks", "description": "A Meccan chapter describing the ranks of angels and the eventual triumph of God's messengers (Peace be upon them) over opposition. (182 verses)" },
+          { "chapter": 38, "english_name": "The Letter Sad", "description": "Revealed in Mecca, discussing the patience of prophets like David (Peace be upon him) and Job (Peace be upon him) and the arrogance of Satan. (88 verses)" },
+          { "chapter": 39, "english_name": "The Troops", "description": "A Meccan Surah focusing heavily on the Oneness of God (Tawhid) and the distinct outcomes for believers and disbelievers. (75 verses)" },
+          { "chapter": 40, "english_name": "The Forgiver", "description": "A Meccan chapter telling the story of a believing man in Pharaoh's court and emphasizing God's forgiveness and power. (85 verses)" },
+          { "chapter": 41, "english_name": "Explained in Detail", "description": "A Meccan Surah describing the Quran's clarity and the testimony of man's own faculties (skin and ears) against him on Judgment Day. (54 verses)" },
+          { "chapter": 42, "english_name": "The Consultation", "description": "A Meccan chapter emphasizing 'Shura' (consultation) among believers and the unity of the message given to all prophets (Peace be upon them). (53 verses)" },
+          { "chapter": 43, "english_name": "The Ornaments of Gold", "description": "A Meccan Surah criticizing the obsession with worldly wealth and correcting false attributions of daughters/offspring to God. (89 verses)" },
+          { "chapter": 44, "english_name": "The Smoke", "description": "A Meccan chapter warning of a coming punishment (smoke) and recounting the failure of Pharaoh to heed Moses (Peace be upon him). (59 verses)" },
+          { "chapter": 45, "english_name": "The Crouching", "description": "A Meccan Surah describing the humility of all nations kneeling before God on Judgment Day and the proofs of God in nature. (37 verses)" },
+          { "chapter": 46, "english_name": "The Wind-Curved Sandhills", "description": "A Meccan chapter mentioning the Jinn listening to the Quran and advising kindness and dutifulness to parents. (35 verses)" },
+          { "chapter": 47, "english_name": "Muhammad (Peace be upon him)", "description": "A Medinan Surah named after the Prophet (Peace be upon him), focused on the believers' struggle for the cause of truth and the nullification of disbelievers' deeds. (38 verses)" },
+          { "chapter": 48, "english_name": "The Victory", "description": "Revealed after the Treaty of Hudaybiyyah, declaring it a clear victory and promising the future peaceful conquest of Mecca. (29 verses)" },
+          { "chapter": 49, "english_name": "The Rooms", "description": "A Medinan chapter teaching manners, respect for the Prophet (Peace be upon him), and the brotherhood of all believers regardless of race. (18 verses)" },
+          { "chapter": 50, "english_name": "The Letter Qaf", "description": "A Meccan Surah emphasizing the resurrection and how every human deed is recorded by guardian angels. (45 verses)" },
+          { "chapter": 51, "english_name": "The Winnowing Winds", "description": "A Meccan chapter discussing the purpose of creating humans and Jinn—solely to worship God. (60 verses)" },
+          { "chapter": 52, "english_name": "The Mount", "description": "A Meccan Surah swearing by Mount Sinai, describing the bliss of Paradise for the righteous and the fate of deniers. (49 verses)" },
+          { "chapter": 53, "english_name": "The Star", "description": "A Meccan chapter confirming the divine source of the Prophet's (Peace be upon him) vision during his ascension and refuting idol worship. (62 verses)" },
+          { "chapter": 54, "english_name": "The Moon", "description": "A Meccan Surah referencing the splitting of the moon as a sign and recounting the punishments of past nations who rejected their prophets. (55 verses)" },
+          { "chapter": 55, "english_name": "The Beneficent", "description": "A Meccan chapter known as the 'Bride of the Quran,' repeatedly asking 'Which of the favors of your Lord will you deny?' (78 verses)" },
+          { "chapter": 56, "english_name": "The Inevitable", "description": "A Meccan Surah categorizing people into three groups in the afterlife: the foremost, the companions of the right, and the companions of the left. (96 verses)" },
+          { "chapter": 57, "english_name": "The Iron", "description": "A Medinan chapter encouraging charity, described as a 'goodly loan' to God, and mentioning iron as a tool given for humanity's benefit. (29 verses)" },
+          { "chapter": 58, "english_name": "The Pleading Woman", "description": "A Medinan Surah addressing marital issues and God's omniscience, hearing every conversation, including secret counsels. (22 verses)" },
+          { "chapter": 59, "english_name": "The Exile", "description": "Revealed in Medina concerning the consequences for the Banu Nadir tribe who broke their treaty, and the distribution of wealth. (24 verses)" },
+          { "chapter": 60, "english_name": "She That Is To Be Examined", "description": "A Medinan chapter regarding the treatment of women refugees and establishing that kindness is due to non-believers who do not fight against Muslims. (13 verses)" },
+          { "chapter": 61, "english_name": "The Ranks", "description": "A Medinan Surah urging believers to align their actions with their words and predicting the coming of a messenger named Ahmad (Muhammad, Peace be upon him). (14 verses)" },
+          { "chapter": 62, "english_name": "The Congregation", "description": "A Medinan chapter establishing the importance of the Friday congregational prayer (Jumu'ah) over worldly commerce. (11 verses)" },
+          { "chapter": 63, "english_name": "The Hypocrites", "description": "A Medinan Surah exposing the deceit of the hypocrites who internally opposed the Prophet (Peace be upon him) while pretending to believe. (11 verses)" },
+          { "chapter": 64, "english_name": "The Mutual Disillusion", "description": "A Medinan chapter describing Judgment Day as a day of mutual gain and loss, emphasizing reliance on God alone. (18 verses)" },
+          { "chapter": 65, "english_name": "The Divorce", "description": "A Medinan Surah outlining the specific laws, waiting periods (Iddah), and maintenance rights regarding divorce. (12 verses)" },
+          { "chapter": 66, "english_name": "The Prohibition", "description": "A Medinan chapter addressing a domestic incident in the Prophet's (Peace be upon him) household and holding up the righteous wives of Noah (Peace be upon him) and Lot (Peace be upon him) as examples. (12 verses)" },
+          { "chapter": 67, "english_name": "The Sovereignty", "description": "A Meccan Surah affirming God's dominion over life and death; traditionally recited for protection from the punishment of the grave. (30 verses)" },
+          { "chapter": 68, "english_name": "The Pen", "description": "A Meccan chapter defending the Prophet's (Peace be upon him) sanity and character against accusers, and telling the parable of the owners of the garden. (52 verses)" },
+          { "chapter": 69, "english_name": "The Reality", "description": "A Meccan Surah describing the inevitable destruction of past nations and the terrifying events of the Day of Judgment. (52 verses)" },
+          { "chapter": 70, "english_name": "The Ascending Stairways", "description": "A Meccan chapter focusing on the patience required of the Prophet (Peace be upon him) and the eventual punishment of the disbelievers. (44 verses)" },
+          { "chapter": 71, "english_name": "Noah", "description": "A Meccan Surah dedicated to Noah's (Peace be upon him) tireless but largely rejected preaching to his people before the flood. (28 verses)" },
+          { "chapter": 72, "english_name": "The Jinn", "description": "A Meccan chapter recounting how a group of Jinn listened to the Quran and accepted Islam, acknowledging God's oneness. (28 verses)" },
+          { "chapter": 73, "english_name": "The Enshrouded One", "description": "A Meccan Surah instructing the Prophet (Peace be upon him) to pray during the night and to bear patiently with those who deny the truth. (20 verses)" },
+          { "chapter": 74, "english_name": "The Cloaked One", "description": "One of the earliest Meccan revelations, commanding the Prophet (Peace be upon him) to arise, warn the people, and purify himself. (56 verses)" },
+          { "chapter": 75, "english_name": "The Resurrection", "description": "A Meccan chapter emphasizing the certainty of the resurrection and the Prophet's (Peace be upon him) eagerness to memorize the revelation. (40 verses)" },
+          { "chapter": 76, "english_name": "Man", "description": "A Medinan Surah describing the rewards of the righteous in Paradise, particularly those who feed the poor, orphans, and captives. (31 verses)" },
+          { "chapter": 77, "english_name": "The Emissaries", "description": "A Meccan chapter swearing by the winds, emphasizing the inevitability of the Day of Decision and warning deniers. (50 verses)" },
+          { "chapter": 78, "english_name": "The Tidings", "description": "A Meccan Surah questioning those who deny the afterlife and vividly describing the day when the trumpet is blown. (40 verses)" },
+          { "chapter": 79, "english_name": "Those Who Drag Forth", "description": "A Meccan chapter describing the angels who take souls at death and the story of Moses (Peace be upon him) calling Pharaoh to account. (46 verses)" },
+          { "chapter": 80, "english_name": "He Frowned", "description": "A Meccan Surah correcting the Prophet (Peace be upon him) for prioritizing a wealthy leader over a blind man seeking knowledge. (42 verses)" },
+          { "chapter": 81, "english_name": "The Overthrowing", "description": "A Meccan chapter depicting the cosmic upheavals at the end of the world, such as the sun being darkened. (29 verses)" },
+          { "chapter": 82, "english_name": "The Cleaving", "description": "A Meccan Surah warning humanity about their delusion regarding God and describing the recording of deeds by angels. (19 verses)" },
+          { "chapter": 83, "english_name": "The Defrauding", "description": "A Meccan chapter condemning those who cheat in business weights and measures, warning of the record of the wicked. (36 verses)" },
+          { "chapter": 84, "english_name": "The Sundering", "description": "A Meccan Surah describing the sky splitting open and humanity laboring toward their Lord to receive their records. (25 verses)" },
+          { "chapter": 85, "english_name": "The Mansions of the Stars", "description": "A Meccan chapter recounting the story of the People of the Ditch who were persecuted for their faith. (22 verses)" },
+          { "chapter": 86, "english_name": "The Morning Star", "description": "A Meccan Surah discussing the creation of man and the distinctness of the Quran's message. (17 verses)" },
+          { "chapter": 87, "english_name": "The Most High", "description": "A Meccan chapter emphasizing the purification of the soul and reminding that the Hereafter is better and more enduring. (19 verses)" },
+          { "chapter": 88, "english_name": "The Overwhelming", "description": "A Meccan Surah contrasting the terrified state of the damned with the peaceful state of the believers in Paradise. (26 verses)" },
+          { "chapter": 89, "english_name": "The Dawn", "description": "A Meccan chapter warning against the greed for wealth and mentioning the punishment of ancient tribes like Ad and Thamud. (30 verses)" },
+          { "chapter": 90, "english_name": "The City", "description": "A Meccan Surah defining the 'steep path' of righteousness as freeing slaves and feeding the hungry. (20 verses)" },
+          { "chapter": 91, "english_name": "The Sun", "description": "A Meccan chapter linking the purification of the soul to success and corruption to failure, citing the Thamud. (15 verses)" },
+          { "chapter": 92, "english_name": "The Night", "description": "A Meccan Surah contrasting those who give in charity with those who are miserly, warning of the consequences. (21 verses)" },
+          { "chapter": 93, "english_name": "The Morning Hours", "description": "Revealed in Mecca to comfort the Prophet (Peace be upon him) after a pause in revelation, promising that his future will be better than his past. (11 verses)" },
+          { "chapter": 94, "english_name": "The Relief", "description": "A Meccan chapter reassuring the Prophet (Peace be upon him) that with every hardship comes ease and that his burden has been lifted. (8 verses)" },
+          { "chapter": 95, "english_name": "The Fig", "description": "A Meccan Surah stating that man was created in the best stature but will fall to the lowest depth unless he believes and does good works. (8 verses)" },
+          { "chapter": 96, "english_name": "The Clot", "description": "The first revelation received by the Prophet (Peace be upon him) in Mecca, commanding him to read in the name of his Lord. (19 verses)" },
+          { "chapter": 97, "english_name": "The Power", "description": "A Meccan chapter describing the Night of Decree (Laylat al-Qadr), which is better than a thousand months. (5 verses)" },
+          { "chapter": 98, "english_name": "The Clear Proof", "description": "A Medinan Surah distinguishing true believers from disbelievers among the People of the Book and polytheists. (8 verses)" },
+          { "chapter": 99, "english_name": "The Earthquake", "description": "A Medinan chapter vividly describing the earth shaking on Judgment Day and yielding up its burdens and secrets. (8 verses)" },
+          { "chapter": 100, "english_name": "The Courser", "description": "A Meccan Surah using the imagery of charging warhorses to describe the ungrateful nature of mankind. (11 verses)" },
+          { "chapter": 101, "english_name": "The Calamity", "description": "A Meccan chapter depicting the Day of Judgment where people will be like scattered moths and mountains like wool. (11 verses)" },
+          { "chapter": 102, "english_name": "The Rivalry in World Increase", "description": "A Meccan Surah warning that the obsession with accumulating more wealth and status distracts people until they reach the grave. (8 verses)" },
+          { "chapter": 103, "english_name": "The Declining Day", "description": "A Meccan chapter summarizing that all mankind is in loss except those who believe, do good, and advise one another to truth and patience. (3 verses)" },
+          { "chapter": 104, "english_name": "The Traducer", "description": "A Meccan Surah condemning the backbiter and the one who hoards wealth, warning of the crushing fire. (9 verses)" },
+          { "chapter": 105, "english_name": "The Elephant", "description": "A Meccan chapter recalling the destruction of Abraha's army of elephants who attempted to destroy the Kaaba. (5 verses)" },
+          { "chapter": 106, "english_name": "Quraysh", "description": "A Meccan Surah reminding the Quraysh tribe of God's protection and provision during their trading journeys. (4 verses)" },
+          { "chapter": 107, "english_name": "The Small Kindnesses", "description": "A Meccan chapter condemning those who deny the judgment by mistreating orphans and performing prayers only to be seen. (7 verses)" },
+          { "chapter": 108, "english_name": "The Abundance", "description": "The shortest Surah, revealed in Mecca, promising the Prophet (Peace be upon him) an abundance of good and the cutting off of his enemies. (3 verses)" },
+          { "chapter": 109, "english_name": "The Disbelievers", "description": "A Meccan Surah declaring the absolute distinction between the worship of Muslims and the worship of polytheists. (6 verses)" },
+          { "chapter": 110, "english_name": "The Divine Support", "description": "A Medinan chapter, one of the last revealed, predicting the mass entry of people into Islam and the Prophet's (Peace be upon him) passing. (3 verses)" },
+          { "chapter": 111, "english_name": "The Palm Fiber", "description": "A Meccan Surah condemning Abu Lahab, an uncle and enemy of the Prophet (Peace be upon him), and his wife to the Fire. (5 verses)" },
+          { "chapter": 112, "english_name": "The Sincerity", "description": "A Meccan chapter that is the essence of monotheism, declaring God is One, Eternal, with no offspring or equal. (4 verses)" },
+          { "chapter": 113, "english_name": "The Daybreak", "description": "A Meccan Surah seeking refuge in the Lord of the dawn from the evil of created things and envy. (5 verses)" },
+          { "chapter": 114, "english_name": "Mankind", "description": "A Meccan chapter seeking refuge in the Lord of mankind from the whispers of devils and men. (6 verses)" }
+        ];
+
+        // --- 2. MULTI-PROFILE & LOGIC ---
         const ACTIVE_PROFILE_ID = localStorage.getItem('quran_active_profile');
         if (!ACTIVE_PROFILE_ID) {
-            // Force redirect to root to select profile
             window.location.href = '../'; 
-            throw new Error("Redirecting to profile selector...");
+            throw new Error("Redirecting...");
         }
-        const STORAGE_KEY = `quranState_${ACTIVE_PROFILE_ID}`; // Dynamic Key based on user
+        const STORAGE_KEY = `quranState_${ACTIVE_PROFILE_ID}`;
 
-        // --- CONFIGURATION ---
         const TRANSLATIONS_CONFIG = {
+           'en': { name: 'English (Saheeh Intl) | Preferred', url: 'https://raw.githubusercontent.com/Quran-lite-pages-dev/Quran-lite.pages.dev/refs/heads/master/a/en.xml' },
             'sq': { name: 'Albanian (Sherif Ahmeti)', url: 'https://raw.githubusercontent.com/Quran-lite-pages-dev/Quran-lite.pages.dev/refs/heads/master/a/sq.ahmeti.xml' },
             'ber': { name: 'Amazigh (At Mansour)', url: 'https://raw.githubusercontent.com/Quran-lite-pages-dev/Quran-lite.pages.dev/refs/heads/master/a/ber.mensur.xml' },
             'am': { name: 'Amharic (Sadiq & Sani)', url: 'https://raw.githubusercontent.com/Quran-lite-pages-dev/Quran-lite.pages.dev/refs/heads/master/a/am.sadiq.xml' },
@@ -392,7 +664,6 @@
         const FTT_URL = 'https://raw.githubusercontent.com/Quran-lite-pages-dev/Quran-lite.pages.dev/refs/heads/master/a/FTT.XML';
         const RTL_CODES = new Set(['ar', 'dv', 'fa', 'he', 'ku', 'ps', 'sd', 'ur', 'ug']);
 
-        // STATE & VARIABLES
         const elements = {
             overlay: document.getElementById('loading-overlay'),
             spinner: document.querySelector('.loader-spinner'),
@@ -401,6 +672,7 @@
             
             quranAudio: document.getElementById('audio-player'),
             transAudio: document.getElementById('translation-audio-player'),
+            previewAudio: document.getElementById('preview-audio'),
             bufferInd: document.getElementById('buffering-indicator'),
             
             selects: {
@@ -416,7 +688,25 @@
                 verseNext: document.getElementById('verse-text-next'),
                 trans: document.getElementById('translation-text'),
                 container: document.getElementById('content-display')
-            }
+            },
+            views: {
+                dashboard: document.getElementById('dashboard-view'),
+                cinema: document.getElementById('cinema-view')
+            },
+            // TV Navigation Elements
+            sidebar: {
+                container: document.getElementById('tv-sidebar'),
+                home: document.getElementById('nav-home'),
+                search: document.getElementById('nav-search'),
+                profile: document.getElementById('nav-profile')
+            },
+            search: {
+                overlay: document.getElementById('search-overlay'),
+                inputDisplay: document.getElementById('search-input-display'),
+                keyboardGrid: document.getElementById('keyboard-grid'),
+                resultsGrid: document.getElementById('search-results-grid')
+            },
+            subtitle: document.getElementById('hero-subtitle-overlay')
         };
 
         let quranData = []; 
@@ -426,13 +716,73 @@
         let forbiddenToTranslateSet = new Set();
         let isBuffering = false;
 
-        // APP INITIALIZATION
+        // Preview Variables
+        let previewTimeout;
+        const PREVIEW_DELAY = 600; 
+        let previewSequence = []; 
+        let previewSeqIndex = 0;
+
+        // Search Variables
+        let searchString = "";
+        const KEYBOARD_KEYS = [
+            'A','B','C','D','E','F',
+            'G','H','I','J','K','L',
+            'M','N','O','P','Q','R',
+            'S','T','U','V','W','X',
+            'Y','Z','1','2','3','4',
+            '5','6','7','8','9','0',
+            'SPACE', 'DEL', 'CLEAR'
+        ];
+
+        // --- MERGE METADATA ---
+        function mergeMetadata(apiChapters) {
+            return apiChapters.map((ch, idx) => {
+                const meta = SURAH_METADATA.find(m => m.chapter === ch.chapterNumber);
+                if (meta) {
+                    return { ...ch, english_name: meta.english_name, description: meta.description };
+                }
+                return ch;
+            });
+        }
+
+        // --- ROUTER ---
+        function switchView(viewName) {
+            if(viewName === 'cinema') {
+                elements.views.dashboard.classList.remove('active');
+                elements.views.cinema.classList.add('active');
+                elements.views.cinema.style.opacity = '1';
+                stopPreview();
+                elements.sidebar.container.style.display = 'none'; // Hide sidebar in cinema
+                setTimeout(() => document.getElementById('control-panel').focus(), 100);
+            } else {
+                elements.views.cinema.classList.remove('active');
+                elements.views.cinema.style.opacity = '0';
+                elements.views.dashboard.classList.add('active');
+                elements.sidebar.container.style.display = 'flex'; // Show sidebar
+                elements.quranAudio.pause();
+                elements.transAudio.pause();
+                refreshDashboard();
+                document.getElementById('door-play-btn').focus();
+            }
+        }
+
+        window.addEventListener('popstate', (event) => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('chapter')) {
+                switchView('cinema');
+                restoreState();
+                loadVerse(false); // Using Old logic
+            } else {
+                switchView('dashboard');
+            }
+        });
+
         async function initializeApp() {
             try {
                 const jsonResponse = await fetch('https://raw.githubusercontent.com/Quran-lite-pages-dev/Quran-lite.pages.dev/refs/heads/master/a/2TM3TM.json');
                 if (!jsonResponse.ok) throw new Error("Failed to load Quran JSON");
                 const jsonData = await jsonResponse.json();
-                quranData = jsonData.chapters;
+                quranData = mergeMetadata(jsonData.chapters);
 
                 try {
                     const fttResp = await fetch(FTT_URL);
@@ -452,32 +802,35 @@
                 populateTranslationAudioSelect();
                 populateTranslationSelectOptions();
 
-                // Restore state using the dynamic Key
-                restoreState();
-                
-                populateVerseSelect();
-                const savedVerse = getSavedVerseIndex();
-                if(savedVerse < elements.selects.verse.options.length) {
-                    elements.selects.verse.value = savedVerse;
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.has('chapter')) {
+                    // Start in Cinema
+                    switchView('cinema');
+                    restoreState();
+                    populateVerseSelect();
+                    const savedVerse = getSavedVerseIndex();
+                    if(savedVerse < elements.selects.verse.options.length) {
+                        elements.selects.verse.value = savedVerse;
+                    }
+                    const activeTransId = elements.selects.trans.value;
+                    await loadTranslationData(activeTransId);
+                    loadVerse(false); // Old Logic
+                    
+                    elements.spinner.style.display = 'none';
+                    elements.loaderText.style.display = 'none';
+                    elements.startBtn.style.display = 'block';
+                    elements.startBtn.textContent = "Continue";
+                    elements.startBtn.focus();
+                } else {
+                    // Start in Dashboard
+                    switchView('dashboard');
+                    refreshDashboard();
+                    elements.overlay.style.display = 'none';
                 }
 
-                const activeTransId = elements.selects.trans.value;
-                elements.loaderText.textContent = "Loading active translation...";
-                await loadTranslationData(activeTransId);
-
-                loadVerse(false); 
                 setupEventListeners();
-
-                elements.spinner.style.display = 'none';
-                elements.loaderText.style.display = 'none';
-                elements.startBtn.style.display = 'block';
-                
-                const chIdx = elements.selects.chapter.value;
-                if(quranData[chIdx]) {
-                    elements.startBtn.textContent = `Continue`;
-                }
-                
-                elements.startBtn.focus();
+                initSidebarNavigation();
+                initSearchInterface();
 
             } catch (error) {
                 console.error("Critical Init Error:", error);
@@ -485,10 +838,162 @@
             }
         }
 
+        // --- DASHBOARD FUNCTIONS ---
+        function refreshDashboard() {
+            const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            const heroBtn = document.getElementById('door-play-btn');
+            
+            fillRow('trending-row', [36, 67, 18, 55, 1, 112, 113, 114].map(id => id-1));
+            fillRow('all-row', Array.from({length: 114}, (_, i) => i));
+
+            if(saved.chapter !== undefined && quranData[saved.chapter]) {
+                const chNum = quranData[saved.chapter].chapterNumber;
+                const vNum = (saved.verse || 0) + 1;
+                const reciter = saved.reciter || 'alafasy';
+                updateHeroPreview(chNum, vNum, reciter, false);
+                heroBtn.onclick = () => launchPlayer(chNum, vNum);
+            } else {
+                updateHeroPreview(1, 1, 'alafasy', false);
+                heroBtn.onclick = () => launchPlayer(1, 1);
+            }
+        }
+
+        function fillRow(elementId, indexArray) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = '';
+            indexArray.forEach(idx => {
+                if(!quranData[idx]) return;
+                const surah = quranData[idx];
+                const card = document.createElement('div');
+                card.className = 'surah-card';
+                card.tabIndex = 0;
+                card.innerHTML = `
+                    <div class="card-bg-num">${surah.chapterNumber}</div>
+                    <div class="card-title">${surah.title}</div>
+                    <div class="card-sub">${surah.english_name || ''}</div>
+                `;
+                card.onclick = () => launchPlayer(surah.chapterNumber, 1);
+                card.onkeydown = (e) => { if(e.key === 'Enter') launchPlayer(surah.chapterNumber, 1); };
+                
+                const handler = () => schedulePreview(surah.chapterNumber);
+                card.onfocus = handler;
+                card.onmouseenter = () => card.focus(); 
+                container.appendChild(card);
+            });
+        }
+
+        function schedulePreview(chapterNum) {
+            if (previewTimeout) clearTimeout(previewTimeout);
+            stopPreview();
+            const surah = quranData[chapterNum - 1];
+            document.getElementById('door-hero-title').textContent = surah.title;
+            document.getElementById('door-hero-subtitle').textContent = surah.english_name;
+            document.getElementById('door-hero-desc').textContent = surah.description;
+            document.getElementById('door-play-btn').onclick = () => launchPlayer(chapterNum, 1);
+
+            previewTimeout = setTimeout(() => {
+                updateHeroPreview(chapterNum, 1, 'alafasy', true); 
+            }, PREVIEW_DELAY);
+        }
+
+        function stopPreview() {
+            elements.previewAudio.pause();
+            elements.previewAudio.onended = null;
+            elements.subtitle.classList.remove('active');
+            clearTimeout(previewTimeout);
+            previewSequence = [];
+        }
+
+        function updateHeroPreview(chapterNum, startVerse, reciterId, isSequence) {
+            const surah = quranData[chapterNum - 1];
+            if (!surah) return;
+            document.getElementById('door-hero-title').textContent = surah.title;
+            document.getElementById('door-hero-subtitle').textContent = surah.english_name;
+            document.getElementById('door-hero-desc').textContent = surah.description;
+
+            if (isSequence) {
+                previewSequence = [0, 1, 2].map(offset => startVerse + offset).filter(v => v <= surah.verses.length);
+            } else {
+                previewSequence = [startVerse]; 
+            }
+            previewSeqIndex = 0;
+            
+            // Pre-load translation logic for preview
+            const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            const trans = saved.trans || 'en';
+            if (!translationCache[trans]) {
+                 loadTranslationData(trans).then(() => {
+                     // If still in preview mode, it will pick up next tick
+                 });
+            }
+
+            playPreviewStep(chapterNum, reciterId);
+        }
+
+        function playPreviewStep(chapterNum, reciterId) {
+            if (previewSeqIndex >= previewSequence.length) return;
+            const verseNum = previewSequence[previewSeqIndex];
+            const padCh = String(chapterNum).padStart(3, '0');
+            const padV = String(verseNum).padStart(3, '0');
+            
+            const imgLayer = document.getElementById('hero-preview-layer');
+            const previewImg = document.getElementById('preview-img');
+            const newSrc = `https://raw.githubusercontent.com/Quran-lite-pages-dev/Quran-lite.pages.dev/refs/heads/master/img/${chapterNum}_${verseNum}.png`;
+
+            previewImg.style.opacity = 0;
+            setTimeout(() => {
+                previewImg.src = newSrc;
+                previewImg.onload = () => {
+                    previewImg.style.opacity = 0.6;
+                    imgLayer.classList.add('active');
+                };
+            }, 200);
+
+            // Subtitle Update Logic
+            const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            const transId = saved.trans || 'en';
+            const cache = translationCache[transId];
+            if(cache) {
+                const sura = cache.querySelector(`sura[index="${chapterNum}"]`);
+                const aya = sura ? sura.querySelector(`aya[index="${verseNum}"]`) : null;
+                const text = aya ? aya.getAttribute('text') : "";
+                if(text) {
+                    elements.subtitle.textContent = text;
+                    elements.subtitle.classList.add('active');
+                    if (RTL_CODES.has(transId)) elements.subtitle.dir = 'rtl';
+                    else elements.subtitle.dir = 'ltr';
+                }
+            } else {
+                elements.subtitle.classList.remove('active');
+            }
+
+            const rPath = RECITERS_CONFIG[reciterId]?.path || RECITERS_CONFIG['alafasy'].path;
+            const audioUrl = `https://everyayah.com/data/${rPath}/${padCh}${padV}.mp3`;
+            elements.previewAudio.src = audioUrl;
+            elements.previewAudio.volume = 0.6;
+            elements.previewAudio.onended = () => {
+                previewSeqIndex++;
+                playPreviewStep(chapterNum, reciterId);
+            };
+            elements.previewAudio.play().catch(e => console.log("Autoplay blocked"));
+        }
+
+        function launchPlayer(chapterNum, verseNum = 1) {
+            const newUrl = `?chapter=${chapterNum}&verse=${verseNum}`;
+            history.pushState({view: 'cinema'}, '', newUrl);
+            switchView('cinema');
+            
+            elements.selects.chapter.value = chapterNum - 1;
+            populateVerseSelect();
+            elements.selects.verse.value = verseNum - 1;
+            elements.overlay.style.display = 'none';
+            loadVerse(true);
+        }
+
+        // --- OLD PLAYER LOGIC HELPERS ---
         async function loadTranslationData(id) {
             if (translationCache[id]) return; 
             if (!TRANSLATIONS_CONFIG[id]) return;
-
             try {
                 toggleBuffering(true);
                 const res = await fetch(TRANSLATIONS_CONFIG[id].url);
@@ -505,7 +1010,6 @@
 
         function restoreState() {
             const urlParams = new URLSearchParams(window.location.search);
-            // MODIFIED: Use the Dynamic Profile Key
             const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
             const browserLang = navigator.language.split('-')[0];
 
@@ -537,9 +1041,7 @@
 
         function getSavedVerseIndex() {
             const urlParams = new URLSearchParams(window.location.search);
-            // MODIFIED: Use the Dynamic Profile Key
             const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-            
             if (urlParams.has('verse')) return parseInt(urlParams.get('verse')) - 1;
             if (saved.verse !== undefined) return saved.verse;
             return 0;
@@ -554,7 +1056,6 @@
                 audio_trans: elements.selects.transAudio.value 
             };
             
-            // MODIFIED: Save to the Dynamic Profile Key
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 
             const chObj = quranData[state.chapter];
@@ -564,7 +1065,8 @@
             const reciterName = RECITERS_CONFIG[state.reciter].name;
 
             const newUrl = `?chapter=${chNum}&verse=${vNum}&reciter=${state.reciter}&trans=${state.trans}&audio_trans=${state.audio_trans}`;
-            window.history.pushState({path: newUrl}, '', newUrl);
+            
+            window.history.replaceState({path: newUrl, view: 'cinema'}, '', newUrl);
 
             const canonicalLink = document.getElementById('dynamic-canonical');
             const fullUrl = `https://Quran-lite.pages.dev/reading/${newUrl}`;
@@ -643,7 +1145,7 @@
             quranData.forEach((c, i) => {
                 const opt = document.createElement('option');
                 opt.value = i;
-                opt.textContent = `${c.chapterNumber}. ${c.title}`;
+                opt.textContent = `${c.chapterNumber}. ${c.title} - ${c.english_name || ''}`;
                 elements.selects.chapter.appendChild(opt);
             });
         }
@@ -838,6 +1340,7 @@
             else if (config.path.startsWith('http')) url = `${config.path}/${padCh}${padV}.mp3`;
             else url = `https://everyayah.com/data/${config.path}/${padCh}${padV}.mp3`;
 
+            if(!url.endsWith('.mp3')) url += `/${padCh}${padV}.mp3`;
             elements.transAudio.src = url;
             if(play) elements.transAudio.play();
         }
@@ -891,7 +1394,7 @@
 
             elements.selects.chapter.addEventListener('change', () => { populateVerseSelect(); loadVerse(true); });
             elements.selects.verse.addEventListener('change', () => loadVerse(true));
-            elements.selects.reciter.addEventListener('change', () => loadVerse(elements.quranAudio.paused === false));
+            elements.selects.reciter.addEventListener('change', () => { saveState(); loadVerse(true); });
             
             elements.selects.trans.addEventListener('change', async () => {
                 const activeTransId = elements.selects.trans.value;
@@ -951,6 +1454,129 @@
                 });
                 navigator.mediaSession.setActionHandler('nexttrack', nextVerse);
             }
+        }
+
+        // --- 3. SIDEBAR LOGIC ---
+        function initSidebarNavigation() {
+            elements.sidebar.container.addEventListener('mouseenter', () => elements.sidebar.container.classList.add('expanded'));
+            elements.sidebar.container.addEventListener('mouseleave', () => elements.sidebar.container.classList.remove('expanded'));
+
+            elements.sidebar.home.addEventListener('click', (e) => {
+                e.preventDefault();
+                closeSearch();
+                switchView('dashboard');
+                setActiveNav(elements.sidebar.home);
+            });
+
+            elements.sidebar.search.addEventListener('click', (e) => {
+                e.preventDefault();
+                openSearch();
+                setActiveNav(elements.sidebar.search);
+            });
+        }
+
+        function setActiveNav(el) {
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        // --- 4. SEARCH & KEYBOARD LOGIC ---
+        function initSearchInterface() {
+            renderKeyboard();
+            
+            // Results delegation
+            elements.search.resultsGrid.addEventListener('click', (e) => {
+                const card = e.target.closest('.surah-card');
+                if(card) {
+                    const ch = parseInt(card.dataset.chapter);
+                    closeSearch();
+                    launchPlayer(ch, 1);
+                }
+            });
+        }
+
+        function renderKeyboard() {
+            const grid = elements.search.keyboardGrid;
+            grid.innerHTML = '';
+            KEYBOARD_KEYS.forEach(key => {
+                const btn = document.createElement('div');
+                btn.className = 'key';
+                btn.textContent = key;
+                btn.tabIndex = 0;
+                
+                if (['SPACE', 'DEL', 'CLEAR'].includes(key)) {
+                    btn.classList.add('wide');
+                }
+
+                btn.onclick = () => handleKeyPress(key);
+                btn.onkeydown = (e) => { if(e.key === 'Enter') handleKeyPress(key); };
+                grid.appendChild(btn);
+            });
+        }
+
+        function handleKeyPress(key) {
+            if (key === 'SPACE') searchString += ' ';
+            else if (key === 'DEL') searchString = searchString.slice(0, -1);
+            else if (key === 'CLEAR') searchString = "";
+            else searchString += key;
+            
+            elements.search.inputDisplay.textContent = searchString;
+            performSearch();
+        }
+
+        function performSearch() {
+            const query = searchString.toLowerCase().trim();
+            const resultsContainer = elements.search.resultsGrid;
+            resultsContainer.innerHTML = '';
+
+            if(!query) {
+                resultsContainer.innerHTML = '<div class="no-results">Start typing to search Surahs...</div>';
+                return;
+            }
+
+            const results = quranData.filter(s => 
+                s.title.toLowerCase().includes(query) || 
+                (s.english_name && s.english_name.toLowerCase().includes(query)) ||
+                String(s.chapterNumber).includes(query)
+            );
+
+            if (results.length === 0) {
+                resultsContainer.innerHTML = '<div class="no-results">No matches found</div>';
+                return;
+            }
+
+            results.forEach(surah => {
+                const card = document.createElement('div');
+                card.className = 'surah-card';
+                card.tabIndex = 0;
+                card.dataset.chapter = surah.chapterNumber;
+                card.innerHTML = `
+                    <div class="card-bg-num">${surah.chapterNumber}</div>
+                    <div class="card-title">${surah.title}</div>
+                    <div class="card-sub">${surah.english_name || ''}</div>
+                `;
+                card.onclick = () => { closeSearch(); launchPlayer(surah.chapterNumber, 1); };
+                card.onkeydown = (e) => { if(e.key === 'Enter') card.click(); };
+                resultsContainer.appendChild(card);
+            });
+        }
+
+        function openSearch() {
+            elements.search.overlay.classList.add('active');
+            searchString = "";
+            elements.search.inputDisplay.textContent = "";
+            elements.search.resultsGrid.innerHTML = '<div class="no-results">Start typing...</div>';
+            // Focus first key
+            setTimeout(() => {
+                const firstKey = elements.search.keyboardGrid.querySelector('.key');
+                if(firstKey) firstKey.focus();
+            }, 100);
+        }
+
+        function closeSearch() {
+            elements.search.overlay.classList.remove('active');
+            setActiveNav(elements.sidebar.home);
+            document.getElementById('door-play-btn').focus();
         }
 
         document.addEventListener('DOMContentLoaded', initializeApp);

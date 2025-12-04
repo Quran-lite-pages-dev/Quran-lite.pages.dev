@@ -289,6 +289,17 @@
     </div>
 
     <script>
+        // --- MULTI-PROFILE LOGIC & GUARD ---
+        // This runs immediately. If no profile is selected (direct link), redirect to root.
+        const ACTIVE_PROFILE_ID = localStorage.getItem('quran_active_profile');
+        if (!ACTIVE_PROFILE_ID) {
+            // Force redirect to root to select profile
+            window.location.href = '../'; 
+            throw new Error("Redirecting to profile selector...");
+        }
+        const STORAGE_KEY = `quranState_${ACTIVE_PROFILE_ID}`; // Dynamic Key based on user
+
+        // --- CONFIGURATION ---
         const TRANSLATIONS_CONFIG = {
             'sq': { name: 'Albanian (Sherif Ahmeti)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/sq.ahmeti.xml' },
             'ber': { name: 'Amazigh (At Mansour)', url: 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/ber.mensur.xml' },
@@ -355,9 +366,6 @@
         };
 
         const FTT_URL = 'https://raw.githubusercontent.com/Quran-lite/Quran-lite.github.io/refs/heads/master/a/FTT.XML';
-
-        // Set of known RTL Language IDs based on the keys in TRANSLATIONS_CONFIG
-        // ar: Arabic, dv: Divehi, fa: Persian, he: Hebrew, ku: Kurdish (Sorani), ps: Pashto, sd: Sindhi, ur: Urdu, ug: Uyghur
         const RTL_CODES = new Set(['ar', 'dv', 'fa', 'he', 'ku', 'ps', 'sd', 'ur', 'ug']);
 
         // STATE & VARIABLES
@@ -420,7 +428,9 @@
                 populateTranslationAudioSelect();
                 populateTranslationSelectOptions();
 
+                // Restore state using the dynamic Key
                 restoreState();
+                
                 populateVerseSelect();
                 const savedVerse = getSavedVerseIndex();
                 if(savedVerse < elements.selects.verse.options.length) {
@@ -471,7 +481,8 @@
 
         function restoreState() {
             const urlParams = new URLSearchParams(window.location.search);
-            const saved = JSON.parse(localStorage.getItem('quranState')) || {};
+            // MODIFIED: Use the Dynamic Profile Key
+            const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
             const browserLang = navigator.language.split('-')[0];
 
             let ch = 0;
@@ -502,7 +513,8 @@
 
         function getSavedVerseIndex() {
             const urlParams = new URLSearchParams(window.location.search);
-            const saved = JSON.parse(localStorage.getItem('quranState')) || {};
+            // MODIFIED: Use the Dynamic Profile Key
+            const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
             
             if (urlParams.has('verse')) return parseInt(urlParams.get('verse')) - 1;
             if (saved.verse !== undefined) return saved.verse;
@@ -517,7 +529,9 @@
                 trans: elements.selects.trans.value,
                 audio_trans: elements.selects.transAudio.value 
             };
-            localStorage.setItem('quranState', JSON.stringify(state));
+            
+            // MODIFIED: Save to the Dynamic Profile Key
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 
             const chObj = quranData[state.chapter];
             const chNum = chObj.chapterNumber;
@@ -762,13 +776,11 @@
             const tid = elements.selects.trans.value;
             if (!translationCache[tid]) return;
             
-            // --- FIX START: Detect RTL based on language code ---
             if (RTL_CODES.has(tid)) {
                 elements.display.trans.dir = 'rtl';
             } else {
                 elements.display.trans.dir = 'ltr';
             }
-            // --- FIX END ---
 
             const sura = translationCache[tid].querySelector(`sura[index="${chNum}"]`);
             const aya = sura ? sura.querySelector(`aya[index="${vNum}"]`) : null;
@@ -834,7 +846,6 @@
 
         function adjustFontSize() {
             const el = elements.display.trans;
-            // Mobile override still applies here if needed
             if (window.innerWidth <= 768) return; 
 
             el.style.fontSize = '3.5rem';

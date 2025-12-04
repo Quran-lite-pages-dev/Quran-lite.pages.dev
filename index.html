@@ -44,19 +44,292 @@
       gtag('js', new Date());
       gtag('config', 'G-PDWXFDCQRH');
     </script>
-
-    <style>
-        /* ... Your existing styles ... */
+<style>
         :root {
             --bg-color: #000000;
             --panel-bg: #2596be;
             --text-main: #ffffff;
             --text-muted: #2596be;
-            --accent: #2596be; 
+            --accent: #2596be; /* Netflix Red-ish */
+            --focus-border: #ffffff;
+            --glass: rgba(255, 255, 255, 0.1);
+            --gold: #2596be;
         }
-        /* Keep the rest of your CSS here */
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* --- LAYOUT: Left Sidebar (Profiles) --- */
+        .sidebar {
+            width: 350px;
+            background: linear-gradient(to right, #000 0%, #0a0a0a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+            z-index: 10;
+            box-shadow: 10px 0 50px rgba(0,0,0,0.8);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 3rem;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .profile-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .profile-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0.6;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .profile-item.focused, .profile-item:hover {
+            opacity: 1;
+            transform: scale(1.05);
+            background: var(--glass);
+            border-color: var(--focus-border);
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 4px; /* Netflix square style */
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-name {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .profile-status {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Edit Mode Styles */
+        .editing .profile-item {
+            border-color: var(--accent);
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        .delete-icon {
+            display: none;
+            color: var(--accent);
+            margin-left: auto;
+            font-size: 1.2rem;
+        }
+        
+        .editing .delete-icon {
+            display: block;
+        }
+
+        .action-buttons {
+            margin-top: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-action {
+            background: transparent;
+            border: 1px solid #444;
+            color: #888;
+            padding: 10px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-action.focused, .btn-action:hover {
+            border-color: white;
+            color: white;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* --- LAYOUT: Right Preview (The Hero) --- */
+        .preview-area {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 80px;
+            overflow: hidden;
+        }
+
+        /* Animated Abstract Background */
+        .preview-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 70% 50%, #222 0%, #000 70%);
+            z-index: 1;
+            transition: opacity 1s ease;
+        }
+        
+        .spotlight {
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 60%);
+            animation: rotateLight 20s linear infinite;
+            z-index: 2;
+        }
+
+        .preview-content {
+            z-index: 10;
+            max-width: 800px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease-out;
+        }
+
+        .preview-content.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .meta-tag {
+            color: var(--gold);
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .meta-tag::before {
+            content: '';
+            width: 40px;
+            height: 2px;
+            background: var(--gold);
+        }
+
+        .surah-title-en {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 10px 30px rgba(0,0,0,1);
+        }
+
+        .surah-title-ar {
+            font-family: 'Amiri', serif;
+            font-size: 3rem;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 2rem;
+        }
+
+        .surah-desc {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #ddd;
+            max-width: 600px;
+            text-shadow: 0 2px 5px rgba(0,0,0,1);
+            border-left: 4px solid var(--accent);
+            padding-left: 20px;
+        }
+
+        /* --- ADD UI OVERLAY --- */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .overlay.active { opacity: 1; pointer-events: all; }
+
+        .input-box {
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        input[type="text"] {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #555;
+            color: white;
+            font-size: 2.5rem;
+            text-align: center;
+            width: 100%;
+            padding: 10px;
+            outline: none;
+        }
+
+        input[type="text"]:focus { border-color: var(--accent); }
+
+        /* --- CONFIRM DELETE MODAL --- */
+        .modal {
+            background: #222;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #444;
+        }
+        .modal h3 { margin-top: 0; color: var(--accent); }
+        .modal-actions { display: flex; gap: 20px; justify-content: center; margin-top: 20px; }
+        .btn-modal { padding: 10px 30px; border: none; font-weight: bold; cursor: pointer; }
+        .btn-yes { background: var(--accent); color: white; }
+        .btn-no { background: #444; color: white; }
+        .btn-modal.focused { transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.3); }
+
+        /* Animations */
+        @keyframes rotateLight {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+        }
+
     </style>
-</head>
+    </head>
 
 <body>
 
@@ -108,25 +381,25 @@
         // --- 1. DATA: The 114 Surahs ---
         const SURAH_DATA = [
           { "chapter": 1, "arabic_name": "Al-Fatihah", "english_name": "The Opening", "description": "Revealed in Mecca, this is the fundamental prayer of Islam, summarizing the core relationship between God and humanity. (7 verses)" },
-          { "chapter": 2, "arabic_name": "Al-Baqarah", "english_name": "The Cow", "description": "The longest Surah, revealed in Medina, establishing Islamic laws, recounting stories of Moses  (PBUH) and guiding the new Muslim community. (286 verses)" },
-          { "chapter": 3, "arabic_name": "Ali 'Imran", "english_name": "The Family of Imran", "description": "A Medinan chapter focusing on the Oneness of God, the family of Mary and Jesus (Isa PBUH), and lessons from the Battle of Uhud. (200 verses)" },
+          { "chapter": 2, "arabic_name": "Al-Baqarah", "english_name": "The Cow", "description": "The longest Surah, revealed in Medina, establishing Islamic laws, recounting stories of Moses  (Peace be upon him) and guiding the new Muslim community. (286 verses)" },
+          { "chapter": 3, "arabic_name": "Ali 'Imran", "english_name": "The Family of Imran", "description": "A Medinan chapter focusing on the Oneness of God, the family of Mary (Peace be upon her) and Jesus (Isa - Peace be upon him), and lessons from the Battle of Uhud. (200 verses)" },
           { "chapter": 4, "arabic_name": "An-Nisa", "english_name": "The Women", "description": "Revealed in Medina after the Battle of Uhud, addressing rights of women, orphans, inheritance laws, and protecting the vulnerable. (176 verses)" },
-          { "chapter": 5, "arabic_name": "Al-Ma'idah", "english_name": "The Table Spread", "description": "One of the last revealed Surahs, finalizing dietary laws and discussing the miracle of the table requested by the disciples of  Jesus (Isa PBUH). (120 verses)" },
-          { "chapter": 6, "arabic_name": "Al-An'am", "english_name": "The Cattle", "description": "A late Meccan Surah emphasizing monotheism, rejecting superstition, and detailing the nature of Allah's power over creation. (165 verses)" },
-          { "chapter": 7, "arabic_name": "Al-A'raf", "english_name": "The Heights", "description": "A Meccan chapter detailing the history of prophets from Adam (PBUH) to Moses (PBUH), warning against arrogance and describing the Day of Judgment. (206 verses)" },
+          { "chapter": 5, "arabic_name": "Al-Ma'idah", "english_name": "The Table Spread", "description": "One of the last revealed Surahs, finalizing dietary laws and discussing the miracle of the table requested by the disciples of  Jesus (Isa - Peace be upon him). (120 verses)" },
+          { "chapter": 6, "arabic_name": "Al-An'am", "english_name": "The Cattle", "description": "A late Meccan Surah emphasizing monotheism, rejecting superstition, and detailing the nature of God's power over creation. (165 verses)" },
+          { "chapter": 7, "arabic_name": "Al-A'raf", "english_name": "The Heights", "description": "A Meccan chapter detailing the history of prophets from Adam (Peace be upon him) (Peace be upon him) to Moses (Peace be upon him), warning against arrogance and describing the Day of Judgment. (206 verses)" },
           { "chapter": 8, "arabic_name": "Al-Anfal", "english_name": "The Spoils of War", "description": "Revealed after the Battle of Badr, clarifying the laws of war, distribution of spoils, and the importance of trusting God. (75 verses)" },
           { "chapter": 9, "arabic_name": "At-Tawbah", "english_name": "The Repentance", "description": "A Medinan text issued before the Tabuk expedition, addressing treaty violations and hypocrisy; the only Surah without 'Bismillah'. (129 verses)" },
-          { "chapter": 10, "arabic_name": "Yunus (PBUH)", "english_name": "Jonah (PBUH)", "description": "A Meccan Surah emphasizing Allah's oneness and citing the story of Jonah's people, who were saved by their timely repentance. (109 verses)" },
-          { "chapter": 11, "arabic_name": "Hud (PBUH)", "english_name": "Hud (PBUH)", "description": "Revealed during a difficult period in Mecca, recounting stories of previous prophets like Noah and Hud to comfort Muhammad (PBUH). (123 verses)" },
-          { "chapter": 12, "arabic_name": "Yusuf (PBUH)", "english_name": "Joseph (PBUH)", "description": "A unique Meccan Surah devoted entirely to the story of  Joseph (PBUH), illustrating patience, divine destiny, and family reconciliation. (111 verses)" },
+          { "chapter": 10, "arabic_name": "Yunus (Peace be upon him)", "english_name": "Jonah (Peace be upon him)", "description": "A Meccan Surah emphasizing God's oneness and citing the story of Jonah's people, who were saved by their timely repentance. (109 verses)" },
+          { "chapter": 11, "arabic_name": "Hud (Peace be upon him)", "english_name": "Hud (Peace be upon him)", "description": "Revealed during a difficult period in Mecca, recounting stories of previous prophets like Noah (Peace be upon him) and Hud to comfort Muhammad (Peace be upon him) (Peace be upon him). (123 verses)" },
+          { "chapter": 12, "arabic_name": "Yusuf (Peace be upon him)", "english_name": "Joseph (Peace be upon him)", "description": "A unique Meccan Surah devoted entirely to the story of  Joseph (Peace be upon him), illustrating patience, divine destiny, and family reconciliation. (111 verses)" },
           { "chapter": 13, "arabic_name": "Ar-Ra'd", "english_name": "The Thunder", "description": "Revealed in Medina, utilizing natural phenomena like thunder to argue for the existence of God and the truth of resurrection. (43 verses)" },
-          { "chapter": 14, "arabic_name": "Ibrahim (PBUH)", "english_name": "Abraham (PBUH)", "description": "A Meccan chapter highlighting the prayer of Abraham (PBUH) for Mecca and contrasting the gratitude of believers with the ingratitude of disbelievers. (52 verses)" },
-          { "chapter": 15, "arabic_name": "Al-Hijr", "english_name": "The Rocky Tract", "description": "A Meccan Surah reassuring the Prophet against mockery and detailing the story of Satan's refusal to bow to Adam. (99 verses)" },
-          { "chapter": 16, "arabic_name": "An-Nahl", "english_name": "The Bee", "description": "A Meccan chapter calling attention to Allah's blessings in nature, specifically the bee, and warning against polytheism. (128 verses)" },
+          { "chapter": 14, "arabic_name": "Ibrahim (Peace be upon him)", "english_name": "Abraham (Peace be upon him)", "description": "A Meccan chapter highlighting the prayer of Abraham (Peace be upon him) for Mecca and contrasting the gratitude of believers with the ingratitude of disbelievers. (52 verses)" },
+          { "chapter": 15, "arabic_name": "Al-Hijr", "english_name": "The Rocky Tract", "description": "A Meccan Surah reassuring the Prophet against mockery and detailing the story of Satan's refusal to bow to Adam (Peace be upon him). (99 verses)" },
+          { "chapter": 16, "arabic_name": "An-Nahl", "english_name": "The Bee", "description": "A Meccan chapter calling attention to God's blessings in nature, specifically the bee, and warning against polytheism. (128 verses)" },
           { "chapter": 17, "arabic_name": "Al-Isra", "english_name": "The Night Journey", "description": "Commemorates the Prophet's night journey from Mecca to Jerusalem, establishing the five daily prayers and moral commandments. (111 verses)" },
-          { "chapter": 18, "arabic_name": "Al-Kahf", "english_name": "The Cave", "description": "A Meccan Surah telling the story of the Sleepers of the Cave and Moses (PBUH), focusing on faith during times of trial. (110 verses)" },
-          { "chapter": 19, "arabic_name": "Maryam", "english_name": "Mary", "description": "A Meccan chapter detailing the birth of Jesus (Isa PBUH) and John, emphasizing Allah's mercy and refuting the concept of God having a son. (98 verses)" },
-          { "chapter": 20, "arabic_name": "Ta-Ha", "english_name": "Ta-Ha", "description": "Revealed in Mecca, this Surah details the story of Moses (PBUH)  confronting Pharaoh and offers comfort to the Prophet Muhammad (PBUH). (135 verses)" },
+          { "chapter": 18, "arabic_name": "Al-Kahf", "english_name": "The Cave", "description": "A Meccan Surah telling the story of the Sleepers of the Cave and Moses (Peace be upon him), focusing on faith during times of trial. (110 verses)" },
+          { "chapter": 19, "arabic_name": "Mary (Peace be upon her)am", "english_name": "Mary (Peace be upon her)", "description": "A Meccan chapter detailing the birth of Jesus (Isa - Peace be upon him) and John, emphasizing God's mercy and refuting the concept of God having a son. (98 verses)" },
+          { "chapter": 20, "arabic_name": "Ta-Ha", "english_name": "Ta-Ha", "description": "Revealed in Mecca, this Surah details the story of Moses (Peace be upon him)  confronting Pharaoh and offers comfort to the Prophet Muhammad (Peace be upon him) (Peace be upon him). (135 verses)" },
           { "chapter": 21, "arabic_name": "Al-Anbiya", "english_name": "The Prophets", "description": "A Meccan text referencing many prophets to show the continuity of the divine message and the inevitability of Judgment Day. (112 verses)" },
           { "chapter": 22, "arabic_name": "Al-Hajj", "english_name": "The Pilgrimage", "description": "A Medinan Surah establishing the rituals of the Hajj pilgrimage and giving permission to fight against oppression. (78 verses)" },
           { "chapter": 23, "arabic_name": "Al-Mu'minun", "english_name": "The Believers", "description": "Revealed in Mecca, outlining the qualities of true believers and the stages of human creation. (118 verses)" },
@@ -134,26 +407,26 @@
           { "chapter": 25, "arabic_name": "Al-Furqan", "english_name": "The Criterion", "description": "A Meccan Surah distinguishing right from wrong, answering objections to the Quran, and describing the servants of the Most Merciful. (77 verses)" },
           { "chapter": 26, "arabic_name": "Ash-Shu'ara", "english_name": "The Poets", "description": "A Meccan chapter recounting the struggles of past prophets and criticizing poets who mislead people with falsehoods. (227 verses)" },
           { "chapter": 27, "arabic_name": "An-Naml", "english_name": "The Ant", "description": "Revealed in Mecca, featuring the story of Solomon, the Queen of Sheba, and the ant, emphasizing knowledge and gratitude. (93 verses)" },
-          { "chapter": 28, "arabic_name": "Al-Qasas", "english_name": "The Narratives", "description": "A Meccan Surah detailing the life of Moses (PBUH)  before prophethood and the arrogance of Korah regarding wealth. (88 verses)" },
+          { "chapter": 28, "arabic_name": "Al-Qasas", "english_name": "The Narratives", "description": "A Meccan Surah detailing the life of Moses (Peace be upon him)  before prophethood and the arrogance of Korah regarding wealth. (88 verses)" },
           { "chapter": 29, "arabic_name": "Al-Ankabut", "english_name": "The Spider", "description": "A Meccan chapter using the metaphor of a spider's web to describe the fragility of false beliefs and testing of faith. (69 verses)" },
-          { "chapter": 30, "arabic_name": "Ar-Rum", "english_name": "The Romans", "description": "Revealed in Mecca, predicting the Roman victory over the Persians as a sign of Allah's control over historical events. (60 verses)" },
+          { "chapter": 30, "arabic_name": "Ar-Rum", "english_name": "The Romans", "description": "Revealed in Mecca, predicting the Roman victory over the Persians as a sign of God's control over historical events. (60 verses)" },
           { "chapter": 31, "arabic_name": "Luqman", "english_name": "Luqman", "description": "A Meccan Surah containing the wisdom and advice of the sage Luqman to his son regarding faith and behavior. (34 verses)" },
           { "chapter": 32, "arabic_name": "As-Sajdah", "english_name": "The Prostration", "description": "A Meccan chapter emphasizing the creation of man, the revelation of the Book, and the certainty of the Day of Judgment. (30 verses)" },
           { "chapter": 33, "arabic_name": "Al-Ahzab", "english_name": "The Combined Forces", "description": "Revealed in Medina during the Battle of the Trench, addressing social reforms, adoption, and the status of the Prophet's wives. (73 verses)" },
           { "chapter": 34, "arabic_name": "Saba", "english_name": "Sheba", "description": "A Meccan Surah contrasting the gratitude of David and Solomon with the ingratitude of the people of Sheba. (54 verses)" },
           { "chapter": 35, "arabic_name": "Fatir", "english_name": "The Originator", "description": "A Meccan chapter praising God as the Creator of angels and the universe, warning against the deception of worldly life. (45 verses)" },
           { "chapter": 36, "arabic_name": "Ya-Sin", "english_name": "Ya-Sin", "description": "Known as the heart of the Quran, this Meccan Surah focuses on the Quran's divine source and the signs of nature. (83 verses)" },
-          { "chapter": 37, "arabic_name": "As-Saffat", "english_name": "Those Who Set The Ranks", "description": "A Meccan chapter describing the ranks of angels and the eventual triumph of Allah's messengers over opposition. (182 verses)" },
+          { "chapter": 37, "arabic_name": "As-Saffat", "english_name": "Those Who Set The Ranks", "description": "A Meccan chapter describing the ranks of angels and the eventual triumph of God's messengers over opposition. (182 verses)" },
           { "chapter": 38, "arabic_name": "Sad", "english_name": "The Letter Sad", "description": "Revealed in Mecca, discussing the patience of prophets like David and Job and the arrogance of Satan. (88 verses)" },
           { "chapter": 39, "arabic_name": "Az-Zumar", "english_name": "The Troops", "description": "A Meccan Surah focusing heavily on the oneness of God and the distinct outcomes for believers and disbelievers. (75 verses)" },
-          { "chapter": 40, "arabic_name": "Ghafir", "english_name": "The Forgiver", "description": "A Meccan chapter telling the story of a believing man in Pharaoh's court and emphasizing Allah's forgiveness. (85 verses)" },
+          { "chapter": 40, "arabic_name": "Ghafir", "english_name": "The Forgiver", "description": "A Meccan chapter telling the story of a believing man in Pharaoh's court and emphasizing God's forgiveness. (85 verses)" },
           { "chapter": 41, "arabic_name": "Fussilat", "english_name": "Explained in Detail", "description": "A Meccan Surah describing the Quran's clarity and the testimony of man's own skin and ears against him on Judgment Day. (54 verses)" },
           { "chapter": 42, "arabic_name": "Ash-Shura", "english_name": "The Consultation", "description": "A Meccan chapter emphasizing 'Shura' (consultation) among believers and the unity of the message given to all prophets. (53 verses)" },
           { "chapter": 43, "arabic_name": "Az-Zukhruf", "english_name": "The Ornaments of Gold", "description": "A Meccan Surah criticizing the obsession with worldly wealth and correcting false attributions of daughters to God. (89 verses)" },
-          { "chapter": 44, "arabic_name": "Ad-Dukhan", "english_name": "The Smoke", "description": "A Meccan chapter warning of a coming punishment (smoke) and recounting the failure of Pharaoh to heed Moses (PBUH). (59 verses)" },
+          { "chapter": 44, "arabic_name": "Ad-Dukhan", "english_name": "The Smoke", "description": "A Meccan chapter warning of a coming punishment (smoke) and recounting the failure of Pharaoh to heed Moses (Peace be upon him). (59 verses)" },
           { "chapter": 45, "arabic_name": "Al-Jathiyah", "english_name": "The Crouching", "description": "A Meccan Surah describing the humility of all nations kneeling before God on Judgment Day and the proofs of God in nature. (37 verses)" },
           { "chapter": 46, "arabic_name": "Al-Ahqaf", "english_name": "The Wind-Curved Sandhills", "description": "A Meccan chapter mentioning the Jinn listening to the Quran and advising kindness to parents. (35 verses)" },
-          { "chapter": 47, "arabic_name": "Muhammad (PBUH)", "english_name": "Muhammad (PBUH)", "description": "A Medinan Surah focused on the believers' struggle for the cause of truth and the nullification of disbelievers' deeds. (38 verses)" },
+          { "chapter": 47, "arabic_name": "Muhammad (Peace be upon him) (Peace be upon him)", "english_name": "Muhammad (Peace be upon him) (Peace be upon him)", "description": "A Medinan Surah focused on the believers' struggle for the cause of truth and the nullification of disbelievers' deeds. (38 verses)" },
           { "chapter": 48, "arabic_name": "Al-Fath", "english_name": "The Victory", "description": "Revealed after the Treaty of Hudaybiyyah, declaring it a clear victory and promising the future conquest of Mecca. (29 verses)" },
           { "chapter": 49, "arabic_name": "Al-Hujurat", "english_name": "The Rooms", "description": "A Medinan chapter teaching manners, respect for the Prophet, and the brotherhood of all believers regardless of race. (18 verses)" },
           { "chapter": 50, "arabic_name": "Qaf", "english_name": "The Letter Qaf", "description": "A Meccan Surah emphasizing the resurrection and how every human deed is recorded by guardian angels. (45 verses)" },
@@ -164,29 +437,29 @@
           { "chapter": 55, "arabic_name": "Ar-Rahman", "english_name": "The Beneficent", "description": "A Meccan chapter known as the 'Bride of the Quran,' repeatedly asking 'Which of the favors of your Lord will you deny?' (78 verses)" },
           { "chapter": 56, "arabic_name": "Al-Waqi'ah", "english_name": "The Inevitable", "description": "A Meccan Surah categorizing people into three groups in the afterlife: the foremost, the companions of the right, and the left. (96 verses)" },
           { "chapter": 57, "arabic_name": "Al-Hadid", "english_name": "The Iron", "description": "A Medinan chapter encouraging charity, described as a loan to God, and mentioning iron as a tool given for humanity's benefit. (29 verses)" },
-          { "chapter": 58, "arabic_name": "Al-Mujadila", "english_name": "The Pleading Woman", "description": "A Medinan Surah addressing marital issues and Allah's omniscience, hearing every conversation, including secret counsels. (22 verses)" },
+          { "chapter": 58, "arabic_name": "Al-Mujadila", "english_name": "The Pleading Woman", "description": "A Medinan Surah addressing marital issues and God's omniscience, hearing every conversation, including secret counsels. (22 verses)" },
           { "chapter": 59, "arabic_name": "Al-Hashr", "english_name": "The Exile", "description": "Revealed in Medina concerning the expulsion of the Banu Nadir tribe and the distribution of wealth within the community. (24 verses)" },
           { "chapter": 60, "arabic_name": "Al-Mumtahanah", "english_name": "She That Is To Be Examined", "description": "A Medinan chapter regarding the treatment of women refugees and relations with non-believers who do not fight the Muslims. (13 verses)" },
-          { "chapter": 61, "arabic_name": "As-Saff", "english_name": "The Ranks", "description": "A Medinan Surah urging believers to align their actions with their words and predicting the coming of Ahmad (Muhammad) (PBUH). (14 verses)" },
+          { "chapter": 61, "arabic_name": "As-Saff", "english_name": "The Ranks", "description": "A Medinan Surah urging believers to align their actions with their words and predicting the coming of Ahmad (Muhammad (Peace be upon him)) (Peace be upon him). (14 verses)" },
           { "chapter": 62, "arabic_name": "Al-Jumu'ah", "english_name": "The Congregation", "description": "A Medinan chapter establishing the importance of the Friday congregational prayer (Jumu'ah) over worldly commerce. (11 verses)" },
           { "chapter": 63, "arabic_name": "Al-Munafiqun", "english_name": "The Hypocrites", "description": "A Medinan Surah exposing the deceit of the hypocrites who internally opposed the Prophet while pretending to believe. (11 verses)" },
           { "chapter": 64, "arabic_name": "At-Taghabun", "english_name": "The Mutual Disillusion", "description": "A Medinan chapter describing Judgment Day as a day of mutual gain and loss, emphasizing reliance on God. (18 verses)" },
           { "chapter": 65, "arabic_name": "At-Talaq", "english_name": "The Divorce", "description": "A Medinan Surah outlining the specific laws and waiting periods regarding divorce and the maintenance of women. (12 verses)" },
-          { "chapter": 66, "arabic_name": "At-Tahrim", "english_name": "The Prohibition", "description": "A Medinan chapter addressing a domestic incident in the Prophet's household and holding up the wives of Noah, Lot, and Pharaoh as examples. (12 verses)" },
-          { "chapter": 67, "arabic_name": "Al-Mulk", "english_name": "The Sovereignty", "description": "A Meccan Surah affirming Allah's dominion over life and death; traditionally recited for protection from the punishment of the grave. (30 verses)" },
+          { "chapter": 66, "arabic_name": "At-Tahrim", "english_name": "The Prohibition", "description": "A Medinan chapter addressing a domestic incident in the Prophet's household and holding up the wives of Noah (Peace be upon him), Lot, and Pharaoh as examples. (12 verses)" },
+          { "chapter": 67, "arabic_name": "Al-Mulk", "english_name": "The Sovereignty", "description": "A Meccan Surah affirming God's dominion over life and death; traditionally recited for protection from the punishment of the grave. (30 verses)" },
           { "chapter": 68, "arabic_name": "Al-Qalam", "english_name": "The Pen", "description": "A Meccan chapter defending the Prophet's sanity against accusers and telling the parable of the owners of the garden. (52 verses)" },
           { "chapter": 69, "arabic_name": "Al-Haqqah", "english_name": "The Reality", "description": "A Meccan Surah describing the inevitable destruction of past nations and the terrifying events of the Day of Judgment. (52 verses)" },
           { "chapter": 70, "arabic_name": "Al-Ma'arij", "english_name": "The Ascending Stairways", "description": "A Meccan chapter focusing on the patience required of the Prophet and the eventual punishment of the disbelievers. (44 verses)" },
-          { "chapter": 71, "arabic_name": "Nuh (PBUH)", "english_name": "Noah (PBUH)", "description": "A Meccan Surah dedicated to Noah's (PBUH) tireless but largely rejected preaching to his people before the flood. (28 verses)" },
-          { "chapter": 72, "arabic_name": "Al-Jinn", "english_name": "The Jinn", "description": "A Meccan chapter recounting how a group of Jinn listened to the Quran and accepted Islam, acknowledging Allah's oneness. (28 verses)" },
+          { "chapter": 71, "arabic_name": "Nuh (Peace be upon him)", "english_name": "Noah (Peace be upon him) (Peace be upon him)", "description": "A Meccan Surah dedicated to Noah (Peace be upon him)'s (Peace be upon him) tireless but largely rejected preaching to his people before the flood. (28 verses)" },
+          { "chapter": 72, "arabic_name": "Al-Jinn", "english_name": "The Jinn", "description": "A Meccan chapter recounting how a group of Jinn listened to the Quran and accepted Islam, acknowledging God's oneness. (28 verses)" },
           { "chapter": 73, "arabic_name": "Al-Muzzammil", "english_name": "The Enshrouded One", "description": "A Meccan Surah instructing the Prophet to pray during the night and to bear patiently with those who deny the truth. (20 verses)" },
           { "chapter": 74, "arabic_name": "Al-Muddaththir", "english_name": "The Cloaked One", "description": "One of the earliest Meccan revelations, commanding the Prophet to arise, warn the people, and purify himself. (56 verses)" },
           { "chapter": 75, "arabic_name": "Al-Qiyamah", "english_name": "The Resurrection", "description": "A Meccan chapter emphasizing the certainty of the resurrection and the Prophet's eagerness to memorize the revelation. (40 verses)" },
           { "chapter": 76, "arabic_name": "Al-Insan", "english_name": "Man", "description": "A Medinan Surah describing the rewards of the righteous in Paradise, particularly those who feed the poor and captive. (31 verses)" },
           { "chapter": 77, "arabic_name": "Al-Mursalat", "english_name": "The Emissaries", "description": "A Meccan chapter swearing by the winds, emphasizing the inevitability of the Day of Decision and warning deniers. (50 verses)" },
           { "chapter": 78, "arabic_name": "An-Naba", "english_name": "The Tidings", "description": "A Meccan Surah questioning those who deny the afterlife and vividly describing the day when the trumpet is blown. (40 verses)" },
-          { "chapter": 79, "arabic_name": "An-Nazi'at", "english_name": "Those Who Drag Forth", "description": "A Meccan chapter describing the angels who take souls at death and the story of Moses (PBUH) calling Pharaoh to account. (46 verses)" },
-          { "chapter": 80, "arabic_name": "'Abasa", "english_name": "He Frowned", "description": "A Meccan Surah correcting the Prophet Muhammad (PBUH)  for prioritizing a wealthy leader over a blind man seeking knowledge. (42 verses)" },
+          { "chapter": 79, "arabic_name": "An-Nazi'at", "english_name": "Those Who Drag Forth", "description": "A Meccan chapter describing the angels who take souls at death and the story of Moses (Peace be upon him) calling Pharaoh to account. (46 verses)" },
+          { "chapter": 80, "arabic_name": "'Abasa", "english_name": "He Frowned", "description": "A Meccan Surah correcting the Prophet Muhammad (Peace be upon him) (Peace be upon him)  for prioritizing a wealthy leader over a blind man seeking knowledge. (42 verses)" },
           { "chapter": 81, "arabic_name": "At-Takwir", "english_name": "The Overthrowing", "description": "A Meccan chapter depicting the cosmic upheavals at the end of the world, such as the sun being darkened. (29 verses)" },
           { "chapter": 82, "arabic_name": "Al-Infitar", "english_name": "The Cleaving", "description": "A Meccan Surah warning humanity about their delusion regarding God and describing the recording of deeds by angels. (19 verses)" },
           { "chapter": 83, "arabic_name": "Al-Mutaffifin", "english_name": "The Defrauding", "description": "A Meccan chapter condemning those who cheat in business weights and measures, warning of the record of the wicked. (36 verses)" },
@@ -212,7 +485,7 @@
           { "chapter": 103, "arabic_name": "Al-Asr", "english_name": "The Declining Day", "description": "A Meccan chapter summarizing that all mankind is in loss except those who believe, do good, and advise truth and patience. (3 verses)" },
           { "chapter": 104, "arabic_name": "Al-Humazah", "english_name": "The Traducer", "description": "A Meccan Surah condemning the backbiter and the one who hoards wealth, warning of the crushing fire. (9 verses)" },
           { "chapter": 105, "arabic_name": "Al-Fil", "english_name": "The Elephant", "description": "A Meccan chapter recalling the destruction of Abraha's army of elephants who attempted to destroy the Kaaba. (5 verses)" },
-          { "chapter": 106, "arabic_name": "Quraysh", "english_name": "Quraysh", "description": "A Meccan Surah reminding the Quraysh tribe of Allah's protection and provision during their trading journeys. (4 verses)" },
+          { "chapter": 106, "arabic_name": "Quraysh", "english_name": "Quraysh", "description": "A Meccan Surah reminding the Quraysh tribe of God's protection and provision during their trading journeys. (4 verses)" },
           { "chapter": 107, "arabic_name": "Al-Ma'un", "english_name": "The Small Kindnesses", "description": "A Meccan chapter condemning those who deny the judgment by mistreating orphans and performing prayers only to be seen. (7 verses)" },
           { "chapter": 108, "arabic_name": "Al-Kawthar", "english_name": "The Abundance", "description": "The shortest Surah, revealed in Mecca, promising the Prophet an abundance of good and the cutting off of his enemies. (3 verses)" },
           { "chapter": 109, "arabic_name": "Al-Kafirun", "english_name": "The Disbelievers", "description": "A Meccan Surah declaring the absolute distinction between the worship of Muslims and the worship of polytheists. (6 verses)" },

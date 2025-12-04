@@ -13,4 +13,4 @@ Allow: /a/*.xml
 Allow: /img/*.png
 
 # ABSOLUTE PATH TO YOUR SITEMAP
-Sitemap: https://quran-lite.github.io/sitemap.xml
+Sitemap: https://quran-lite.pages.dev/sitemap.xml

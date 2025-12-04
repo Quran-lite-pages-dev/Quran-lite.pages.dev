@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+    // 1. Redirect GitHub.io traffic to Pages.dev
+    // This ensures everyone uses the same localStorage database
+    if (window.location.hostname.includes('github.io')) {
+        var newUrl = window.location.href.replace('github.io', 'pages.dev');
+        
+        // This tells Google "The new page is the real one" (301-like behavior for JS)
+        window.location.replace(newUrl); 
+    }
+</script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Who is reading? - QuranLite</title>
@@ -8,6 +18,19 @@
     <meta name="theme-color" content="#050505">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<link rel="canonical" href="https://Quran-lite.pages.dev/">
+
+<link rel="canonical" href="https://Quran-lite.pages.dev/reading/">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PDWXFDCQRH"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-PDWXFDCQRH', { 'send_page_view': false });
+    </script>
+
     
     <style>
         :root { --bg: #050505; --text: #fff; --accent: #0FB; --surface: #141414; }

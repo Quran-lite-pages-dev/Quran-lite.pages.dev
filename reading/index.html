@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" prefix="og: http://ogp.me/ns# book: http://ogp.me/ns/book#">
 <head>
+
 <script>
     // 1. Redirect GitHub.io traffic to Pages.dev
     if (window.location.hostname.includes('github.io')) {
@@ -47,9 +48,10 @@
       gtag('js', new Date());
       gtag('config', 'G-PDWXFDCQRH', { 'send_page_view': false });
     </script>
-
+       
     <style>
-        /* --- 0. NETFLIX TV STYLE OVERRIDES & SCROLLBAR BAN --- */
+
+   /* --- 0. NETFLIX TV STYLE OVERRIDES & SCROLLBAR BAN --- */
         ::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; background: transparent !important; }
         html, body { scrollbar-width: none !important; -ms-overflow-style: none !important; }
         
@@ -80,7 +82,7 @@
 
         /* Preview Subtitles */
         #hero-subtitle-overlay {
-            position: absolute; bottom: 120px; left: 5%; max-width: 600px;
+            position: absolute; bottom: 120px; right: 5%; max-width: 600px;
             color: #fff; font-size: 1.8rem; font-weight: 500;
             text-shadow: 0 2px 4px rgba(0,0,0,0.9);
             z-index: 10; opacity: 0; transition: opacity 0.3s;
@@ -348,10 +350,71 @@
             select { width: 100%; height: 48px; font-size: 1.4rem; }
             #chapterSelect { grid-column: 1 / -1; background-color: rgba(30,30,30,0.8); color: var(--accent); font-weight: 600; }
         }
-    </style>
-</head>
 
+        /* NEW: Netflix-style Intro Transition Styles */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.8s ease-out;
+        }
+        .intro-logo {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 5rem;
+            font-weight: 700;
+            color: #fff; /* Charismatic White for Quran */
+            letter-spacing: 1px;
+            animation: logoZoom 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            text-transform: uppercase;
+        }
+        @keyframes logoZoom {
+            0% { transform: scale(1); opacity: 0; }
+            20% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { transform: scale(3.5); opacity: 0; }
+        }
+        .intro-fade-out {
+            opacity: 0 !important;
+            pointer-events: none;
+        }
+        /* Mobile adjustment */
+        @media (max-width: 768px) {
+            .intro-logo { font-size: 3rem; }
+        }
+    </style>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "QuranLite",
+      "url": "https://Quran-lite.pages.dev/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://quran-lite.pages.dev/reading?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+
+
+    </head>
 <body>
+
+    <!-- NEW: Intro Overlay and Audio -->
+    <div id="intro-overlay" style="display:none;">
+        <div class="intro-logo">THE QURAN</div>
+    </div>
+    <audio id="intro-sound" src="https://everyayah.com/data/Abdullaah_3awwaad_Al-Juhaynee_128kbps/001001.mp3" preload="auto"></audio>
 
     <nav id="tv-sidebar">
         <a href="#" class="nav-item active" id="nav-home" tabindex="1">
@@ -412,7 +475,7 @@
         </div>
 
         <div class="row-section">
-            <div class="row-header">Trending Now</div>
+            <div class="row-header">For you</div>
             <div class="card-scroller" id="trending-row"></div>
         </div>
 
@@ -805,6 +868,7 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.has('chapter')) {
                     // Start in Cinema
+                    document.getElementById('intro-overlay').style.display = 'none'; // NEW: Hide intro if direct link
                     switchView('cinema');
                     restoreState();
                     populateVerseSelect();
@@ -826,6 +890,7 @@
                     switchView('dashboard');
                     refreshDashboard();
                     elements.overlay.style.display = 'none';
+                    playNetflixIntro(); // NEW: Trigger Intro
                 }
 
                 setupEventListeners();
@@ -1577,6 +1642,33 @@
             elements.search.overlay.classList.remove('active');
             setActiveNav(elements.sidebar.home);
             document.getElementById('door-play-btn').focus();
+        }
+
+        // NEW: Netflix-style Intro Logic
+        function playNetflixIntro() {
+            const intro = document.getElementById('intro-overlay');
+            const audio = document.getElementById('intro-sound');
+            if(!intro || !audio) return;
+            
+            intro.style.display = 'flex'; // Ensure visible
+            
+            // Attempt autoplay (might be blocked by browser without interaction)
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Intro autoplay blocked by policy - user must interact first");
+                    // Optionally force hide if blocked to avoid stuck screen, 
+                    // or leave it for the animation to handle.
+                });
+            }
+
+            // Sync fade out with audio length (approx 3-4s)
+            setTimeout(() => {
+                intro.classList.add('intro-fade-out');
+                setTimeout(() => {
+                    intro.style.display = 'none';
+                }, 1000);
+            }, 3500); 
         }
 
         document.addEventListener('DOMContentLoaded', initializeApp);

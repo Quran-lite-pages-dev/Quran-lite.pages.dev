@@ -330,148 +330,202 @@
             transform: translateX(0);
         }
 
-/* --- REFACTORED MOBILE OPTIMIZATION (CLEAN & NO SCROLLBARS) --- */
+/* --- REFACTORED MOBILE OPTIMIZATION (NETFLIX STYLE) --- */
 @media screen and (max-width: 768px), screen and (orientation: portrait) {
 
     body {
+        display: flex;
         flex-direction: column;
-        height: 100vh; /* Fixed height, no page scrolling */
+        height: 100vh;
         width: 100vw;
-        overflow: hidden !important; /* Forces layout containment */
+        overflow: hidden !important;
+        background: #000;
     }
 
-    /* 1. Sidebar: Fixed Top Container (No Page Scroll) */
+    /* 1. Sidebar: Top Horizontal Carousel (Netflix-style Row) */
     .sidebar {
         width: 100%;
         height: auto;
-        flex: 0 0 auto; /* Do not grow, fit content */
-        max-height: 45vh; /* Cap height to ensure preview is seen */
-        padding: 20px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.8);
-        background: linear-gradient(to bottom, #000 0%, #0a0a0a 100%);
-        z-index: 20;
+        flex: 0 0 auto;
+        padding: 15px 0 15px 15px; /* Padding left only for scroll start */
+        background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.8) 100%);
+        backdrop-filter: blur(10px); /* Glass effect */
+        z-index: 50;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         
-        /* Internal Scroll for Sidebar only */
-        overflow-y: auto; 
-        overflow-x: hidden;
-        -webkit-overflow-scrolling: touch; /* Smooth iOS scroll */
+        /* Layout for horizontal scroll */
+        display: flex;
+        flex-direction: column;
+        overflow: visible; 
     }
 
+    /* Clean up the logo area */
     .logo {
-        margin-bottom: 1rem;
-        transform: scale(0.8); /* Smaller logo */
+        margin-bottom: 0.8rem;
+        padding-right: 15px;
+        transform: scale(0.9);
+        transform-origin: left center;
     }
 
-    /* 2. Profile List: Compact Grid/Row */
+    /* 2. Profile List: Horizontal Scrolling Strip */
     .profile-list-container {
         display: flex;
-        flex-direction: row; /* Horizontal scroll feels more app-like on top */
-        flex-wrap: wrap; /* Or wrap if you prefer grid */
-        gap: 0.8rem;
-        justify-content: center;
+        flex-direction: row;
+        flex-wrap: nowrap; /* CRITICAL: Forces single row */
+        gap: 12px;
+        overflow-x: auto; /* Allow horizontal scroll */
+        overflow-y: hidden;
+        padding-right: 20px; /* Space at end of scroll */
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        
+        /* Hide Scrollbar */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE/Edge */
+    }
+    
+    /* Hide scrollbar for Chrome/Safari */
+    .profile-list-container::-webkit-scrollbar {
+        display: none;
     }
 
     .profile-item {
-        padding: 8px;
-        background: rgba(255, 255, 255, 0.05); 
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        flex-direction: column; /* Icon top, text bottom */
-        gap: 5px;
-        min-width: 80px;
-        text-align: center;
-    }
-
-    .profile-avatar {
-        width: 45px;
-        height: 45px;
-        font-size: 1rem;
-        margin: 0 auto;
-    }
-
-    .profile-info {
-        align-items: center;
-    }
-    
-    .profile-name { font-size: 0.8rem; }
-    .profile-status { display: none; /* Hide status to save space */ }
-
-    .action-buttons {
-        flex-direction: row;
-        justify-content: center;
-        margin-top: 1rem;
-    }
-    
-    .btn-action {
-        padding: 8px 12px;
-        font-size: 0.7rem;
-    }
-
-    /* 3. Preview Area: Fills remaining space */
-    .preview-area {
-        flex: 1; /* Takes all remaining height */
-        width: 100%;
-        padding: 20px;
-        align-items: center; 
-        justify-content: center;
-        overflow-y: auto; /* Internal scroll if text is huge */
-        overflow-x: hidden;
-    }
-
-    .preview-bg {
-        background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 90%);
-    }
-
-    .spotlight {
-        top: -10%; left: -50%;
-        width: 200%; height: 120%;
-    }
-
-    .preview-content {
-        width: 100%;
+        flex: 0 0 auto; /* Don't shrink items */
+        width: 70px;    /* Fixed width for uniform look */
+        padding: 0;
+        background: transparent;
+        border: none;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        text-align: center;
+        gap: 6px;
     }
 
-    /* 4. Typography Scaling */
+    .profile-avatar {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%; /* Netflix circular avatars */
+        border: 2px solid transparent; /* Prepare for active state */
+        background: #333;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s ease;
+    }
+    
+    /* Active/Selected State Simulation */
+    .profile-item.active .profile-avatar {
+        border-color: #e50914; /* Netflix Red border */
+        transform: scale(1.05);
+    }
+
+    .profile-info {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .profile-name {
+        font-size: 0.7rem;
+        color: #b3b3b3;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+    }
+
+    /* Hide extraneous desktop elements */
+    .profile-status, .action-buttons, .btn-action {
+        display: none; 
+    }
+
+    /* 3. Preview Area: The "Hero" Section */
+    .preview-area {
+        flex: 1; /* Fills all remaining space */
+        width: 100%;
+        position: relative;
+        padding: 30px 20px 80px 20px; /* Extra bottom padding for safe area */
+        display: flex;
+        align-items: center; 
+        justify-content: center;
+        overflow-y: auto;
+    }
+
+    .preview-bg {
+        /* Netflix-style vignette */
+        background: radial-gradient(circle at 50% 40%, #2a2a2a 0%, #000000 85%);
+    }
+
+    .spotlight {
+        /* Ambient light effect */
+        opacity: 0.4;
+        filter: blur(80px);
+    }
+
+    /* 4. Typography & Content Scaling */
+    .preview-content {
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+        animation: fadeIn 0.8s ease-out;
+    }
+
     .surah-title-en {
-        font-size: 2.5rem; 
-        line-height: 1;
+        font-size: 3rem; 
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(to right, #fff, #ccc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
     .surah-title-ar {
-        font-size: 2rem;
-        margin-bottom: 1rem;
+        font-size: 2.2rem;
+        color: var(--accent, #e50914);
+        margin-bottom: 1.5rem;
+        font-family: serif; /* Ensure arabic font looks distinct */
     }
 
     .surah-desc {
-        font-size: 0.95rem;
-        text-align: center;
-        border-left: none;
-        border-top: 2px solid var(--accent);
-        padding-top: 15px;
-        padding-left: 0;
-        max-height: 20vh; /* Prevent text from pushing everything off */
-        overflow-y: auto; /* Scroll text if too long */
+        font-size: 1rem;
+        line-height: 1.6;
+        color: #dcdcdc;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+        border: none;
+        padding: 0;
+        opacity: 0.9;
+    }
+
+    /* 5. Mobile Search / Input */
+    .input-box {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    /* Hide input placeholder on focus for cleaner look */
+    input[type="text"]:focus::placeholder {
+        color: transparent;
     }
 
     .meta-tag {
-        justify-content: center;
-        font-size: 0.8rem;
+        display: inline-flex;
+        margin-top: 20px;
+        background: rgba(255,255,255,0.1);
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
     
-    .meta-tag::before { display: none; } /* Remove line on mobile */
-
-    /* 5. Mobile Input Fixes */
-    .input-box { width: 95%; }
-    input[type="text"] { font-size: 1.5rem; }
-
-    #phantom-heading {
-        font-size: 1.2rem;
-        top: 10px;
-        left: 15px;
-    }
+    .meta-tag::before { display: none; }
 }
+
+/* Optional simple fade in for content */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 </style>

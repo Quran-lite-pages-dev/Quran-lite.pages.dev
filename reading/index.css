@@ -492,7 +492,7 @@
 
     /* 1. MOVE SIDEBAR TO BOTTOM */
     #tv-sidebar {
-        display: flex !important; /* Override the 'display: none' */
+        display: none; /* Override the 'display: none' */
         flex-direction: row;
         width: 100% !important;
         height: 80px; /* Taller to accommodate the pop-out button */

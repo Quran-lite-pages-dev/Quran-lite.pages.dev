@@ -508,4 +508,124 @@
             padding: 1rem;
         }
         }
+
+/* =========================================
+   MOBILE LAYOUT OVERRIDES (Bottom Bar & 9:16 Search)
+   ========================================= */
+
+@media screen and (max-width: 768px) {
+
+    /* 1. MOVE SIDEBAR TO BOTTOM */
+    #tv-sidebar {
+        display: flex !important; /* Override the 'display: none' */
+        flex-direction: row;
+        width: 100% !important;
+        height: 80px; /* Taller to accommodate the pop-out button */
+        bottom: 0;
+        top: auto;
+        left: 0;
+        right: 0;
+        padding: 0;
+        background: rgba(0, 0, 0, 0.98);
+        border-top: 1px solid #222;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 9999;
+        box-shadow: 0 -5px 20px rgba(0,0,0,0.8);
+    }
+
+    /* 2. HIDE ALL BUTTONS INITIALLY (To filter only the 3 we want) */
+    .nav-item {
+        display: none; 
+        flex: 1;
+        justify-content: center;
+        padding: 0;
+        height: 100%;
+        border-left: none !important; /* Remove any desktop borders */
+    }
+
+    /* 3. CONFIGURE BUTTON POSITIONS (Flex Order) */
+    
+    /* PROFILE / USER BUTTON -> LEFT */
+    /* Assuming ID is user-auth-btn or similar based on standard conventions */
+    #user-auth-btn, #profile-btn { 
+        display: flex;
+        order: 1; 
+    }
+
+    /* SEARCH BUTTON -> CENTER (Highlighted) */
+    #search-btn {
+        display: flex;
+        order: 2;
+        /* Visual Pop-out Effect */
+        background: #111;
+        border: 2px solid #00ffbb; /* Your theme accent color */
+        border-radius: 50%;
+        width: 65px; /* Fixed width */
+        height: 65px; /* Fixed height */
+        max-width: 65px;
+        margin-bottom: 25px; /* Push it up */
+        box-shadow: 0 0 15px rgba(0, 255, 187, 0.3);
+        z-index: 10000;
+        align-items: center;
+        color: #00ffbb;
+    }
+
+    /* HOME BUTTON -> RIGHT */
+    #door-btn, #home-btn {
+        display: flex;
+        order: 3;
+    }
+
+    /* 4. SEARCH OVERLAY -> 9:16 FULL SCREEN LAYOUT */
+    #search-overlay {
+        /* Force full screen vertical */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%; /* Fill screen */
+        padding: env(safe-area-inset-top) 1rem 100px 1rem; /* Padding for notch and bottom bar */
+        
+        /* Change grid to vertical flex */
+        display: none; /* JS toggles this to flex */
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        
+        background: #000;
+        transform: none; /* Remove desktop centering transform */
+        border-radius: 0;
+        border: none;
+    }
+
+    #search-overlay.active {
+        display: flex; /* Ensure flex is used when active */
+    }
+
+    /* Make Input Area Top & Prominent */
+    .search-header, .input-group {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    #search-input {
+        width: 100%;
+        font-size: 18px; /* Prevents iOS auto-zoom */
+        padding: 15px;
+        background: #1a1a1a;
+        border: 1px solid #333;
+    }
+
+    /* Make Results/Keyboard flow naturally vertically */
+    .keyboard-section {
+        width: 100%;
+        border: none;
+        padding: 0;
+        /* If using on-screen keyboard, this ensures it fits, 
+           but if using phone keyboard, this pushes content up */
+        flex: 1;
+        overflow-y: auto; 
+    }
+}
     </style>
